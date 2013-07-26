@@ -294,14 +294,60 @@ Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。�
 
 > 并不太喜欢Sea.js的use API，因为其回调函数并没有使用与Define一样的参数列表。
 
-Tea.js
+#### Tea.js
 
 鉴于上面的解释，我们先来实现一个简单运行时——Tea.js。迫不及待了吧，让我们开始吧！
 
 Tea.js提供两个接口：
 
 1. infuse（沏茶）：用来祭出一个模块；
-2. taste（品茶）：运来执行一个模块。
+2. taste（品茶）：运来执行一个模块；
+3. require、exports和module来组织模块。
+
+参考CMD，我们来定一下TMD。
+
+> 实际上并没有“他妈的”这种标准。
+
+```javascript
+// 定一个TMD的模块
+Tea.infuse(id?, dependencies?, factory)
+
+// 使用一个TMD的模块
+Tea.taste(dependencies?, factory)
+```
+
+##### 模块标识（id）
+
+模块id的标准参考[Module Identifiers](http://wiki.commonjs.org/wiki/Modules/1.1.1#Module_Identifiers)，简单说来就是作为一个模块的唯一标识。
+
+出于学习的目的，我将它们翻译引用在这里：
+
+1. 模块标识由数个被斜杠（/）隔开的词项组成；
+2. 每次词项必须是小写的标识、“.”或“..”；
+3. 模块标识并不是必须有像“.js”这样的文件扩展名；
+4. 模块标识不是相对的，就是顶级的。相对的模块标识开头要么是“.”，要么是“..”；
+5. Top-level identifiers are resolved off the conceptual module name space root. 
+6. 相对的模块标识被解释为相对于某模块的标识，“require”语句是写在这个模块中，并在这个模块中调用的。
+
+##### 模块（factory）
+
+顾名思义，factory就是工厂，一个可以产生模块的工厂。node中的工厂就是新的运行时，而在Sea.js中（Tea.js）中也同样，factory就是一个函数。这个函数接受三个参数。
+
+```javascript
+function (require, exports, module) {
+    // here is module body
+}
+```
+
+在整个运行时中只有模块，即只有factory。
+
+##### 依赖（dependencies）
+
+依赖就是一个id的数组，即模块所依赖模块的标识。
+
+##### 运行时
+
+我们从最简单的运行时开始。
 
 ## 快速参考
 
