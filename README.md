@@ -202,6 +202,7 @@ define(function (require, exports) {
     exports.helloPython = helloPython;
     exports.helloJavaScript = helloJavaScript;
 });
+```
 
 ### 在页面中引入Sea.js：
 
