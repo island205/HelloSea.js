@@ -45,7 +45,7 @@ greet.hello_pyhton()
 greet.py的模块中有两个方法，把它们import到use_greet.py中，我们就可以使用了。
 Python还提供了另外一种引入模块的方法：
 
-```
+```python
 # !/usr/bin/python
 # Filename: use_greet.py
 
@@ -126,7 +126,7 @@ Node.js模块化的组织方案是Server端的实现，并不能直接在浏览�
 
 ### LABjs
 
-[LABjs](https://github.com/getify/LABjs）是一个动态的脚本加载类库，替代难看的，低性能的`script`标签。该类库可以并行地加载多个脚本，可按照需求顺序执行依赖的代码，这样在保证依赖的同时大大提高的脚本的加载速度。
+[LABjs](https://github.com/getify/LABjs)是一个动态的脚本加载类库，替代难看的，低性能的`script`标签。该类库可以并行地加载多个脚本，可按照需求顺序执行依赖的代码，这样在保证依赖的同时大大提高的脚本的加载速度。
 
 LABjs已经三岁了，其作者getify声称，由于社区里大家更喜欢使用AMD模式，随在2012年7月25号停止对该类库的更新。但LABjs绝对是JavaScript在浏览器端模块化的鼻祖，在脚本加载方面做了大量的工作。
 
@@ -172,4 +172,19 @@ sea.use("greet", function (require, exports) {
 
 - [实例解析 SeaJS 内部执行过程 - 从 use 说起](https://github.com/seajs/seajs/issues/308)
 - [hello seajs](http://mrzhang.me/blog/hello-seajs.html)
-
+- [http://seajs.org/docs/](http://seajs.org/docs/)
+- [使用SeaJS实现模块化JavaScript开发](http://cnodejs.org/topic/4f16442ccae1f4aa270010d9)
+- [use.js](http://documentup.com/tbranyen/use.js)
+- [harmony:modules](http://wiki.ecmascript.org/doku.php?id=harmony:modules)
+- [harmony:module_loaders](http://wiki.ecmascript.org/doku.php?id=harmony:module_loaders)
+- [AMD规范](https://github.com/amdjs/amdjs-api/wiki/AMD)
+- [CMD规范](https://github.com/seajs/seajs/issues/242)
+- [AMD 和 CMD 的区别有哪些？](http://www.zhihu.com/question/20351507/answer/14859415)
+- [与 RequireJS 的异同](https://github.com/seajs/seajs/issues/277)
+- [基于CommonJS Modules/2.0的实现：BravoJS](http://www.cnblogs.com/snandy/archive/2012/06/10/2543893.html)
+- [Dynamic Script Request (DSR) API](http://tagneto.org/how/reference/js/DynamicScriptRequest.html)
+- [Achieving A Runtime CPAN With Dojo's XD Loader](http://tagneto.org/talks/AjaxExperienceXDomain/)
+- [jQueryRequireJS](http://www.tagneto.org/talks/jQueryRequireJS/jQueryRequireJS.html)
+- [labjs](http://www.slideshare.net/itchina110/labjs)
+- [行进中的前端类库：KISSY CommonJS 的模块系统，AMD 和 Wrappings, 以及 RequireJS](http://lifesinger.org/blog/2011/01/commonjs-amd-wrappings-and-requirejs/)
+- [jsi](http://code.google.com/p/jsi/wiki/History)
