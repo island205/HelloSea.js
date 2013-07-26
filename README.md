@@ -12,7 +12,7 @@
 
 模块就是一团黑乎乎的东西，有份文档会教你如何使用这团东西，你只知道它的接口，但不知道它内部是如何运作的，但这个模块能满足你的需求。
 
-过程、函数、类都可以称作为模块，它们有一个共同的特点就是分装了功能，供外界调用。对于特定的语言，模块所指的东西各有不同。
+过程、函数、类都可以称作为模块，它们有一个共同的特点就是封装了功能，供外界调用。对于特定的语言，模块所指的东西各有不同。
 
 在Python中，
 
@@ -164,7 +164,7 @@ LABjs已经三岁了，其作者getify声称，由于社区里大家更喜欢使
 
 ### seajs
 
-seajs相对于前两者就比较年轻，2010年玉伯发起了这个开源项目，SeaJS遵循CMD规范，与RequireJS类似，同样做为模块加载器。那我们如何使用seajs来分装刚才的示例呢？
+seajs相对于前两者就比较年轻，2010年玉伯发起了这个开源项目，SeaJS遵循CMD规范，与RequireJS类似，同样做为模块加载器。那我们如何使用seajs来封装刚才的示例呢？
 
 ```javascript
 // File:greet.js
@@ -180,13 +180,69 @@ define(function (require, exports) {
 });
 
 // File:usegreet.js
-sea.use("greet", function (require, exports) {
-    var greet = require("greet");
+sea.use("greet", function (Greet) {
     greet.helloJavaScript();
 });
 ```
-
 ## 小试身手
+
+还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/Bodule/HelloSea.js/blob/master/gettingstart)可以找到。
+
+### 首先写个模块：
+
+```javascript
+// File:js/module/greet.js
+define(function (require, exports) {
+    function helloPython() {
+        document.write("Hello,Python");
+    }
+    function helloJavaScript() {
+        document.write("Hello,JavaScript");
+    }
+    exports.helloPython = helloPython;
+    exports.helloJavaScript = helloJavaScript;
+});
+
+### 在页面中引入Sea.js：
+
+```html
+<!-- File:index.html -->
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Getting start width Sea.js</title>
+    <!-- 引入seajs-->
+    <script src="/js/sea.js"></script>
+</head>
+<body>
+    
+</body>
+</html>
+```
+### 加载模块文件！
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Getting start width Sea.js</title>
+    <!-- 引入seajs-->
+    <script src="/js/sea.js"></script>
+    <script>
+        seajs.use(['/js/module/greet'], function (Greet) {
+            Greet.helloJavaScript()
+        })
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
+```
+
+看到页面上输出的`Hello,JavaScript`么，这确实太简单了！
 
 ## 使用指南
 
