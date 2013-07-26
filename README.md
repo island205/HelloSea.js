@@ -121,8 +121,34 @@ Node.js把JavaScript移植到了Server端的开发中，Node.js通过export和re
 
 ### ECMA标准草案
 
-Node.js模块化的组织方案是Server端的实现，并不能直接在浏览器中使用。JavaScript原生并没有支持exports和require关键字。ECMAScript6标准草案harmony已经考虑到了这种模块话的需求。举个例子：
+Node.js模块化的组织方案是Server端的实现，并不能直接在浏览器中使用。JavaScript原生并没有支持`exports`和`require`关键字。ECMAScript6标准草案harmony已经考虑到了这种模块化的需求。举个例子：
 
+```javascript
+// Define a module
+module 'greet' {
+    export function helloPython() {
+        console.log("Hello,Python")
+    }
+    export function helloJavaScript() {
+        console.log("Hello,JavaScript")
+    }
+}
+
+// Use module
+import {helloPython, helloJavaScript} from 'greet'
+helloJavaScript()
+
+// Or 
+
+module Greet from 'greet'
+Greet.helloJavaScript()
+
+// Or remote module
+module Greet from 'http://bodule.org/greet.js'
+Greet.helloJavaScript()
+```
+
+可以到这里查看更多的[例子](http://wiki.ecmascript.org/doku.php?id=harmony:modules_examples)。
 
 不过该标准还处于草案阶段，没有主流的浏览器所支持，那我们该怎么办？恩，已经有一些先行者了。
 
