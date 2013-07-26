@@ -345,9 +345,76 @@ function (require, exports, module) {
 
 依赖就是一个id的数组，即模块所依赖模块的标识。
 
-##### 运行时
+##### 运行时（runtime）
 
 我们从最简单的运行时开始。
+
+首先假定我们的所需要的模块都是提前定义好，并加载好的，于是API可以简化为：
+
+```javascript
+// 定一个TMD的模块
+Tea.infuse(id, factory)
+
+// 使用一个TMD的模块
+Tea.taste(factory)
+```
+
+测试用例：
+
+```javascript
+// File: test.js
+Tea.infuse('greet', function (require, exports) {
+    function helloPython() {
+        document.write("Hello,Python")
+    }
+    function helloJavaScript() {
+        document.write("Hello,JavaScript")
+    }
+    exports.helloPython = helloPython
+    exports.helloJavaScript = helloJavaScript
+})
+
+
+Tea.taste(function (require) {
+    var Greet = require('greet')
+    Greet.helloJavaScript()
+})
+```
+
+实现代码：
+
+```javascript
+(function () {
+    var Tea = window.Tea = {}
+
+    var modules = Tea.__modules = {}
+
+    function require(id) {
+        var module = modules[id]
+        if (module.exports) {
+            return module.exports
+        } else {
+            return module.exports = Tea.taste(module.factory)
+        }
+    }
+
+    Tea.infuse = function (id, factory) {
+        var module = {
+            id: id,
+            factory: factory
+        }
+        modules[id] = module
+    }
+
+    Tea.taste = function (factory) {
+        var module = {}
+        var exports = module.exports = {}
+        factory.call(null, require, exports, module)
+        return module.exports
+    }
+})()
+```
+示例在[这里](https://github.com/Bodule/HelloSea.js/tree/master/Tea.js/runtime)可以找到。
 
 ## 快速参考
 
