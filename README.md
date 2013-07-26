@@ -186,7 +186,7 @@ sea.use("greet", function (Greet) {
 ```
 ## 小试身手
 
-还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/Bodule/HelloSea.js/blob/master/gettingstart)可以找到。
+还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/Bodule/HelloSea.js/blob/master/gettingstart)可以找到，用[anywhere](https://github.com/JacksonTian/anywhere)起个静态服务来看看。
 
 ### 首先写个模块：
 
@@ -203,6 +203,8 @@ define(function (require, exports) {
     exports.helloJavaScript = helloJavaScript;
 });
 ```
+
+如果你对Node.js非常熟悉，你可以把这个模块理解为Node.js的模块加上一个Wrapper。
 
 ### 在页面中引入Sea.js：
 
@@ -247,7 +249,48 @@ define(function (require, exports) {
 
 ## 使用指南
 
-## 实现
+## 原理与实现
+
+### 原理
+
+Sea.js很酷不是？
+
+Sea.js给出了CMD规范，本质上Sea.js是这个规范的一个运行时。
+
+#### node
+
+怎么解释这个问题，我们还是从Node模块说起，用我们之前使用过的一个模块：
+
+```javascript
+// File: usegreet.js
+var greet = require("./greet");
+greet.helloJavaScript();
+```
+
+当我们使用`node usegreet.js`来运行这个模块时，实际上node会构建一个运行的上下文，在这个上下文中运行这个模块。运行到`require('./greet')`这句话时，会通过注入的API，在新的上下文中解析greet.js这个模块，然后通过注入的`exports`或`module`这两个关键字获取该模块的接口，将接口暴露出来给usegreet.js使用，即通过`greet`这个对象来引用这些接口。例如，`helloJavaScript`这个函数。详细细节可以参看node源码中的[module.js](https://github.com/joyent/node/blob/master/lib/module.js)。
+
+node的模块方案的特点如下：
+
+1. 使用require、exports和module作为模块化组织的关键字；
+2. 每个模块只加载一次，作为单例存在于内存中，每次require时使用的是它的接口；
+3. require是同步的，通俗地讲，就是node运行A模块，发现需要B模块，会停止运行A模块，把B模块加载好，获取的B的接口，才继续运行A模块。如果B模块已经加载到内存中了，当然require B可以直接使用B的接口，否则会通过fs模块化同步地将B文件内存，开启新的上下文解析B模块，获取B的API。
+
+实际上node如果通过fs异步的读取文件的话，require也可以是异步的，所以曾经node中有require.async这个API。
+
+#### Sea.js
+
+Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。使用require、exports和module来组织模块。但Sea.js比起Node的不同点在于，前者的运行环境是在浏览器中，这就导致A依赖的B模块不能同步地读取过来，所以Sea.js比起Node，除了运行之外，还提供了两个额外的东西：
+
+1. 模块的管理
+2. 模块从服务端的同步
+
+即Sea.js必须分为模块加载期和执行期。加载期需要将执行期所有用到的模块从服务端同步过来，在再执行期按照代码的逻辑顺序解析执行模块。本身执行期与node的运行期没什么区别。
+
+所以Sea.js需要三个接口：
+
+1. define用来wrapper模块，指明依赖，同步依赖；
+2. use用来启动加载期；
+3. require关键字，实际上是执行期的桥梁。
 
 ## 快速参考
 
