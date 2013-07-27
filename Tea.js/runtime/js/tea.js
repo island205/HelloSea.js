@@ -23,7 +23,7 @@
     Tea.taste = function (factory) {
         var module = {}
         var exports = module.exports = {}
-        factory.call(null, require, exports, module)
+        factory(require, exports, module)
         return module.exports
     }
 })()

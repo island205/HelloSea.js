@@ -409,12 +409,32 @@ Tea.taste(function (require) {
     Tea.taste = function (factory) {
         var module = {}
         var exports = module.exports = {}
-        factory.call(null, require, exports, module)
+        factory.call(require, exports, module)
         return module.exports
     }
 })()
 ```
 示例在[这里](https://github.com/Bodule/HelloSea.js/tree/master/Tea.js/runtime)可以找到。
+
+这段代码的关键在两个地方：
+
+1. Tea.taste这个接口，执行一个模块（factory），相当于运行`node somefile.js`，并返回这个模块的接口。我们定义了一个空对象module，有一个exports的空对象，通过这两个对象注入到factory中，获取模块的接口。
+
+> 注意这里的细节：由于返回值是module.exports，因此如果在factory中直接覆盖exports来暴露接口是不可取的。如果真要那么做，就需要使用module.exports来实现，这与Sea.js中的规定一致。
+
+```javascript
+var module = {}
+var exports = module.exports = {}
+factory.call(require, exports, module)
+return module.exports
+```
+2. require函数，作为factory的第一个注入参数，为模块提供了访问外部模块的接口。根据id获取对应模块的exports（即接口），如果该模块还没有执行过，就使用Tea.taste执行该模块获取其exports。
+
+再次强调，在所有模块的依赖都分析好，按顺序加载好，这个简单的运行时就可以运作起一个模块系统了。但现实并不是如此，模块依赖一开始并不知道（所依赖的模块只有在运行时才知道依赖情况），也没有加载好，该怎么办呢？
+
+
+
+
 
 ## 快速参考
 
