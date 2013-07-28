@@ -362,7 +362,7 @@ Tea.taste(factory)
 测试用例：
 
 ```javascript
-// File: test.js
+// File: greet.js
 Tea.infuse('greet', function (require, exports) {
     function helloPython() {
         document.write("Hello,Python")
@@ -418,7 +418,7 @@ Tea.taste(function (require) {
 
 这段代码的关键在两个地方：
 
-1. Tea.taste这个接口，执行一个模块（factory），相当于运行`node somefile.js`，并返回这个模块的接口。我们定义了一个空对象module，有一个exports的空对象，通过这两个对象注入到factory中，获取模块的接口。
+- Tea.taste这个接口，执行一个模块（factory），相当于运行`node somefile.js`，并返回这个模块的接口。我们定义了一个空对象module，有一个exports的空对象，通过这两个对象注入到factory中，获取模块的接口。
 
 > 注意这里的细节：由于返回值是module.exports，因此如果在factory中直接覆盖exports来暴露接口是不可取的。如果真要那么做，就需要使用module.exports来实现，这与Sea.js中的规定一致。
 
@@ -428,13 +428,91 @@ var exports = module.exports = {}
 factory.call(require, exports, module)
 return module.exports
 ```
-2. require函数，作为factory的第一个注入参数，为模块提供了访问外部模块的接口。根据id获取对应模块的exports（即接口），如果该模块还没有执行过，就使用Tea.taste执行该模块获取其exports。
+- require函数，作为factory的第一个注入参数，为模块提供了访问外部模块的接口。根据id获取对应模块的exports（即接口），如果该模块还没有执行过，就使用Tea.taste执行该模块获取其exports。
 
 再次强调，在所有模块的依赖都分析好，按顺序加载好，这个简单的运行时就可以运作起一个模块系统了。但现实并不是如此，模块依赖一开始并不知道（所依赖的模块只有在运行时才知道依赖情况），也没有加载好，该怎么办呢？
 
+##### 加载期（module loading）
 
+如果模块依赖并不是提前加载好，代码就变成了这样子：
 
+```javascript
+Tea.taste(function (require) {
+    var Greet = require('greet')
+    Greet.helloJavaScript()
+})
+```
 
+报错了有没有？require('greet')，在modules中并没有这个greet模块。
+
+怎么办，我们必须修正下接口：
+
+```javascript
+// 定一个TMD的模块
+Tea.infuse(id, dependencies, factory)
+
+// 使用一个TMD的模块
+Tea.taste(dependencies, factory)
+```
+
+增加一个dependencies参数，指明factory所依赖的模块，只有将这些模块从服务端同步下来之后，才执行这个factory。加入异步了问题，就复杂了起来，我们先来看清一下形式。
+
+##### 模块依赖树
+
+可以想见，整个模块系统是一棵树。启动模块作为根节点，依赖模块作为叶子节点。
+
+在加载期，模块从根节点开始，依据模块间的依赖，先加载根节点，叶子节点才会慢慢显现出来。只有当最底层的根节点加载完成之后，才能回调来开始执行根模块。
+
+在执行期，执行也是从根节点开始，本质上是按照代码的顺序结构，对整棵树进行了遍历。有的模块可能已经EXECUTED，而有的还小执行获取其exports。
+
+##### 如何确定整个依赖树加载好了呢？
+
+1. 定义A模块，如果有模块依赖于A，把该模块加入到等待A的模块队列中；
+2. 加载A模块，状态变为FETCHING
+3. A加载完成，获取A模块依赖的BCDEFG模块，发现B模块没有定义，而C加载中，D自己已加载好，E加载子模块中，F加载完成，E行中，G已经解析好，SAVED；
+4. 由于FEG本身以及子模块都已加载好，因此A模块要确定已经加载好了，必须等待BCDE加载好；开始加载必须的子模块，LOADING；
+5. 针对B重复步骤1；
+6. 将A加入到CDE的等待队列中；
+7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
+8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
+
+#### 莫非我们需要一个状态机？
+
+#### Sea.js
+
+##### 模块的状态
+
+由于浏览器端与Node的环境差异，模块存在加载期和执行期，所以Sea.js中为模块定义了六种状态。
+
+```javascript
+var STATUS = Module.STATUS = {
+  // 1 - The `module.uri` is being fetched
+  FETCHING: 1,
+  // 2 - The meta data has been saved to cachedMods
+  SAVED: 2,
+  // 3 - The `module.dependencies` are being loaded
+  LOADING: 3,
+  // 4 - The module are ready to execute
+  LOADED: 4,
+  // 5 - The module is being executed
+  EXECUTING: 5,
+  // 6 - The `module.exports` is available
+  EXECUTED: 6
+}
+```
+
+分别为：
+
+- FETCHING：开始从服务端加载模块
+- SAVED：模块加载完成
+- LOADING：加载依赖模块中
+- LOADED：依赖模块加载完成
+- EXECUTING：模块执行中
+- EXECUTED：模块执行完成
+
+##### module.js
+
+[module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，
 
 ## 快速参考
 
@@ -443,6 +521,7 @@ return module.exports
 ## 参考资料
 
 - [实例解析 SeaJS 内部执行过程 - 从 use 说起](https://github.com/seajs/seajs/issues/308)
+- [SeaJS v1.2 中文注释版](https://github.com/seajs/seajs/issues/305)
 - [hello seajs](http://mrzhang.me/blog/hello-seajs.html)
 - [http://seajs.org/docs/](http://seajs.org/docs/)
 - [使用SeaJS实现模块化JavaScript开发](http://cnodejs.org/topic/4f16442ccae1f4aa270010d9)
