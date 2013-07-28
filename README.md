@@ -476,7 +476,9 @@ Tea.taste(dependencies, factory)
 7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
 8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
 
-#### 莫非我们需要一个状态机？
+针对每一次执行期，对应的加载依赖树与整个模块依赖树是有区别的，因为子模块已经加载好了的模块，并不在加载树中。
+
+#### 状态机
 
 #### Sea.js
 
@@ -513,6 +515,219 @@ var STATUS = Module.STATUS = {
 ##### module.js
 
 [module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，
+
+##### 加载过程
+
+- Sea.use调用Module.use构造一个没有factory的模块，该模块即为这个运行期的根节点。
+
+```javascript
+// Use function is equal to load a anonymous module
+Module.use = function (ids, callback, uri) {
+    var mod = Module.get(uri, isArray(ids) ? ids: [ids])
+
+    mod.callback = function () {
+        var exports = []
+        var uris = mod.resolve()
+
+        for (var i = 0, len = uris.length; i < len; i++) {
+            exports[i] = cachedMods[uris[i]].exec()
+        }
+
+        if (callback) {
+            callback.apply(global, exports)
+        }
+
+        delete mod.callback
+    }
+
+    mod.load()
+}
+```
+
+模块构造完成，则调用mod.load()来同步其子模块；直接跳过fetching这一步；mod.callback也是Sea.js纯粹的一点，在模块加载完成后，会调用这个callback。
+
+- 在load方法中，获取子模块，加载子模块，在子模块加载完成后，会触发mod.onload()：
+
+```javascript
+// Load module.dependencies and fire onload when all done
+Module.prototype.load = function () {
+    var mod = this
+
+    // If the module is being loaded, just wait it onload call
+    if (mod.status >= STATUS.LOADING) {
+        return
+    }
+
+    mod.status = STATUS.LOADING
+
+    // Emit `load` event for plugins such as combo plugin
+    var uris = mod.resolve()
+    emit("load", uris)
+
+    var len = mod._remain = uris.length
+    var m
+
+    // Initialize modules and register waitings
+    for (var i = 0; i < len; i++) {
+        m = Module.get(uris[i])
+
+        if (m.status < STATUS.LOADED) {
+            // Maybe duplicate
+            m._waitings[mod.uri] = (m._waitings[mod.uri] || 0) + 1
+        }
+        else {
+            mod._remain--
+        }
+    }
+
+    if (mod._remain === 0) {
+        mod.onload()
+        return
+    }
+
+    // Begin parallel loading
+    var requestCache = {}
+
+    for (i = 0; i < len; i++) {
+        m = cachedMods[uris[i]]
+
+        if (m.status < STATUS.FETCHING) {
+            m.fetch(requestCache)
+        }
+        else if (m.status === STATUS.SAVED) {
+            m.load()
+        }
+    }
+
+    // Send all requests at last to avoid cache bug in IE6-9. Issues#808
+    for (var requestUri in requestCache) {
+        if (requestCache.hasOwnProperty(requestUri)) {
+            requestCache[requestUri]()
+        }
+    }
+}
+```
+
+模块的状态是最关键的，模块状态的流转决定了加载的行为；
+
+- 是否触发onload是由模块的_remian属性来确定，在load和子模块的onload函数中都对_remain进行了计算，如果为0，则表示模块加载完成，调用onload：
+
+```javascript
+// Call this method when module is loaded
+Module.prototype.onload = function () {
+    var mod = this
+    mod.status = STATUS.LOADED
+
+    if (mod.callback) {
+        mod.callback()
+    }
+
+    // Notify waiting modules to fire onload
+    var waitings = mod._waitings
+    var uri, m
+
+    for (uri in waitings) {
+        if (waitings.hasOwnProperty(uri)) {
+            m = cachedMods[uri]
+            m._remain -= waitings[uri]
+            if (m._remain === 0) {
+                m.onload()
+            }
+        }
+    }
+
+    // Reduce memory taken
+    delete mod._waitings
+    delete mod._remain
+}
+```
+模块的_remain和_waitings是两个非常关键的属性，子模块通过_waitings获得父模块，通过_remain来判断模块是否加载完成。
+
+- 当这个没有factory的根模块触发onload之后，会调用其方法callback，callback是这样的：
+
+```javascript
+mod.callback = function () {
+    var exports = []
+    var uris = mod.resolve()
+
+    for (var i = 0, len = uris.length; i < len; i++) {
+        exports[i] = cachedMods[uris[i]].exec()
+    }
+
+    if (callback) {
+        callback.apply(global, exports)
+    }
+
+    delete mod.callback
+}
+```
+
+这预示着加载期结束，开始执行期；
+
+- 而执行期相对比较无脑，首先是直接调用根模块依赖模块的exec方法获取其exports，用它们来调用use传经来的callback。而子模块在执行时，都是按照标准的模块解析方式执行的：
+
+```javascript
+// Execute a module
+Module.prototype.exec = function () {
+    var mod = this
+
+    // When module is executed, DO NOT execute it again. When module
+    // is being executed, just return `module.exports` too, for avoiding
+    // circularly calling
+    if (mod.status >= STATUS.EXECUTING) {
+        return mod.exports
+    }
+
+    mod.status = STATUS.EXECUTING
+
+    // Create require
+    var uri = mod.uri
+
+    function require(id) {
+        return Module.get(require.resolve(id)).exec()
+    }
+
+    require.resolve = function (id) {
+        return Module.resolve(id, uri)
+    }
+
+    require.async = function (ids, callback) {
+        Module.use(ids, callback, uri + "_async_" + cid())
+        return require
+    }
+
+    // Exec factory
+    var factory = mod.factory
+
+    var exports = isFunction(factory) ? factory(require, mod.exports = {},
+    mod) : factory
+
+    if (exports === undefined) {
+        exports = mod.exports
+    }
+
+    // Emit `error` event
+    if (exports === null && ! IS_CSS_RE.test(uri)) {
+        emit("error", mod)
+    }
+
+    // Reduce memory leak
+    delete mod.factory
+
+    mod.exports = exports
+    mod.status = STATUS.EXECUTED
+
+    // Emit `exec` event
+    emit("exec", mod)
+
+    return exports
+}
+```
+
+> 看到这一行代码了么？ 
+> `var exports = isFunction(factory) ? factory(require, mod.exports = {}, mod) : factory`
+> 真的，整个Sea.js就是为了这行代码能够完美运行
+
 
 ## 快速参考
 
