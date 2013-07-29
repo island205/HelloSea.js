@@ -4,6 +4,8 @@
 
 这是一本关于Sea.js，前端模块化的小书。记录一些我在模块化方面的见闻、理解和思考。
 
+> 本书基于Sea.js v2.1.1完成。
+
 ## Sea.js是什么？
 
 起初被看作是一门玩具语言的JavaScript，最近已经发生了很大的变化。变化之一就是从HTML中的`<script>`标签转向了模块化。
@@ -478,7 +480,181 @@ Tea.taste(dependencies, factory)
 
 针对每一次执行期，对应的加载依赖树与整个模块依赖树是有区别的，因为子模块已经加载好了的模块，并不在加载树中。
 
-#### 状态机
+#### 状态管理
+
+加载期的复杂性完全在于状态的管理和转移，因此我们需要一个状态管理模块，该模块有两个核心功能：
+
+1. 承载模块状态的转移
+2. 支持单个或多个状态实例的联合状态触发器
+
+```javascript
+function State() {
+    this.state = 0
+    this.triggers = []
+}
+State.prototype.to = function (state) {
+    if (state > this.state) {
+        this.state = state
+        this.trigger()
+    }
+}
+State.prototype.addTrigger = function (condition, trigger) {
+    var once = function () {
+        this.removeTrigger(condition, trigger)
+        trigger()
+    }.bind(this)
+    once.originTrigger = trigger
+    this.__addTrigger({
+        condition: condition,
+        trigger: once
+    })
+}
+State.prototype.__addTrigger = function (trigger) {
+    this.triggers.push(trigger)
+    this.trigger()
+}
+State.prototype.removeTrigger = function (condition, trigger) {
+    var i, len, _trigger, triggers = this.triggers,
+    index = - 1
+    for (i = 0, len = triggers.length; i < len; i++) {
+        _trigger = triggers[i]
+        if (_trigger.condition === condition && (_trigger.trigger === trigger || _trigger.trigger.originTrigger === trigger)) {
+            index = i
+            break
+        }
+    }
+    if (index !== - 1) {
+        triggers.splice(index, 1)
+    }
+}
+State.prototype.trigger = function () {
+    var triggers = this.triggers.slice(),
+    trigger
+    var i, len
+    for (i = 0, len = triggers.length; i < len; i++) {
+        trigger = triggers[i]
+        if (trigger.condition.apply(this)) {
+            trigger.trigger()
+        }
+    }
+    State.trigger()
+}
+
+State.triggers = []
+State.addAssociatedTrigger = function (states, condition, trigger) {
+    var once = function () {
+        this.removeAssociatedTrigger(states, condition, trigger)
+        trigger()
+    }.bind(this)
+    once.originTrigger = trigger
+    this.__addAssociatedTrigger({
+        states: states,
+        condition: condition,
+        trigger: once
+    })
+
+}
+State.__addAssociatedTrigger = function (trigger) {
+    this.triggers.push(trigger)
+    this.trigger()
+}
+State.removeAssociatedTrigger = function (states, condition, trigger) {
+    var i, len, _trigger, triggers = this.triggers,
+    index = - 1
+    for (i = 0, len = triggers.length; i < len; i++) {
+        _trigger = triggers[i]
+        if (_trigger.condition === condition && (_trigger.trigger === trigger || _trigger.trigger.originTrigger === trigger)) {
+            index = i
+            break
+        }
+    }
+    if (index !== - 1) {
+        triggers.splice(index, 1)
+    }
+
+}
+State.trigger = function () {
+    var triggers = this.triggers.slice(),
+    trigger,
+    triggable = true
+    var i, len, j, count
+    for (i = 0, len = triggers.length; i < len; i++) {
+        trigger = triggers[i]
+        for (j = 0, count = trigger.states.length; j < count; j++) {
+            if (!trigger.condition.apply(trigger.states[j])) {
+                triggable = false
+                break
+            }
+        }
+
+        if (triggable) {
+            trigger.trigger()
+        }
+    }
+}
+```
+
+State的用法如下：
+
+```javascript
+var State = Tea.State
+var STATUS = Tea.Module.STATUS
+
+var state1 = new State()
+state1.addTrigger(function () {
+    return this.state >= STATUS.LOADED
+}, function () {
+    console.log('module1 is loaded')
+})
+
+state2 = new State()
+state2.addTrigger(function () {
+    return this.state >= STATUS.LOADED
+}, function () {
+    console.log('module2 is loaded')
+})
+state3 = new State()
+state3.addTrigger(function () {
+    return this.state >= STATUS.FETCHING
+}, function () {
+    console.log('module3 is fetching')
+})
+
+State.addAssociatedTrigger([state1, state2], function () {
+    return this.state >= STATUS.EXECUTED
+}, function () {
+    console.log('both module1 and module2 are executed')
+})
+
+State.addAssociatedTrigger([state1, state3], function () {
+    return this.state >= STATUS.FETCHING
+}, function () {
+    console.log('module1 and module3 are both fetching')
+})
+
+State.addAssociatedTrigger([state1, state2, state3], function () {
+    return this.state >= STATUS.EXECUTED
+}, function () {
+    console.log('module1 and module3 are both fetching')
+})
+
+setTimeout(function () {
+    state1.to(STATUS.EXECUTED)
+}, 10000)
+setTimeout(function () {
+    state2.to(STATUS.EXECUTED)
+}, 15000)
+state3.to(STATUS.FETCHING)
+setTimeout(function () {
+    state2.to(STATUS.LOADED)
+}, 10000)
+setTimeout(function () {
+    state2.to(STATUS.FETCHING)
+}, 5000)
+setTimeout(function () {
+    state3.to(STATUS.EXECUTED)
+}, 1000)
+```
 
 #### Sea.js
 
@@ -512,9 +688,8 @@ var STATUS = Module.STATUS = {
 - EXECUTING：模块执行中
 - EXECUTED：模块执行完成
 
-##### module.js
 
-[module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，
+[module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，我们来看一下，module.js是如何控制模块加载过程的。
 
 ##### 加载过程
 
