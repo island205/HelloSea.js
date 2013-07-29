@@ -59,7 +59,7 @@
     }
     State.prototype.removeTrigger = function (condition, trigger) {
         var i, len, _trigger, triggers = this.triggers,
-        index = - 1
+        index = -1
         for (i = 0, len = triggers.length; i < len; i++) {
             _trigger = triggers[i]
             if (_trigger.condition === condition && (_trigger.trigger === trigger || _trigger.trigger.originTrigger === trigger)) {
@@ -67,7 +67,7 @@
                 break
             }
         }
-        if (index !== - 1) {
+        if (index !== -1) {
             triggers.splice(index, 1)
         }
     }
@@ -104,7 +104,7 @@
     }
     State.removeAssociatedTrigger = function (states, condition, trigger) {
         var i, len, _trigger, triggers = this.triggers,
-        index = - 1
+        index = -1
         for (i = 0, len = triggers.length; i < len; i++) {
             _trigger = triggers[i]
             if (_trigger.condition === condition && (_trigger.trigger === trigger || _trigger.trigger.originTrigger === trigger)) {
@@ -112,7 +112,7 @@
                 break
             }
         }
-        if (index !== - 1) {
+        if (index !== -1) {
             triggers.splice(index, 1)
         }
 
@@ -120,9 +120,10 @@
     State.trigger = function () {
         var triggers = this.triggers.slice(),
         trigger,
-        triggable = true
+        triggable
         var i, len, j, count
         for (i = 0, len = triggers.length; i < len; i++) {
+            triggable = true
             trigger = triggers[i]
             for (j = 0, count = trigger.states.length; j < count; j++) {
                 if (!trigger.condition.apply(trigger.states[j])) {
@@ -143,6 +144,7 @@
         this.factory = factory
         this.exports = null
         this.state = new State()
+        this.state.module = this
     }
 
     var STATUS = Module.STATUS = {
@@ -214,11 +216,13 @@
         } else {
             module = new Module(id, dependencies, factory)
         }
-        return module
+        return modules[id] = module
     }
     Tea.__infuse = function (id, dependencies, factory) {
         var module = this.get(id, dependencies, factory)
         module.state.to(STATUS.SAVED)
+        module.loadDependencies()
+        return module
     }
     Tea.__taste = function (module) {
         var exports = module.exports = {}
@@ -226,10 +230,10 @@
         return module.exports
     }
     Tea.infuse = function (id, dependencies, factory) {
-        this.__infuse(id, dependencies, factory)
+        return this.__infuse(id, dependencies, factory)
     }
     Tea.taste = function (dependencies, factory) {
-        var module = this.infuse('taste' + guid(), dependencies, factory)
+        var module = this.infuse('_taste_' + guid(), dependencies, factory)
         module.state.addTrigger(function () {
             if (this.state >= STATUS.LOADED) {
                 Tea.__taste(module)
