@@ -1044,3 +1044,4 @@ Module.prototype.exec = function () {
 - [labjs](http://www.slideshare.net/itchina110/labjs)
 - [行进中的前端类库：KISSY CommonJS 的模块系统，AMD 和 Wrappings, 以及 RequireJS](http://lifesinger.org/blog/2011/01/commonjs-amd-wrappings-and-requirejs/)
 - [jsi](http://code.google.com/p/jsi/wiki/History)
+- [从零开始编写自己的JavaScript框架（一）](http://www.ituring.com.cn/article/48461)

@@ -241,9 +241,5 @@
         })
         module.loadDependencies()
     }
-
-    Tea.State = State
-    Tea.Module = Module
-
 })()
 
