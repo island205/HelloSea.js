@@ -660,6 +660,117 @@ setTimeout(function () {
 
 ##### 模块
 
+有了State，我们的模块就相对简单了。只有两个方法loadDependencies和fetch，用来执行两个动作。
+
+```javascript
+function Module(id, dependencies, factory) {
+    this.id = id
+    this.dependencies = dependencies || []
+    this.factory = factory
+    this.exports = null
+    this.state = new State()
+    this.state.module = this
+}
+
+var STATUS = Module.STATUS = {
+    FETCHING: 1,
+    SAVED: 2,
+    LOADING: 3,
+    LOADED: 4,
+    EXECUTING: 5,
+    EXECUTED: 6
+}
+
+Module.prototype.loadDependencies = function () {
+    if (this.state.get() >= STATUS.LOADING) {
+        return
+    }
+    this.state.to(STATUS.LOADING)
+
+    var i, len, dependencieStates = [],
+    dependencieModules = [],
+    dependencies = this.dependencies,
+    dependencie,
+    module,
+    state
+
+    for (i = 0, len = dependencies.length; i < len; i++) {
+        module = Tea.get(dependencies[i])
+        dependencieModules.push(module)
+        dependencieStates.push(module.state)
+    }
+    
+    this.state.addAssociatedTrigger(dependencieStates, function () {
+        return this.state >= STATUS.LOADED
+    }, function () {
+        this.state.to(STATUS.LOADED)
+    }.bind(this))
+
+    for (i = 0, len = dependencieModules.length; i < len; i++) {
+        module = dependencieModules[i]
+        state = module.state.get()
+        if (state < STATUS.FETCHING) {
+            module.fetch()
+        } else if (state === STATUS.SAVED) {
+            module.loadDependencies()
+        }
+    }
+}
+
+Module.prototype.fetch = function () {
+    if (this.state.get() >= STATUS.FETCHING) {
+        return
+    }
+    loadScript(this.id)
+    this.state.to(STATUS.FETCHING)
+}
+```
+
+State和Module组合在一起，就可以完成整个加载期了。
+
+
+修改之前的接口，保留基础的`__infuse`和`__taste`，用于执行期；重新编写infuse和taste接口：
+
+```javascript
+Tea.infuse = function (id, dependencies, factory) {
+    return this.__infuse(id, dependencies, factory)
+}
+Tea.taste = function (dependencies, factory) {
+    var module = this.infuse('_taste_' + guid(), dependencies, factory)
+    module.state.addTrigger(function () {
+        if (this.state >= STATUS.LOADED) {
+            Tea.__taste(module)
+        }
+    })
+    module.loadDependencies()
+}
+```
+
+有了State，什么时候开始执行期，添加一个触发器（trigger）即可。
+
+最后还需要一个东西，就是真实的脚本加载函数：
+
+```javascript
+var loadScript = (function () {
+    var head = document.getElementsByTagName('head')[0]
+    function loadScript(id) {
+        var script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.async = 'true'
+        script.src = id + '.js'
+        script.onload = function () {
+            head.removeChild(script)
+        }
+        head.appendChild(script)
+    }
+    return loadScript
+})()
+```
+
+好了，最最基础的框架已经完成，看看我们还缺少什么？
+
+#### 资源定位
+
 #### Sea.js
 
 ##### 模块的状态
