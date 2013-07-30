@@ -251,7 +251,92 @@ define(function (require, exports) {
 
 ## 使用指南
 
+刚才的示例很简单？实际上Sea.js本身小巧而不失灵活，让我们再来深入地了解下如何使用Sea.js!
+
 ### 定义模块
+
+Sea.js是[CMD](https://github.com/amdjs/amdjs-api/wiki/AMD)这个模块系统的一个运行时，Sea.js可以加载的模块，就是CMD规范里所指明的。那我们该如何编写一个CMD模块呢？
+
+Sea.js提供了一个全局方法——`define`，用来定义一个CMD模块。
+
+##### define(factory)
+
+```javascript
+define(function(require, exports, module) {
+    // 模块代码
+    // 使用require获取依赖模块的接口
+    // 使用exports或者module来暴露该模块的对外接口
+})
+```
+
+`factory`是这样一个函数`function (require?, exports?, module?) {}`，如果模块本身既不依赖其他模块，也不提供接口，`require`、`exports`和`module`都可以省略。但通常会是以下两种新式：
+
+```javascript
+define(function(require, exports) {
+    var Vango = require('vango')
+    exports.drawCicle = function () {
+        var vango = new Vango(document.body, 100, 100)
+        vango.cicle(50, 50, 50, {
+            fill: true,
+            styles:{
+                fillStyle:"red"
+            }
+        })
+    } 
+})
+```
+
+或者：
+
+```javascript
+define(function(require, exports, module) {
+    var Vango = require('vango')
+    module.exports = {
+        drawCicle: function () {
+            var vango = new Vango(document.body, 100, 100)
+            vango.cicle(50, 50, 50, {
+                fill: true,
+                styles:{
+                    fillStyle:"red"
+                }
+            })
+        }
+    } 
+})
+```
+
+> **注意**：必须保证参数的顺序，即需要用到exports，require不能省略；在模块中exports对象不可覆盖，如果需要覆盖请使用`module.exports`的形式（这与node的用法一致，在后面的原理介绍会有相关的解释）。你可以使用`module.exports`来export任意的对象（包括字符串、数字等等）。
+
+##### define(id?, dependencies?, factory)
+
+**id**：String 模块标识
+**dependencies**：Array 模块依赖的模块标识
+
+这种写法并不属于CMD规范，而是源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
+
+```javascript
+define('drowcicle', ['vango'], function(require, exports) {
+    var Vango = require('vango')
+    exports.drawCicle = function () {
+        var vango = new Vango(document.body, 100, 100)
+        vango.cicle(50, 50, 50, {
+            fill: true,
+            styles:{
+                fillStyle:"red"
+            }
+        })
+    } 
+})
+```
+
+与CMD的define没有本质区别，我更情愿把它称作“具名模块”。Sea.js从用于生产的角度来说，必须支持具名模块，因为开发时模块拆得太小，生产环境必须把这些模块文件打包为一个文件，如果模块都是匿名的，那就傻逼了。
+
+> 所以Sea.js支持具名模块也是无奈之举。
+
+##### define(anythingelse)
+
+除去以上两种新式，在CMD标准中，可以给define传入任意的字符串或者对象，表示接口就是对象或者字符串。不过这只是包含在标准中，在Sea.js并没有相关的实现。
+
 
 ### 配置Sea.js
 
