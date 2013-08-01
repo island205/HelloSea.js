@@ -337,8 +337,123 @@ define('drowcicle', ['vango'], function(require, exports) {
 
 除去以上两种新式，在CMD标准中，可以给define传入任意的字符串或者对象，表示接口就是对象或者字符串。不过这只是包含在标准中，在Sea.js并没有相关的实现。
 
-
 ### 配置Sea.js
+
+Sea.js为了能够使用起来更灵活，提供了配置的接口。可配置的内容包括静态服务的位置，简化模块标识或路径。接下来我们来详细地了解下这些内容。
+
+##### seajs.config(config)
+
+**config**：Object，配置键值对。
+
+Sea.js通过`.config`API来进行配置。你甚至可以在多个地方调用seajs.config来配置。Sea.js会mix传入的多个config对象。
+
+```javascript
+seajs.config({
+    alias: {
+        'jquery': 'path/to/jquery.js',
+        'a': 'path/to/a.js'
+    },
+    preload: ['seajs-text']
+})
+```
+
+```javascript
+seajs.config({
+    alias: {
+        'underscore': 'path/to/underscore.js',
+        'a': 'path/to/biz/a.js'
+    },
+    preload: ['seajs-combo']
+})
+```
+
+上面两个配置会合并为：
+
+```javascript
+{
+    alias: {
+        'jquery': 'path/to/jquery.js',
+        'underscore': 'path/to/underscore.js',
+        'a': 'path/to/biz/a.js'
+    },
+    preload: ['seajs-text', 'seajs-combo']
+
+}
+```
+
+`config`可以配置的键入下：
+
+##### base
+
+**base**：String，在解析绝对路径标识的模块时所使用的base路径。
+
+默认地，在不配置base的情况下，base与sea.js的引用路径。如果引用路径为`http://example.com/assets/sea.js`，则base为`http://example.com/assets/`。
+
+> 在阅读Sea.js这份文档时看到：
+
+>> 当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。
+
+> 即如果sea.js的引用路径为`http://example.com/assets/1.0.0/sea.js`，则base仍为'`http://example.com/assets/'。这种方便性，我觉得过了点。
+
+使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。
+
+```javascript
+seajs.config({
+    base: 'http://g.tbcdn.cn/tcc/'
+})
+```
+
+> 如果我们有三个CDN域名，如何将静态资源散列到这三个域名上呢？
+
+##### paths
+
+**paths**：Object，如果目录太深，可以使用paths这个配置项来缩写，可以在require时少写些代码。
+
+如果：
+
+```javascript
+seajs.config({
+    base: 'http://g.tbcdn.cn/tcc/'，
+    paths: {
+        'index': 's/js/index'
+    }
+})
+```
+
+则：
+
+```javascript
+define(function(require, exports, module) {
+    // http://g.tbcdn.cn/tcc/s/js/index/switch.js
+    var Switch = require('index/switch')
+});
+```
+
+##### alias
+
+**alias**：Object，本质上看不出和paths有什么区别，区别就在使用的概念上。
+
+```javascript
+seajs.config({
+    alias: {
+        'jquery': 'jquery/jquery/1.10.1/jquery'
+    }
+})
+```
+
+然后：
+
+```javascript
+define(function(require, exports, module) {
+    // jquery/jquery/1.10.1/jquery
+    var $ = require('jquery')
+});
+
+```
+
+> 看出使用概念的区别了么？
+
+还有一些别的配置，比如`preload`、`map`等，可以参考[配置](https://github.com/seajs/seajs/issues/262)。
 
 ### 启用模块
 
