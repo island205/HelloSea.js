@@ -393,7 +393,7 @@ seajs.config({
 
 >> 当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。
 
-> 即如果sea.js的引用路径为`http://example.com/assets/1.0.0/sea.js`，则base仍为'`http://example.com/assets/'。这种方便性，我觉得过了点。
+> 即如果sea.js的引用路径为`http://example.com/assets/1.0.0/sea.js`，则base仍为'http://example.com/assets/'。这种方便性，我觉得过了点。
 
 使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。
 
@@ -448,12 +448,26 @@ define(function(require, exports, module) {
     // jquery/jquery/1.10.1/jquery
     var $ = require('jquery')
 });
-
 ```
 
 > 看出使用概念的区别了么？
 
-还有一些别的配置，比如`preload`、`map`等，可以参考[配置](https://github.com/seajs/seajs/issues/262)。
+##### preload
+
+`preload`配置项可以让你在加载普通模块之前提前加载一些模块。既然所有模块都是在use之后才加载的，preload有何意义？然，看下面这段：
+
+```javascript
+seajs.config({
+    preload: [
+        Function.prototype.bind ? '' : 'es5-safe',
+        this.JSON ? '' : 'json'
+    ]
+});
+```
+
+preload比较适合用来加载一些核心模块，或者是shim模块。这是一个全局的配置，使用者无需关系核心模块或者是shim模块的加载，把注意力放在核心功能即可。
+
+还有一些别的配置，比如`vars`、`map`等，可以参考[配置](https://github.com/seajs/seajs/issues/262)。
 
 ### 启用模块
 
