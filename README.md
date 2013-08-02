@@ -469,17 +469,53 @@ preload比较适合用来加载一些核心模块，或者是shim模块。这是
 
 还有一些别的配置，比如`vars`、`map`等，可以参考[配置](https://github.com/seajs/seajs/issues/262)。
 
-### 启用模块
+### 使用模块
+
+##### seajs.use(id)
+
+Sea.js通过use方法来启动一个模块。
+
+```javascript
+seajs.use('./main')
+```
+
+在这里，`./main`是main模块的id，Sea.js在main模块LOADED之后，执行这个模块。
+
+Sea.js还有另外一种启动模块的方式：
+
+##### seajs.use(ids, callbacks)
+
+```javascript
+seajs.use('./main', function(main) {
+    main.init()
+})
+```
+
+Sea.js执行ids中的所有模块，然后传递给callback使用。
 
 ### 插件
 
-#### 使用插件
+Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。
 
-#### 开发插件
+- seajs-text：用来加载HTML或者模板文件；
+- seajs-style：提供了`importStyle`，动态地向页面中插入css；
+- seajs-combo：该插件提供了依赖combo的功能，能把多个依赖的模块uri combo，减少HTTP请求；
+- seajs-flush：该插件是对seajs-combo的补充，或者是大杀器，可以先hold住前面的模块请求，最后将请求的模块combo成一个url，一次加载hold住的模块；
+- seajs-debug：Fiddler用过么？这个插件基本就是提供了这样一种功能，可以通过修改config，将线上文件proxy到本地服务器，便于线上开发调试和排错；
+- seajs-log：提供一个seajs.log API，斯觉得比较鸡肋；
+- seajs-health：目标功能是，分析当前网页的模块健康情况。
+
+由此可见，Sea.js的插件主要是解决一些附加问题，或者是给Sea.js添加一些而外的功能。私觉得有些功能并不合适让Sea.js来处理。
 
 ##### 插件机制       
 
-##### CDN插件
+总结一下，插件机制大概就是两种：
+
+- 使用Sea.js在加载过程中的事件，注入一些插件代码，修改Sea.js的运行流程，实现插件的功能；
+- 其次就是给seajs加入一些方法，提供一些额外的功能。
+
+> 私还是觉得Sea.js应该保持纯洁；为了实现插件，在Sea.js中加入的代码，感觉有点不值；combo这种事情，更希望采取别的方式来实现。
+> Sea.js应该做好运行时。
 
 ### 构建与部署
 
