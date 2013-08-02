@@ -393,7 +393,7 @@ seajs.config({
 
 >> 当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。
 
-> 即如果sea.js的引用路径为`http://example.com/assets/1.0.0/sea.js`，则base仍为'http://example.com/assets/'。这种方便性，我觉得过了点。
+> 即如果sea.js的引用路径为'http://example.com/assets/1.0.0/sea.js'，则base仍为'http://example.com/assets/'。这种方便性，我觉得过了点。
 
 使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。
 
