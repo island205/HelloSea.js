@@ -1,4 +1,4 @@
-Tea.infuse('/js/greet',['/js/greet/lua', '/js/greet/ruby'], function (require, exports) {
+define('/js/greet',['/js/greet/lua', '/js/greet/ruby'], function (require, exports) {
     var lua = require('/js/greet/lua')
     var ruby = require('/js/greet/ruby')
     function helloPython() {

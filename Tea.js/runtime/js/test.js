@@ -14,4 +14,3 @@ Tea.taste(function (require) {
     var Greet = require('greet')
     Greet.helloJavaScript()
 })
-
