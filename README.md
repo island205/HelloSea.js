@@ -1184,6 +1184,36 @@ function parseDependencies(code) {
 > 从`REQUIRE_RE`这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。
 
 
+##### 获取真实的加载路径
+
+1. 在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为`http://www.dianping.com/promo/195800`，则cwd为`http://www.dianping.com/promo/`；使用data.base来代表sea.js的加载地址，如果sea.js的路径为`http://i1.dpfile.com/lib/1.0.0/sea.js`，则base为`http://i1.dpfile.com/lib/`。
+
+>  [“当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便”](https://github.com/seajs/seajs/issues/258)。看到这一句，我凌乱了，这Sea.js是多么的人性化！但是我觉得这似乎没有必要。
+
+2. seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：
+
+- './a'，则真实加载路径为http://www.dianping.com/promo/a.js；
+- '/a'，则为http://www.dianping.com/a.js；
+- '../a'，则为http://www.dianping.com/a.js；
+
+> 从需求上看，相对页面地址定位在现实生活中并不太适用，如果页面地址或者静态文件的路径稍微变化下，就跪了。
+
+如果模块标识为绝对路径：
+
+- 'https://a.alipayobjects.com/ar/a'，则加载路径就是'https://a.alipayobjects.com/ar/a.js'。
+
+如果模块标识是顶级标识，就基于base来加载：
+
+- 'jquery'，则加载路径为'http://i1.dpfile.com/lib/jquery.js'。
+
+3. 除此之外，就是factory中的模块标识了：
+
+- 'https://a.alipayobjects.com/ar/b'，加载路径为'https://a.alipayobjects.com/ar/b.js'
+- '/c'，加载路径为'http://www.dianping.com/c.js'；
+- './d'，如果父模块的加载路径是'http://i1.dpfile.com/lib/e.js'，则加载路径为'http://i1.dpfile.com/lib/d.js'
+
+> 在模块系统中使用'/c'绝对路径是什么意思？Sea.js会将其解析为相对页面的模块，有点牛马不相及的感觉。
+
 ##### 加载过程
 
 - Sea.use调用Module.use构造一个没有factory的模块，该模块即为这个运行期的根节点。
