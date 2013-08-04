@@ -310,6 +310,7 @@ define(function(require, exports, module) {
 ##### define(id?, dependencies?, factory)
 
 **id**：String 模块标识
+
 **dependencies**：Array 模块依赖的模块标识
 
 这种写法并不属于CMD规范，而是源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
@@ -602,7 +603,7 @@ Tea.taste(dependencies?, factory)
 2. 每次词项必须是小写的标识、“.”或“..”；
 3. 模块标识并不是必须有像“.js”这样的文件扩展名；
 4. 模块标识不是相对的，就是顶级的。相对的模块标识开头要么是“.”，要么是“..”；
-5. Top-level identifiers are resolved off the conceptual module name space root. 
+5. 顶级标识根据模块系统的基础路径来解析；
 6. 相对的模块标识被解释为相对于某模块的标识，“require”语句是写在这个模块中，并在这个模块中调用的。
 
 ##### 模块（factory）
@@ -1043,10 +1044,6 @@ var loadScript = (function () {
 
 好了，最最基础的框架已经完成，看看我们还缺少什么？
 
-#### 资源定位
-
-资源定位是Sea.js，或者说模块加载器中非常关键部分。那什么是资源定位呢？
-
 
 
 #### Sea.js
@@ -1083,6 +1080,109 @@ var STATUS = Module.STATUS = {
 
 
 [module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，我们来看一下，module.js是如何控制模块加载过程的。
+
+##### 资源定位
+
+资源定位是Sea.js，或者说模块加载器中非常关键部分。那什么是资源定位呢？
+
+资源定位与模块标识相关，而在Sea.js中有三种模块标识。
+
+###### 普通路径
+
+普通路径与网页中超链接一样，相对于当前页面解析，在Sea.js中，普通路径包有以下几种：
+
+```javascript
+// 假设当前页面是 http://example.com/path/to/page/index.html
+
+// 绝对路径是普通路径：
+require.resolve('http://cdn.com/js/a');
+  // => http://cdn.com/js/a.js
+
+// 根路径是普通路径：
+require.resolve('/js/b');
+  // => http://example.com/js/b.js
+
+// use 中的相对路径始终是普通路径：
+seajs.use('./c');
+  // => 加载的是 http://example.com/path/to/page/c.js
+
+seajs.use('../d');
+  // => 加载的是 http://example.com/path/to/d.js
+```
+
+###### 相对标识
+
+在define的factory中的相对路径（`..` `.`）是相对标识，相对标识相对当前的URI来解析。
+
+```javascript
+// File http://example.com/js/b.js
+define(function(require) {
+    var a = require('./a');
+    a.doSomething();
+});
+// => 加载的是http://example.com/js/a.js
+```
+
+这与node模块中相对路径的解析一致。
+
+###### 顶级标识
+
+不以`.`或者'/'开头的模块标识是顶级标识，相对于Sea.js的base路径来解析。
+
+```javascript
+// 假设 base 路径是：http://example.com/assets/
+
+// 在模块代码里：
+require.resolve('gallery/jquery/1.9.1/jquery');
+  // => http://example.com/assets/gallery/jquery/1.9.1/jquery.js
+```
+
+> 在node中即是在paths中搜索模块（node_modules文件夹中）。
+
+###### 模块定位小演
+
+使用seajs.use启动模块，如果不是顶级标识或者是绝对路径，就是相对于页面定位；如果是顶级标识，就从Sea.js的模块系统中加载（即base）；如果是绝对路径，直接加载；
+之后的模块加载都是在define的factory中，如果是相对路径，就是相对标识，相对当前模块路径加载；如果是绝对路径，直接加载；
+由此可见，在Sea.js中，模块的配置被分割成2+x个地方：
+
+- 与页面放在一起；
+- 与Sea.js放在一起；
+- 通过绝对路径添加更多的模块源。
+
+> 由此可见，Sea.js确实海纳百川。
+
+###### factory的依赖分析
+
+在Sea.js的API中，`define(factory)`，并没有指明模块的依赖项，那Sea.js是如何获得的呢？
+
+这段是Sea.js的源码：
+
+```javascript
+/**
+ * util-deps.js - The parser for dependencies
+ * ref: tests/research/parse-dependencies/test.html
+ */
+
+var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^\/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*require|(?:^|[^$])\brequire\s*\(\s*(["'])(.+?)\1\s*\)/g
+var SLASH_RE = /\\\\/g
+
+function parseDependencies(code) {
+  var ret = []
+
+  code.replace(SLASH_RE, "")
+      .replace(REQUIRE_RE, function(m, m1, m2) {
+        if (m2) {
+          ret.push(m2)
+        }
+      })
+
+  return ret
+}
+```
+`REQUIRE_RE`这个硕大无比的正则就是关键。推荐使用[regexper](http://www.regexper.com/)来看看这个正则表达式。非native的函数factory我们可以通过的toString()方法获取源码，Sea.js就是使用`REQUIRE_RE`在factory的源码中匹配出该模块的依赖项。
+
+> 从`REQUIRE_RE`这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。
+
 
 ##### 加载过程
 
@@ -1303,6 +1403,7 @@ Module.prototype.exec = function () {
 
 ## 参考资料
 
+- [seajs](https://github.com/)
 - [实例解析 SeaJS 内部执行过程 - 从 use 说起](https://github.com/seajs/seajs/issues/308)
 - [SeaJS v1.2 中文注释版](https://github.com/seajs/seajs/issues/305)
 - [hello seajs](http://mrzhang.me/blog/hello-seajs.html)
@@ -1323,3 +1424,4 @@ Module.prototype.exec = function () {
 - [行进中的前端类库：KISSY CommonJS 的模块系统，AMD 和 Wrappings, 以及 RequireJS](http://lifesinger.org/blog/2011/01/commonjs-amd-wrappings-and-requirejs/)
 - [jsi](http://code.google.com/p/jsi/wiki/History)
 - [从零开始编写自己的JavaScript框架（一）](http://www.ituring.com.cn/article/48461)
+- [ECMAScript 6 Modules: What Are They and How to Use Them Today](http://www.infoq.com/news/2013/08/es6-modules)
