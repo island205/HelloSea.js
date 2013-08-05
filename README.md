@@ -26,7 +26,7 @@
 # !/usr/bin/python
 # Filename: greet.py
 
-def hello_pyhton():
+def hello_python():
     print "Hello,Python"
    
 def hello_javascript():
@@ -43,7 +43,7 @@ import greet
 
 # call greet module's func
 # print "Hello,Python"
-greet.hello_pyhton()
+greet.hello_python()
 ```
 
 greet.py的模块中有两个方法，把它们import到use_greet.py中，我们就可以使用了。
@@ -53,11 +53,11 @@ Python还提供了另外一种引入模块的方法：
 # !/usr/bin/python
 # Filename: use_greet.py
 
-from greet import hello_pyhton
+from greet import hello_python
 
 # call greet module's func
 # print "Hello,Python"
-hello_pyhton()
+hello_python()
 ```
 
 可以引入模块特定的API。
