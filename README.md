@@ -540,6 +540,132 @@ SPM包括：
 
 #### SPM2
 
+> spm is a package manager, it is not build tools.
+
+这句话来自github上[spm2](https://github.com/spmjs/spm2)的README文件。`spm是一个包管理工具，不是构建工具！`，它与npm非常相似。
+
+##### spm的包规范
+
+一个spm的模块至少包含：
+
+```bash
+-- dist
+    -- overlay.js
+    -- overlay.min.js
+-- package.json
+```
+
+###### package.json
+
+在模块中必须提供一个package.json，该文件遵循[Common Module Definition](https://github.com/cmdjs/specification)模块标准。与node的`package.json`兼容。在此基础上添加了两个key。
+
+- family，即是包发布者在spmjs.org上的用户名；
+- spm，针对spm的配置。
+
+一个典型的`package.json`文件：
+
+```json
+{
+    "family": "arale",
+    "name": "base",
+    "version": "1.0.0",
+    "description": "base is ....",
+    "homepage": "http://aralejs.org/base/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aralejs/base.git"
+    },
+    "keywords": ["class"],
+
+    "spm": {
+        "source": "src",
+        "output": ["base.js", "i18n/*"],
+        "alias": {
+            "class": "arale/class/1.0.0/class",
+            "events": "arale/events/1.0.0/events"
+        }
+    }
+}
+```
+
+###### dist
+
+`dist`目录包含了模块必要的模块代码；可能是使用spm-build打包的，当然只要满足两个条件，就是一个spm的包。
+
+##### 安装
+
+`$ npm install spm -g`
+
+安装好了spm，那该如何使用spm呢？让我们从help命令开始：
+
+##### help
+
+我们可以运行`spm help`查看`spm`所包含的功能：
+
+```bash
+$ spm help
+
+  Static Package Manager
+
+  Usage: spm <command> [options]
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+
+  System Commands:
+
+    plugin         plugin system for spm
+    config         configuration for spm
+    help           show help information
+
+  Package Commands:
+
+    tree           show dependencies tree
+    info           information of a module
+    login          login your account
+    search         search modules
+    install        install a module
+    publish        publish a module
+    unpublish      unpublish a module
+
+  Plugin Commands:
+
+    init           init a template
+    build          Build a standar cmd module.
+```
+
+也可以使用`help`来查看单个命令的用法：
+
+```bash
+$ spm help install
+
+  Usage: spm-install [options] family/name[@version]
+
+  Options:
+
+    -h, --help               output usage information
+    -s, --source [name]      the source repo name
+    -d, --destination [dir]  the destination, default: sea-modules
+    -g, --global             install the package to ~/.spm/sea-modules
+    -f, --force              force to download a unstable module
+    -v, --verbose            show more logs
+    -q, --quiet              show less logs
+    --parallel [number]      parallel installation
+    --no-color               disable colorful print
+
+
+  Examples:
+
+   $ spm install jquery
+   $ spm install jquery/jquery arale/class
+   $ spm install jquery/jquery@1.8.2
+```
+
+##### search
+
+
 #### SPM1与SPM2
 
 ## 实战
@@ -1473,3 +1599,4 @@ Module.prototype.exec = function () {
 - [jsi](http://code.google.com/p/jsi/wiki/History)
 - [从零开始编写自己的JavaScript框架（一）](http://www.ituring.com.cn/article/48461)
 - [ECMAScript 6 Modules: What Are They and How to Use Them Today](http://www.infoq.com/news/2013/08/es6-modules)
+- [aralejs.org/](http://aralejs.org/)
