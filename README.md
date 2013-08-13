@@ -636,6 +636,8 @@ $ spm help
     build          Build a standar cmd module.
 ```
 
+`spm`包含三种命令，**系统命令**，即与`spm`本身相关（配置、插件和帮助），**包命令**，与包管理相关，**插件命令**，插件并不属于`spm`的核心内容，目前有两个插件`init`和`build`。
+
 也可以使用`help`来查看单个命令的用法：
 
 ```bash
@@ -665,6 +667,62 @@ $ spm help install
 
 ##### search
 
+`spm`是一个包管理工具，与`npm`类似，有自己的源服务器。我们可以使用`search`命令来查看源提供的包。
+
+> 由于`spm`在包规范中加入了`family`的概念，常常想运行`spm install backbone`，发现并没有backbone这个包。原因就是`backbone`是放在`gallery`这族下的。
+
+```bash
+$ spm search backbone
+
+  1 result
+
+  gallery/backbone
+  keys: model view controller router server client browser
+  desc: Give your JS App some Backbone with Models, Views, Collections, and Events.
+```
+
+##### install 
+
+然后我们就可以使用`install`来安装了，注意我们必须使用包的全名，即`族名/包名`。
+
+```bash
+$ spm install gallery/backbone
+
+        install: gallery/backbone@stable
+          fetch: gallery/backbone@stable
+       download: repository/gallery/backbone/1.0.0/backbone-1.0.0.tar.gz
+           save: c:\Users\zhi.cun\.spm\cache\gallery\backbone\1.0.0\backbone-1.0.0.tar.gz
+        extract: c:\Users\zhi.cun\.spm\cache\gallery\backbone\1.0.0\backbone-1.0.0.tar.gz
+          found: dist in the package
+      installed: sea-modules\gallery\backbone\1.0.0
+        depends: gallery/underscore@1.4.4
+
+        install: gallery/underscore@1.4.4
+          fetch: gallery/underscore@1.4.4
+       download: repository/gallery/underscore/1.4.4/underscore-1.4.4.tar.gz
+           save: c:\Users\zhi.cun\.spm\cache\gallery\underscore\1.4.4\underscore-1.4.4.tar.gz
+        extract: c:\Users\zhi.cun\.spm\cache\gallery\underscore\1.4.4\underscore-1.4.4.tar.gz
+          found: dist in the package
+      installed: sea-modules\gallery\underscore\1.4.4
+```
+`spm`将模块安装在了`sea_modules`中，并且在`~/.spm/cache`中做了缓存。
+
+```hash
+`~sea-modules/
+  `~gallery/
+    |~backbone/
+    | `~1.0.0/
+    |   |-backbone-debug.js
+    |   |-backbone.js
+    |   `-package.json
+    `~underscore/
+      `~1.4.4/
+        |-package.json
+        |-underscore-debug.js
+        `-underscore.js
+```
+
+`spm`还加载了`backbone`的依赖`underscore`。
 
 #### SPM1与SPM2
 
