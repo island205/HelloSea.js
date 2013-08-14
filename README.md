@@ -538,7 +538,7 @@ SPM包括：
 
 > SPM心很大，yo、bower和grunt这三个工具，SPM囊括三者。
 
-#### SPM2
+#### spm
 
 > spm is a package manager, it is not build tools.
 
@@ -755,7 +755,37 @@ $ spm plugin install build
 
 **SPM2的功能和命令就介绍到这里，更多的命令在之后的实践中介绍。**
 
-#### SPM1与SPM2
+#### spm与spm2
+
+##### spm与spm2
+
+其实之前介绍的spm是其第二个版本[spm2](https://github.com/spmjs/spm2)。spm的第一个版本可以在[这里](https://github.com/spmjs/spm)找到。
+
+spm与spm2同样都是包管理工具，那它们之间有什么不同呢？
+
+- 从定位上，spm2更加强调该工具是一个cmd包管理工具；
+- 从提供的用户接口（cmd命令）spm2比起spm更加规范，作为包管理工具，在使用方式和命令都更趋同于npm；
+- 在spm2中，构建命令以插件的方式独立出来，并且分层清晰；Transport和Concat分装成了grunt，便于自定义build方式；基于基础的grunt，构建了一个标准的spm-build工具，用于构建标准的cmd模块；
+- 与此类似，deploy和init的功能都是以插件的形式提供的；
+- 修改了package.json规范。
+
+为什么作者对spm进行了大量的重构？
+
+之所以进行大量的重构，就是为了保持spm作为包管理工具的特征。如npm一般，只指定最少的规范（package.json），提供包管理的命令，但是这个包如何构建，代码如何压缩并不是npm关心的事情。
+
+只有规则简单合理，只定义接口，不关心具体实现，才有更广的实用性。
+
+> spm本身是从业务需求成长起来的一个包管理工具，spm1更多的是一些需求功能的堆砌，而spm2就是对这些功能的提炼，形成一套适用于业界的工具。
+
+##### apm
+
+apm的全称是：
+
+> Alipay package manager
+
+即支付宝的包管理工具。
+
+apm是基于spm的一套专门为支付宝开发的工具集。我们可以这么看，spm2和apm是spm升级后的两个产物，spm2更加专注于包管理和普适性，而apm更加专注于支付宝业务。由于业务细节和规模的不同，apm可能并不适合其他公司所用，所以需要spm2，而又因为支付宝业务的特殊性和基因，必须apm。
 
 ## 实战
 
