@@ -771,7 +771,7 @@ spm与spm2同样都是包管理工具，那它们之间有什么不同呢？
 
 为什么作者对spm进行了大量的重构？
 
-之所以进行大量的重构，就是为了保持spm作为包管理工具的特征。如npm一般，只指定最少的规范（package.json），提供包管理的命令，但是这个包如何构建，代码如何压缩并不是npm关心的事情。
+之所以进行大量的重构，就是为了保持spm作为包管理工具的特征。如npm一般，只指定最少的规范（package.json），提供包管理的命令，但是这个包如何构建，代码如何压缩并不是spm关心的事情。
 
 只有规则简单合理，只定义接口，不关心具体实现，才有更广的实用性。
 
@@ -787,7 +787,150 @@ apm的全称是：
 
 apm是基于spm的一套专门为支付宝开发的工具集。我们可以这么看，spm2和apm是spm升级后的两个产物，spm2更加专注于包管理和普适性，而apm更加专注于支付宝业务。由于业务细节和规模的不同，apm可能并不适合其他公司所用，所以需要spm2，而又因为支付宝业务的特殊性和基因，必须apm。
 
+谢谢 @lepture 的指正：
+
+> 不一定要用 apm，只是 apm 把所有要用到的插件都打包好了，同时相应的默认配置也为支付宝做了处理，方便内部员工使用，不用再配置了。
+
 ## 实战
+
+### venus-in-cmd
+
+Venus是一个javascript类库，是一个canvas的wrapper，为了学习spm，我们使用cmd的模式来重构这个类库。
+
+#### 安装spm-init
+
+spm提供了初始cmd模块的脚手架，我们可以使用下面的命令来安装这个脚手架：
+
+```bash
+$ spm plugin install init
+```
+
+#### 初始化一个cmd项目
+
+运行：
+
+```bash
+$ spm init
+```
+
+就可以初始化一个cmd模块的项目，回答一些spm的问题，就能在当前目录生成必要的文件和文件夹：
+
+```bash
+|~examples/
+| `-index.md
+|~src/
+| `-venus.js
+|~tests/
+| `-venus-spec.js
+|-LICENSE
+|-Makefile
+|-package.json
+`-README.md
+```
+
+我们在`src`中添加`venus`的代码。
+
+#### 编写cmd模块
+
+或者将现有的模块转化为cmd模块。
+
+本例中的[Venus](https://github.com/island205/Venus)本来就已经存在，那我们如何将其转成cmd模块呢？
+
+在Venus的源码中我惊喜地发现这段代码：
+
+```javascript
+// File: vango.js
+
+/*
+ * wrapper for browser,nodejs or AMD loader evn
+ */
+(function(root, factory) {
+    if (typeof exports === "object") {
+        // Node
+        module.exports = factory();
+    // AMD loader
+    } else if (typeof define === "function" && define.amd) {
+        define(factory);
+    } else {
+        // Broser
+        root.Vango = factory();
+    }
+})(this, function() {
+    // Factory for build Vango
+})
+```
+
+这段代码可以令`vango.js`支持浏览器（通过script直接引入）、node环境以及AMD加载器。
+
+于是事情就简单了，因为我们可以很简单地将一个Node模块转成CMD模块，添加如下的wrapper即可：
+
+```javascript
+// File: vango.js
+define(function (require, exports, module) {
+    (function(root, factory) {
+        if (typeof exports === "object") {
+            // Node
+            module.exports = factory();
+        // AMD loader
+        } else if (typeof define === "function" && define.amd) {
+            define(factory);
+        } else {
+            // Broser
+            root.Vango = factory();
+        }
+    })(this, function() {
+        // Factory for build Vango
+        // return Vango
+    })
+})
+```
+
+##### UMD
+
+上面那段有点黑魔法的代码还有一个更复杂的形式，即[Universal Module Definition](https://github.com/umdjs/umd)：
+
+```javascript
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define('backbone', ['jquery', 'underscore'], function (jQuery, _) {
+      return factory(jQuery, _);
+    });
+  } else if (typeof exports === 'object') {
+  // Node.js
+    module.exports = factory(require('jquery'), require('underscore'));
+  } else {
+    // Browser globals
+    root.Backbone = factory(root.jQuery, root._);
+  }
+}(this, function (jQuery, _) {
+  var Backbone = {};
+  // Backbone code that depends on jQuery and _
+  return Backbone;
+
+}));
+```
+
+当然并不是所有的CMD模块都得这么写，你可以按照自己的方式，使用`require`、`exports`和`module`这三个关键字，遵循CMD的规范即可。
+
+最后`src`有两个文件，`venus.js`就很简单了：
+
+```javascript
+define(function (require, exports, module) {
+	var Vango = require('./vango');
+	exports.Vango = Vango;
+})
+```
+
+我们的venus的cmd版本搞定了，vango.js作为vango具体实现，而venus.js只是这些将这些画家暴露出来。
+
+
+#### 测试
+
+#### 构建
+
+#### 发布
+
 
 ## 原理与实现
 
