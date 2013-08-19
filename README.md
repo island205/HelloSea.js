@@ -152,6 +152,8 @@ Greet.helloJavaScript()
 
 可以到这里查看更多的[例子](http://wiki.ecmascript.org/doku.php?id=harmony:modules_examples)。
 
+参考[es6-module-transpiler](http://square.github.io/es6-module-transpiler/)和[es6-module-loader](https://github.com/ModuleLoader/es6-module-loader)这两个项目。
+
 不过该标准还处于草案阶段，没有主流的浏览器所支持，那我们该怎么办？恩，已经有一些先行者了。
 
 ### LABjs
@@ -924,13 +926,111 @@ define(function (require, exports, module) {
 
 我们的venus的cmd版本搞定了，vango.js作为vango具体实现，而venus.js只是这些将这些画家暴露出来。
 
-
-#### 测试
-
 #### 构建
+
+作为标准的cmd模块，我们可以使用`spm-build`来构建，别忘了之前提到的，你可以使用`spm plugin install build`来安装。
+
+在项目的根目录下运行`spm build`：
+
+```bash
+$ spm build
+           Task: "clean:build" (clean) task
+
+           Task: "spm-install" task
+
+           Task: "transport:src" (transport) task
+      transport: 2 files
+
+           Task: "concat:css" (concat) task
+       concated: 0 files
+
+           Task: "transport:css" (transport) task
+      transport: 0 files
+
+           Task: "concat:js" (concat) task
+       concated: 2 files
+
+           Task: "copy:build" (copy) task
+
+           Task: "cssmin:css" (cssmin) task
+
+           Task: "uglify:js" (uglify) task
+           file: ".build/dist/venus.js" created.
+
+           Task: "clean:dist" (clean) task
+
+           Task: "copy:dist" (copy) task
+         copied: 2 files
+
+           Task: "clean:build" (clean) task
+       cleaning: ".build"...
+
+           Task: "spm-newline" task
+         create: dist/venus-debug.js
+         create: dist/venus.js
+
+           Done: without errors.
+```
+
+从构建的log中可以看出，`spm`完全就是使用grunt来构建的，涉及到多个grunt task。你完全可以自己编写Gruntfile.js来实现自定义的构建过程。
+
+venus就被构建好了，`spm`在目录中生成了一个`dist`文件夹：
+
+```bash
+|~dist/
+  |-venus-debug.js
+  `-venus.js
+```
+
+`venus-debug.js`中的内容为：
+
+```javascript
+define("island205/venus/1.0.0/venus-debug", [ "./vango-debug" ], function(require, exports, module) {
+    var Vango = require("./vango-debug");
+    exports.Vango = Vango;
+});
+
+define("island205/venus/1.0.0/vango-debug", [], function(require, exports, module) {
+    // Vango's code
+})
+```
+
+`venus.js`的内容与之一样，只是经过了压缩，去掉了模块名最后的`-debug`。
+
+`spm`将`src`中的vango.js和venus.js根据依赖打到了一起。作为包的主模块，venus.js被放到了最前面。
+
+> 这是Sea.js的约定，打包后的模块文件中的一个define即为该包的主模块，也就是说，你通过`require('island205/venus/1.0.0/venus')`，虽然Sea.js加载的是整个打包的模块，但是会把的一个factory的exports作为venus暴露的接口。
 
 #### 发布
 
+如果你用过npm，那你对spm的发布功能应该不会陌生了。spm也像npm一样，有一个公共仓库，我们可以通过`spm plublish`将venus发布到仓库中，与大家共享。
+
+```bash
+$ spm publish
+        publish: island205/venus@1.0.0
+          found: readme in markdown.
+        tarfile: venus-1.0.0.tar.gz
+        execute: git rev-parse HEAD
+           yuan: Authorization required.
+           yuan: `spm login` first
+```
+
+如果你碰到上面这种情况，你需要登录下。
+
+```bash
+$ spm publish
+        publish: island205/venus@1.0.0
+          found: readme in markdown.
+        tarfile: venus-1.0.0.tar.gz
+        execute: git rev-parse HEAD
+      published: island205/venus@1.0.0
+```
+
+接下来我们使用venus编写一个名为pixelegos的网页程序，你可以使用这个程序来生成一些头像的位图。例如，spmjs的头像(这是github为spmjs生成的随机头像)：
+
+![spmjs](https://identicons.github.com/1e5ac2bf13d0dc1b93e8d663f2fdf885.png)
+
+### pixelegos
 
 ## 原理与实现
 
