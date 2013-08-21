@@ -1032,6 +1032,10 @@ $ spm publish
 
 ### pixelegos
 
+pixelegos整体的样式如下图：
+
+![pixelegos](http://pic.yupoo.com/island205/D6slHlIX/PrApD.png)
+
 ## 原理与实现
 
 ### 原理
