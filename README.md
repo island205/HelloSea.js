@@ -1036,6 +1036,7 @@ pixelegos整体的样式如下图：
 
 ![pixelegos](http://pic.yupoo.com/island205/D6slHlIX/PrApD.png)
 
+
 ## 原理与实现
 
 ### 原理
@@ -1262,6 +1263,24 @@ Tea.taste(dependencies, factory)
 6. 将A加入到CDE的等待队列中；
 7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
 8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
+
+##### 打包模块的加载过程
+
+打包模块分成三类，self,relative和all。
+
+- self，只是自己做了transport
+- relative，将多有相对路径的模块transport，concat
+- all，包括相对路径模块和库模块（即在`seajs-modules`文件夹中的），transport，concat
+
+例如，我们`seajs.use('/dist/pixelegos')`，解析为需要加载`http://127.0.0.1:81/dist/pixelegos.js`这个文件，且这个文件是all全打包的。其加载过程如下：
+
+加载方式：
+
+1. 在use时，定义一个匿名的`use_`模块，依赖于`/dist/pixelegos`模块，匿名的`use_`模块`load`依赖，开始加载`http://127.0.0.1:81/dist/pixelegos.js`模块；
+2. `http://127.0.0.1:81/dist/pixelegos.js`加载执行，所有打包在里面的模块被`define`；
+3. `http://127.0.0.1:81/dist/pixelegos.js`的`onload`回调执行，调用`/dist/pixelegos`模块的load，加载其依赖模块，但依赖的模块都加载好了；
+4. 通知匿名的`use_`加载完成，开始执行期。
+
 
 针对每一次执行期，对应的加载依赖树与整个模块依赖树是有区别的，因为子模块已经加载好了的模块，并不在加载树中。
 
