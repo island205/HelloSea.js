@@ -1032,10 +1032,405 @@ $ spm publish
 
 ### pixelegos
 
-pixelegos整体的样式如下图：
+pixelegos完成后的样子：
 
 ![pixelegos](http://pic.yupoo.com/island205/D7v3BdKT/Aiuue.jpg)
 
+#### 准备
+
+创建一个名为`pixelegos`的文件夹，初始化一个npm项目：
+
+```bash
+$ mkdir pixelegos && cd pixelegos && npm init
+
+```
+
+在目录中多了一个packege.json文件，在这个文件中包含了一些pixelegos的信息，之后还会保存一些node module和spm的配置。
+
+#### 安装依赖
+
+本项目中需要依赖的cmd模块包括`backbone`、`seajs`、`venus`、`zepto`。我们运行下面的命令安装这些依赖:
+
+```bash
+$ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
+```
+
+在`pixelegos`目录下增加了一个`sea-modules`目录，上面的cmd依赖都安装在这个目录中，由于backone依赖于underscore，spm自动安装了依赖。
+
+```bash
+├── gallery
+│   ├── backbone
+│   │   └── 1.0.0
+│   │       ├── backbone-debug.js
+│   │       ├── backbone.js
+│   │       └── package.json
+│   └── underscore
+│       └── 1.4.4
+│           ├── package.json
+│           ├── underscore-debug.js
+│           └── underscore.js
+├── island205
+│   └── venus
+│       └── 1.0.0
+│           ├── package.json
+│           ├── venus-debug.js
+│           └── venus.js
+├── seajs
+│   └── seajs
+│       └── 2.1.1
+│           ├── package.json
+│           ├── sea-debug.js
+│           ├── sea.js
+│           └── sea.js.map
+└── zepto
+    └── zepto
+        └── 1.0.0
+            ├── package.json
+            ├── zepto-debug.js
+            └── zepto.js
+```
+
+#### 开始
+
+新建一些html、css、js文件，结构如下：
+
+```bash
+├── index.css
+├── index.html
+├── js
+│   ├── canvas.js
+│   ├── config.js
+│   ├── menu.js
+│   ├── pixelegos.js
+│   └── tool.js
+├── package.json
+└── sea-modules
+    ├── gallery
+    ├── island205
+    ├── seajs
+    └── zepto
+```
+
+给index.html添加如下内容：
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/index.css" />
+    <script type="text/javascript" src="/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
+    <script type="text/javascript" src="/config.js"></script>
+    <script type="text/javascript">
+        seajs.use('/js/pixelegos')
+    </script>
+</head>
+<body>
+</body>
+</html>
+```
+
+其中，config.js在开发时用来配置alias，pixelegos作为整个程序的启动模块。
+
+```javascript
+// config.js
+seajs.config({
+    alias: {
+        '$': 'zepto/zepto/1.0.0/zepto',
+        "backbone": "gallery/backbone/1.0.0/backbone",
+        "venus": "island205/venus/1.0.0/venus"
+    }   
+})
+```
+
+```javascript
+// pixelegos.js
+define(function (require, exports, module) {
+    var Menu = require('./menu')
+    var Tool = require('./tool')
+    var Canvas = require('./canvas')
+    var $ = require('$')
+    
+    $(function() {
+        var menu = new Menu()
+        var tool = new Tool()
+        var canvas = new Canvas()
+        tool.on('select', function(color) {
+            canvas.color = color
+        })
+        tool.on('erase', function() {
+            canvas.color = 'white'
+        })
+    })
+})
+```
+
+在其他js文件中分别基于backbone实现一些pixelegos的组件。例如：
+
+```javascript
+// menu.js
+define(function (require, exports, module) {
+    var Backbone = require('backbone')
+    var $ = require('$')
+
+    var Menu = Backbone.View.extend({
+        el: $('header'),
+        show: false,
+        events: {
+            'click .menu-trigger': 'toogle'
+        },
+        initialize: function() {
+            this.menu = this.$el.next()
+            this.render()
+        },
+        toogle: function(e) {
+            e.preventDefault()
+            this.show = ! this.show
+            this.render()
+        },
+        render: function() {
+            if (this.show) {
+                this.menu.css('height', 172)
+            } else {
+                this.menu.css('height', 0)
+            }
+        }
+    })
+
+    module.exports = Menu
+})
+```
+menu.js依赖于backbone和$（在config.js将zepto alias为了$），实现了顶部的菜单。
+
+#### 当当当当
+
+当当当当，巴拉巴拉，我们敲敲打打完成了pixelegos得功能，我们已经可以画出那只Octocat了！
+
+#### 构建发布
+
+终于来到了我们的重点，关于cmd模块的构建。
+
+> 有童靴觉得spm提供出来的构建工具很难用，搞不懂。我用下来确实些奇怪的地方，等我慢慢到来吧。
+
+spm为自定义构建提供了两个工具:
+
+- grunt-cmd-transport：将cmd模块转换成具名模块，即将`define(function (require, exports, module) {})`转换为`define(id, deps, function(require, exports, module) {})`，可基于package.json中的spm配置来替换被alias掉的路径等等。本身还可以将css或者html文件转换为cmd包。
+- grunt-cmd-cancat：根据依赖树，将多个具名的cmd模块打包到一起。
+
+接下来就是用这些工具将我们零散的js打包成一个名为pixelegos.js的文件。
+
+##### grunt
+
+grunt是目前JavaScript最炙手可热的构建工具，我们先来安装下：
+
+```bash
+" 在全部安装grunt的命令行接口
+$ npm install grunt-cli -g
+
+" 安装需要用的grunt task
+$ npm install grunt grunt-cmd-concat grunt-cmd-transport grunt-contrib-concat grunt-contrib-jshint grunt-contrib-uglify  --dev-save
+```
+
+整个打包的流程为：
+
+1. 将业务代码transport成cmd的具名模块
+2. cancat所有的文件到一个文件pixelegos.js
+4. uglify
+
+##### 编写Gruntfile.js文件
+
+第一步先把js文件夹中的业务js转换成具名模块：
+
+```javascript
+transport : {
+    options: {
+        idleading: '/dist/',
+        alias: '<%= pkg.spm.alias %>',
+        debug: false
+    },
+    app:{
+        files:[{
+            cwd: 'js/',
+            src: '**/*',
+            dest: '.build'
+        }]
+    }
+}
+```
+
+这是一些transport的配置，即将js/中的js transport到.build中间文件夹中。
+
+
+接下来，将.build中的文件合并到一起（包含sea-modules中的依赖项。）：
+
+```javascript
+concat : {
+    options : {
+        include : 'all'
+    },
+    app: {
+        files: [
+            {
+                expand: true,
+                cwd: '.build/',
+                src: ['pixelegos.js'],
+                dest: 'dist/',
+                ext: '.js'
+            }
+        ]
+    }
+}
+```
+
+这里我们只对pixelegos.js进行concat，因为它是app的入口文件，将`include`配置成`all`，只需要cancat这个文件，就能将所有的依赖项打包到一起。`include`还可以配置成其他值：
+
+- self，相当于不做concat，只是copy该文件
+- relative，只concat通过想对路径依赖的模块
+
+既然我们已经transport和concat好了文件，那我们直接使用整个文件就行了，于是我们的发布页面可写成：
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/index.css" />
+    <script type="text/javascript" src="/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
+    <script type="text/javascript">
+        seajs.use('/dist/pixelegos')
+    </script>
+</head>
+<body>
+...
+</body>
+</html>
+```
+
+当我运行index-product.html时我遇到了坑。在backbone包中并没有指明$依赖的具体包，导致打包后的js无法找到$.js文件。原本以为backbone中的$会被业务级的配置所替换，但是事实并非如此。如何解决？
+
+我们必须使用seajs.config接口提供一个dom的engine，在js/中创建engine.js文件：
+
+```javascript
+// engine.js
+seajs.config({
+    alias: {
+        '$': 'zepto/zepto/1.0.0/zepto'
+    }
+})
+```
+
+接下来把这个文件和pixelegos.js concat在一起：
+
+```javascript
+normalconcat: {
+    app: {
+        src: ['js/engine.js', 'dist/pixelegos.js'],
+        dest: 'dist/pixelegos.js'
+    }
+}
+```
+
+由于grunt-contrib-concat和grunt-cmd-concat产生了task name的冲突，可以通过grunt.renameTask来修改task名。
+
+下一步，uglify！
+
+```javascript
+uglify : {
+    app : {
+        files: [
+            {
+                expand: true,
+                cwd: 'dist/',
+                src: ['**/*.js', '!**/*-debug.js'],
+                dest: 'dist/',
+                ext: '.js'
+            }
+        ]
+    }
+}
+```
+
+大功告成，完整的Gruntfile.js如下:
+
+```javascript
+module.exports = function (grunt) {
+    grunt.initConfig({
+        pkg : grunt.file.readJSON("package.json"),
+        transport : {
+            options: {
+                idleading: '/dist/',
+                alias: '<%= pkg.spm.alias %>',
+                debug: false
+            },
+            app:{
+                files:[{
+                    cwd: 'js/',
+                    src: '**/*',
+                    dest: '.build'
+                }]
+            }
+        },
+        concat : {
+            options : {
+                include : 'all'
+            },
+            app: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.build/',
+                        src: ['pixelegos.js'],
+                        dest: 'dist/',
+                        ext: '.js'
+                    }
+                ]
+            }
+        },
+        normalconcat: {
+            app: {
+                src: ['js/engine.js', 'dist/pixelegos.js'],
+                dest: 'dist/pixelegos.js'
+            }
+        },
+        uglify : {
+            app : {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'dist/',
+                        src: ['**/*.js', '!**/*-debug.js'],
+                        dest: 'dist/',
+                        ext: '.js'
+                    }
+                ]
+            }
+        },
+        clean:{
+            app:['.build', 'dist']
+        }
+    })
+
+     grunt.loadNpmTasks('grunt-cmd-transport')
+     grunt.loadNpmTasks('grunt-contrib-concat')
+     grunt.renameTask('concat', 'normalconcat')
+     grunt.loadNpmTasks('grunt-cmd-concat')
+     grunt.loadNpmTasks('grunt-contrib-uglify')
+     grunt.loadNpmTasks('grunt-contrib-clean')
+
+     grunt.registerTask('build', ['clean', 'transport:app', 'concat:app', 'normalconcat:app', 'uglify:app'])
+     grunt.registerTask('default', ['build'])
+}
+```
+
+### 总结
+
+我们使用spm将一个非cmd模块venus转成了标准的cmd模块venus-in-cmd，然后我们用它结合多个cmd模块构建了一个简单的网页程序。很有成就，有没有！接下来我们要进入hard模式了，我们来看看，Sea.js是如何实现的？只有了解了它的内部是如何运作的，在使用它的过程才能游刃有余！
 
 ## 原理与实现
 
