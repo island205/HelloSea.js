@@ -416,7 +416,7 @@ seajs.config({
 
 ```javascript
 seajs.config({
-    base: 'http://g.tbcdn.cn/tcc/'，
+    base: 'http://g.tbcdn.cn/tcc/',
     paths: {
         'index': 's/js/index'
     }
