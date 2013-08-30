@@ -17,6 +17,9 @@
 
 ## 贡献者
 
+- [pyrocat101](https://github.com/pyrocat101)
+- [GZShi](https://github.com/GZShi)
+
 ## License
 
 The MIT License (MIT)
