@@ -23,9 +23,9 @@ define(function(require, exports, module) {
 ```javascript
 define(function(require, exports) {
     var Vango = require('vango')
-    exports.drawCicle = function () {
+    exports.drawCircle = function () {
         var vango = new Vango(document.body, 100, 100)
-        vango.cicle(50, 50, 50, {
+        vango.circle(50, 50, 50, {
             fill: true,
             styles:{
                 fillStyle:"red"
@@ -41,9 +41,9 @@ define(function(require, exports) {
 define(function(require, exports, module) {
     var Vango = require('vango')
     module.exports = {
-        drawCicle: function () {
+        drawCircle: function () {
             var vango = new Vango(document.body, 100, 100)
-            vango.cicle(50, 50, 50, {
+            vango.circle(50, 50, 50, {
                 fill: true,
                 styles:{
                     fillStyle:"red"
@@ -65,11 +65,11 @@ define(function(require, exports, module) {
 这种写法并不属于CMD规范，而是源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
 
 ```javascript
-define('drowcicle', ['vango'], function(require, exports) {
+define('drawCircle', ['vango'], function(require, exports) {
     var Vango = require('vango')
-    exports.drawCicle = function () {
+    exports.drawCircle = function () {
         var vango = new Vango(document.body, 100, 100)
-        vango.cicle(50, 50, 50, {
+        vango.circle(50, 50, 50, {
             fill: true,
             styles:{
                 fillStyle:"red"
