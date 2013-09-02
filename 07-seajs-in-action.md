@@ -59,7 +59,7 @@ $ spm init
     } else if (typeof define === "function" && define.amd) {
         define(factory);
     } else {
-        // Broser
+        // Browser
         root.Vango = factory();
     }
 })(this, function() {
@@ -82,7 +82,7 @@ define(function (require, exports, module) {
         } else if (typeof define === "function" && define.amd) {
             define(factory);
         } else {
-            // Broser
+            // Browser
             root.Vango = factory();
         }
     })(this, function() {
@@ -423,7 +423,7 @@ menu.js依赖于backbone和$（在config.js将zepto alias为了$），实现了�
 spm为自定义构建提供了两个工具:
 
 - grunt-cmd-transport：将cmd模块转换成具名模块，即将`define(function (require, exports, module) {})`转换为`define(id, deps, function(require, exports, module) {})`，可基于package.json中的spm配置来替换被alias掉的路径等等。本身还可以将css或者html文件转换为cmd包。
-- grunt-cmd-cancat：根据依赖树，将多个具名的cmd模块打包到一起。
+- grunt-cmd-concat：根据依赖树，将多个具名的cmd模块打包到一起。
 
 接下来就是用这些工具将我们零散的js打包成一个名为pixelegos.js的文件。
 
@@ -442,7 +442,7 @@ $ npm install grunt grunt-cmd-concat grunt-cmd-transport grunt-contrib-concat gr
 整个打包的流程为：
 
 1. 将业务代码transport成cmd的具名模块
-2. cancat所有的文件到一个文件pixelegos.js
+2. concat所有的文件到一个文件pixelegos.js
 4. uglify
 
 ##### 编写Gruntfile.js文件
@@ -490,7 +490,7 @@ concat : {
 }
 ```
 
-这里我们只对pixelegos.js进行concat，因为它是app的入口文件，将`include`配置成`all`，只需要cancat这个文件，就能将所有的依赖项打包到一起。`include`还可以配置成其他值：
+这里我们只对pixelegos.js进行concat，因为它是app的入口文件，将`include`配置成`all`，只需要concat这个文件，就能将所有的依赖项打包到一起。`include`还可以配置成其他值：
 
 - self，相当于不做concat，只是copy该文件
 - relative，只concat通过想对路径依赖的模块
