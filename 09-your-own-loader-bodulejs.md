@@ -8,6 +8,92 @@
 
 一个模块系统，必然有一些约定，下面是bodule.js的规范。
 
+#### 模块
+
+bodule.js的模块由以下几个概念组成：
+
+- url，一个url地址对应一个模块；
+- meta module：如下形式为一个meta module：
+
+**define(id, dependancies?, factory)**
+
+id必须为完整的url，dependancies如果没有依赖，则可以省略，factory包含两种形式：
+
+Function：function(require, [exports,] [module])：
+
+非Function：直接作为该meta模块的exports。
+
+```javascript
+define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
+  //CommonJS
+})
+
+// or 
+
+
+define('http://bodule.org/island205/venus/1.0.0/conststring', 'bodule.js')
+
+// even or
+
+define('http://bodule.org/island205/venus/1.0.0/undefined', undefined)
+
+```
+
+dependancies中的字符串以及CommonJS中的require的参数，必须为url、相对路径或顶级路径的解析依赖于前面的id。
+
+- 一个模块文件包含一个或多个meta module，但是，在该模块文件中，必须包含一个该模块文件url作为id的meta module，例如：
+
+http://bodule.org/island205/venus/1.0.0/venus.js对应的模块文件内容为：
+
+
+```javascript
+define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
+  //CommonJS for venus
+})
+
+define('http://bodule.org/venus/1.0.0/vango', [], function (require, exports, module) {
+  //CommonJS for vango
+})
+```
+
+该模块文件包含两个meta module，而第一个是必须的。但这两个meta模块的顺序不做要求。
+
+#### 简化
+
+为了简化代码，针对
+
+```javascript
+define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
+  //CommonJS for venus
+})
+```
+这样的代码我们可以将其简化为：
+
+```javascript
+define('./venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
+  //CommonJS for venus
+})
+```
+
+或者：
+
+
+```javascript
+define('/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
+  //CommonJS for venus
+})
+```
+
+这样的形式，然想对路径或者顶级路径必须要由一个绝对路径可参照，在bodule.js中，这个绝对路径来自于当前页面的url地址，或者使用bodule.config进行配置。
+
+#### bodule cloud
+
+在node中，可以使用require('underscore')来引用node_modules中的模块，作为bodule.js的目标，将commonjs桥接到浏览器端来使用，所以允许使用类似的写法，这种模块我们把它称作bodule模块，resovle后映射到http://bodule.org/underscore/stable，bodule.js会在bodule.org上提供一个云服务，来支持你从这里加载这些bodule模块。
+
+如果你想使用自己的bodule服务器，可以使用bodule.config来配置boduleServer。
+
+
+
 #### Tea.js
 
 鉴于上面的解释，我们先来实现一个简单运行时——Tea.js。迫不及待了吧，让我们开始吧！
