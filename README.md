@@ -19,6 +19,9 @@
 
 - [pyrocat101](https://github.com/pyrocat101)
 - [GZShi](https://github.com/GZShi)
+- [chuguixin](https://github.com/chuguixin)
+
+> 排名不分先后。
 
 ## License
 

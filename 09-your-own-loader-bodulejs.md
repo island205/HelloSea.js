@@ -92,6 +92,37 @@ define('/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
 
 如果你想使用自己的bodule服务器，可以使用bodule.config来配置boduleServer。
 
+#### npm
+
+npm非常流行，bodule.js将其作为模块的源。我们采取与npm包一致的策略。典型的npm的package.json为（以underscore为例）：
+
+```json
+{
+  "name"          : "underscore",
+  "description"   : "JavaScript's functional programming helper library.",
+  "homepage"      : "http://underscorejs.org",
+  "keywords"      : ["util", "functional", "server", "client", "browser"],
+  "author"        : "Jeremy Ashkenas <jeremy@documentcloud.org>",
+  "repository"    : {"type": "git", "url": "git://github.com/jashkenas/underscore.git"},
+  "main"          : "underscore.js",
+  "version"       : "1.5.1",
+  "devDependencies": {
+    "phantomjs": "1.9.0-1"
+  },
+  "scripts": {
+    "test": "phantomjs test/vendor/runner.js test/index.html?noglobals=true"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/jashkenas/underscore/master/LICENSE"
+    }
+  ],
+  "files"         : ["underscore.js", "LICENSE"]
+}
+```
+
+bodule.js将会使用工具将其转化为bodule模块，最终会以http://bodule.org/underscore/1.5.1这样的地址地提供出来。注意：该地址会根据package.json中的main，变为http://bodule.org/underscore/1.5.1/underscore。
 
 
 #### Tea.js
