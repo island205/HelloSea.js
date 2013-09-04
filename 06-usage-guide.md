@@ -4,7 +4,7 @@
 
 ### 定义模块
 
-Sea.js是[CMD](https://github.com/amdjs/amdjs-api/wiki/AMD)这个模块系统的一个运行时，Sea.js可以加载的模块，就是CMD规范里所指明的。那我们该如何编写一个CMD模块呢？
+Sea.js是[CMD](https://github.com/cmdjs/specification/blob/master/draft/module.md)这个模块系统的一个运行时，Sea.js可以加载的模块，就是CMD规范里所指明的。那我们该如何编写一个CMD模块呢？
 
 Sea.js提供了一个全局方法——`define`，用来定义一个CMD模块。
 
