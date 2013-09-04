@@ -252,7 +252,7 @@ Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。
 - seajs-combo：该插件提供了依赖combo的功能，能把多个依赖的模块uri combo，减少HTTP请求；
 - seajs-flush：该插件是对seajs-combo的补充，或者是大杀器，可以先hold住前面的模块请求，最后将请求的模块combo成一个url，一次加载hold住的模块；
 - seajs-debug：Fiddler用过么？这个插件基本就是提供了这样一种功能，可以通过修改config，将线上文件proxy到本地服务器，便于线上开发调试和排错；
-- seajs-log：提供一个seajs.log API，斯觉得比较鸡肋；
+- seajs-log：提供一个seajs.log API，私觉得比较鸡肋；
 - seajs-health：目标功能是，分析当前网页的模块健康情况。
 
 由此可见，Sea.js的插件主要是解决一些附加问题，或者是给Sea.js添加一些而外的功能。私觉得有些功能并不合适让Sea.js来处理。
