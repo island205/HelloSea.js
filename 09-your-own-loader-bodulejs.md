@@ -158,6 +158,7 @@ Bodule.use('a-random-id')
         console.log(e)
     })
 </script>
+```
 
 #### define
 
