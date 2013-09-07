@@ -4,33 +4,9 @@
 
 洋洋洒洒写了这么多，必须证明着并不是一份乏味的使用文档，我们来深入看看Sea.js，搞清楚它时如何工作的吧！
 
-### 原理
+### CMD规范
 
-Sea.js很酷不是？
-
-Sea.js给出了CMD规范，本质上Sea.js是这个规范的一个运行时。
-
-#### node
-
-怎么解释这个问题，我们还是从Node模块说起，用我们之前使用过的一个模块：
-
-```javascript
-// File: usegreet.js
-var greet = require("./greet");
-greet.helloJavaScript();
-```
-
-当我们使用`node usegreet.js`来运行这个模块时，实际上node会构建一个运行的上下文，在这个上下文中运行这个模块。运行到`require('./greet')`这句话时，会通过注入的API，在新的上下文中解析greet.js这个模块，然后通过注入的`exports`或`module`这两个关键字获取该模块的接口，将接口暴露出来给usegreet.js使用，即通过`greet`这个对象来引用这些接口。例如，`helloJavaScript`这个函数。详细细节可以参看node源码中的[module.js](https://github.com/joyent/node/blob/master/lib/module.js)。
-
-node的模块方案的特点如下：
-
-1. 使用require、exports和module作为模块化组织的关键字；
-2. 每个模块只加载一次，作为单例存在于内存中，每次require时使用的是它的接口；
-3. require是同步的，通俗地讲，就是node运行A模块，发现需要B模块，会停止运行A模块，把B模块加载好，获取的B的接口，才继续运行A模块。如果B模块已经加载到内存中了，当然require B可以直接使用B的接口，否则会通过fs模块化同步地将B文件内存，开启新的上下文解析B模块，获取B的API。
-
-实际上node如果通过fs异步的读取文件的话，require也可以是异步的，所以曾经node中有require.async这个API。
-
-#### Sea.js
+要想了解Sea.js的运作机制，就不得不先了解其CMD规范。
 
 Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。使用require、exports和module来组织模块。但Sea.js比起Node的不同点在于，前者的运行环境是在浏览器中，这就导致A依赖的B模块不能同步地读取过来，所以Sea.js比起Node，除了运行之外，还提供了两个额外的东西：
 
@@ -76,24 +52,59 @@ function (require, exports, module) {
 
 依赖就是一个id的数组，即模块所依赖模块的标识。
 
-##### 模块依赖树
+### 依赖加载原理
 
-可以想见，整个模块系统是一棵树。启动模块作为根节点，依赖模块作为叶子节点。
+Sea.js给出了CMD规范，本质上Sea.js是这个规范的一个运行时。
 
-在加载期，模块从根节点开始，依据模块间的依赖，先加载根节点，叶子节点才会慢慢显现出来。只有当最底层的根节点加载完成之后，才能回调来开始执行根模块。
+#### node的方式-同步的`require`
 
-在执行期，执行也是从根节点开始，本质上是按照代码的顺序结构，对整棵树进行了遍历。有的模块可能已经EXECUTED，而有的还需要执行获取其exports。
+想要解释这个问题，我们还是从Node模块说起，用我们之前使用过的一个模块：
 
-##### 如何确定整个依赖树加载好了呢？
+```javascript
+// File: usegreet.js
+var greet = require("./greet");
+greet.helloJavaScript();
+```
 
-1. 定义A模块，如果有模块依赖于A，把该模块加入到等待A的模块队列中；
-2. 加载A模块，状态变为FETCHING
-3. A加载完成，获取A模块依赖的BCDEFG模块，发现B模块没有定义，而C加载中，D自己已加载好，E加载子模块中，F加载完成，运行中，G已经解析好，SAVED；
-4. 由于FG本身以及子模块都已加载好，因此A模块要确定已经加载好了，必须等待BCDE加载好；开始加载必须的子模块，LOADING；
-5. 针对B重复步骤1；
-6. 将A加入到CDE的等待队列中；
-7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
-8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
+当我们使用`node usegreet.js`来运行这个模块时，实际上node会构建一个运行的上下文，在这个上下文中运行这个模块。运行到`require('./greet')`这句话时，会通过注入的API，在新的上下文中解析greet.js这个模块，然后通过注入的`exports`或`module`这两个关键字获取该模块的接口，将接口暴露出来给usegreet.js使用，即通过`greet`这个对象来引用这些接口。例如，`helloJavaScript`这个函数。详细细节可以参看node源码中的[module.js](https://github.com/joyent/node/blob/master/lib/module.js)。
+
+node的模块方案的特点如下：
+
+1. 使用require、exports和module作为模块化组织的关键字；
+2. 每个模块只加载一次，作为单例存在于内存中，每次require时使用的是它的接口；
+3. require是同步的，通俗地讲，就是node运行A模块，发现需要B模块，会停止运行A模块，把B模块加载好，获取的B的接口，才继续运行A模块。如果B模块已经加载到内存中了，当然require B可以直接使用B的接口，否则会通过fs模块化同步地将B文件内存，开启新的上下文解析B模块，获取B的API。
+
+实际上node如果通过fs异步的读取文件的话，require也可以是异步的，所以曾经node中有require.async这个API。
+
+#### Sea.js的方式-加载期与执行期
+
+由于在浏览器端，JavaScript文件无法同步的获取，只能采用异步的方式。Sea.js的做法是，分成两个时期——加载期和执行期；
+
+- 加载期：即在执行一个模块之前，将其直接或间接依赖的模块从服务器端同步到浏览器端；
+- 执行期：在确认该模块直接或间接依赖的模块都加载完毕之后，执行该模块。
+
+##### 加载期
+
+不难想见，模块间的依赖就像一棵树。启动模块作为根节点，依赖模块作为叶子节点。下面是pixelegos的依赖树：
+
+![loadingperiod](https://raw.github.com/island205/HelloSea.js/master/images/loadingperiod.png)
+
+如上图，在页面中通过`seajs.use('/js/pixelegos')`调用，目的是执行pixelegos这个模块。Sea.js并不知道pixelegos还依赖于其他什么模块，只是到服务端加载pixelegos.js，将其加载到浏览器端之后，通过分析发现它还依赖于其他的模块，于是Sea.js又去加载其他的模块。随着更多的模块同步到浏览器端后，一棵依赖树才慢慢地通过递归显现出来。
+
+> 那Sea.js如何确定pixelegos所有依赖的模块都加载好了呢？
+
+从依赖树中可以看出，如果pixelegos.js所依赖的直接子节点加载好了（此种加载好，即为节点和其依赖的子节点都加载好），那就表示它就加载好了，于是就可以启动该模块。明显，这种加载完成的过程也是一个递归的过程。
+
+从最底层的叶子节点开始（例如undercore），由于没有再依赖于其他模块，所以它从服务端同步过来之后，就加载好了。然后开始询问其父节点backbone是否已经加载好了，即询问backbone所依赖的所有节点都加载好了。同理对于pixelegos模块，其子节点menu、tool、canvas都会询问pixelegos其子节点加载好了没有。
+
+如果三个依赖都已loading完毕，则pixelgos也加载完成，即其整棵依赖树都加载好了，然后就可以启动pixelegos这个模块了。
+
+##### 执行期
+
+在执行期，执行也是从根节点开始，本质上是按照代码的顺序结构，对整棵树进行了遍历。有的模块可能已经EXECUTED，而有的还需要执行获取其exports。由于在执行期时，所有依赖的模块都加载好了，所以与node执行过程有点类似。
+
+pixelegos通过同步的require函数获取tool、canvas和menu，后三者同样通过require来执行各自的依赖模块，于是通过这样一个递归的过程，pixelegos就执行完毕了。
+
 
 ##### 打包模块的加载过程
 
@@ -150,6 +161,17 @@ var STATUS = Module.STATUS = {
 
 
 [module.js](https://github.com/seajs/seajs/blob/master/src/module.js)是Sea.js的核心，我们来看一下，module.js是如何控制模块加载过程的。
+
+##### 如何确定整个依赖树加载好了呢？
+
+1. 定义A模块，如果有模块依赖于A，把该模块加入到等待A的模块队列中；
+2. 加载A模块，状态变为FETCHING
+3. A加载完成，获取A模块依赖的BCDEFG模块，发现B模块没有定义，而C加载中，D自己已加载好，E加载子模块中，F加载完成，运行中，G已经解析好，SAVED；
+4. 由于FG本身以及子模块都已加载好，因此A模块要确定已经加载好了，必须等待BCDE加载好；开始加载必须的子模块，LOADING；
+5. 针对B重复步骤1；
+6. 将A加入到CDE的等待队列中；
+7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
+8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
 
 ##### 资源定位
 
