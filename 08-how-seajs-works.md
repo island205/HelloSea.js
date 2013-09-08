@@ -183,139 +183,6 @@ var STATUS = Module.STATUS = {
 7. BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；
 8. A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；
 
-#### 资源定位
-
-资源定位是Sea.js，或者说模块加载器中非常关键部分。那什么是资源定位呢？
-
-资源定位与模块标识相关，而在Sea.js中有三种模块标识。
-
-##### 普通路径
-
-普通路径与网页中超链接一样，相对于当前页面解析，在Sea.js中，普通路径包有以下几种：
-
-```javascript
-// 假设当前页面是 http://example.com/path/to/page/index.html
-
-// 绝对路径是普通路径：
-require.resolve('http://cdn.com/js/a');
-  // => http://cdn.com/js/a.js
-
-// 根路径是普通路径：
-require.resolve('/js/b');
-  // => http://example.com/js/b.js
-
-// use 中的相对路径始终是普通路径：
-seajs.use('./c');
-  // => 加载的是 http://example.com/path/to/page/c.js
-
-seajs.use('../d');
-  // => 加载的是 http://example.com/path/to/d.js
-```
-
-##### 相对标识
-
-在define的factory中的相对路径（`..` `.`）是相对标识，相对标识相对当前的URI来解析。
-
-```javascript
-// File http://example.com/js/b.js
-define(function(require) {
-    var a = require('./a');
-    a.doSomething();
-});
-// => 加载的是http://example.com/js/a.js
-```
-
-这与node模块中相对路径的解析一致。
-
-##### 顶级标识
-
-不以`.`或者'/'开头的模块标识是顶级标识，相对于Sea.js的base路径来解析。
-
-```javascript
-// 假设 base 路径是：http://example.com/assets/
-
-// 在模块代码里：
-require.resolve('gallery/jquery/1.9.1/jquery');
-  // => http://example.com/assets/gallery/jquery/1.9.1/jquery.js
-```
-
-> 在node中即是在paths中搜索模块（node_modules文件夹中）。
-
-##### 模块定位小演
-
-使用seajs.use启动模块，如果不是顶级标识或者是绝对路径，就是相对于页面定位；如果是顶级标识，就从Sea.js的模块系统中加载（即base）；如果是绝对路径，直接加载；
-之后的模块加载都是在define的factory中，如果是相对路径，就是相对标识，相对当前模块路径加载；如果是绝对路径，直接加载；
-由此可见，在Sea.js中，模块的配置被分割成2+x个地方：
-
-- 与页面放在一起；
-- 与Sea.js放在一起；
-- 通过绝对路径添加更多的模块源。
-
-> 由此可见，Sea.js确实海纳百川。
-
-##### factory的依赖分析
-
-在Sea.js的API中，`define(factory)`，并没有指明模块的依赖项，那Sea.js是如何获得的呢？
-
-这段是Sea.js的源码：
-
-```javascript
-/**
- * util-deps.js - The parser for dependencies
- * ref: tests/research/parse-dependencies/test.html
- */
-
-var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^\/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*require|(?:^|[^$])\brequire\s*\(\s*(["'])(.+?)\1\s*\)/g
-var SLASH_RE = /\\\\/g
-
-function parseDependencies(code) {
-  var ret = []
-
-  code.replace(SLASH_RE, "")
-      .replace(REQUIRE_RE, function(m, m1, m2) {
-        if (m2) {
-          ret.push(m2)
-        }
-      })
-
-  return ret
-}
-```
-`REQUIRE_RE`这个硕大无比的正则就是关键。推荐使用[regexper](http://www.regexper.com/)来看看这个正则表达式。非native的函数factory我们可以通过的toString()方法获取源码，Sea.js就是使用`REQUIRE_RE`在factory的源码中匹配出该模块的依赖项。
-
-> 从`REQUIRE_RE`这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。
-
-
-#### 获取真实的加载路径
-
-1. 在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为`http://www.dianping.com/promo/195800`，则cwd为`http://www.dianping.com/promo/`；使用data.base来代表sea.js的加载地址，如果sea.js的路径为`http://i1.dpfile.com/lib/1.0.0/sea.js`，则base为`http://i1.dpfile.com/lib/`。
-
->  [“当 sea.js 的访问路径中含有版本号或其他东西时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便”](https://github.com/seajs/seajs/issues/258)。看到这一句，我凌乱了，这Sea.js是多么的人性化！但是我觉得这似乎没有必要。
-
-2. seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：
-
-- './a'，则真实加载路径为http://www.dianping.com/promo/a.js；
-- '/a'，则为http://www.dianping.com/a.js；
-- '../a'，则为http://www.dianping.com/a.js；
-
-> 从需求上看，相对页面地址定位在现实生活中并不太适用，如果页面地址或者静态文件的路径稍微变化下，就跪了。
-
-如果模块标识为绝对路径：
-
-- 'https://a.alipayobjects.com/ar/a'，则加载路径就是'https://a.alipayobjects.com/ar/a.js'。
-
-如果模块标识是顶级标识，就基于base来加载：
-
-- 'jquery'，则加载路径为'http://i1.dpfile.com/lib/jquery.js'。
-
-3. 除此之外，就是factory中的模块标识了：
-
-- 'https://a.alipayobjects.com/ar/b'，加载路径为'https://a.alipayobjects.com/ar/b.js'
-- '/c'，加载路径为'http://www.dianping.com/c.js'；
-- './d'，如果父模块的加载路径是'http://i1.dpfile.com/lib/e.js'，则加载路径为'http://i1.dpfile.com/lib/d.js'
-
-> 在模块系统中使用'/c'绝对路径是什么意思？Sea.js会将其解析为相对页面的模块，有点牛马不相及的感觉。
-
 #### 加载过程
 
 - Sea.use调用Module.use构造一个没有factory的模块，该模块即为这个运行期的根节点。
@@ -344,7 +211,7 @@ Module.use = function (ids, callback, uri) {
 }
 ```
 
-模块构造完成，则调用mod.load()来同步其子模块；直接跳过fetching这一步；mod.callback也是Sea.js纯粹的一点，在模块加载完成后，会调用这个callback。
+模块构造完成，则调用mod.load()来同步其子模块；直接跳过fetching这一步；mod.callback也是Sea.js不纯粹的一点，在模块加载完成后，会调用这个callback。
 
 - 在load方法中，获取子模块，加载子模块，在子模块加载完成后，会触发mod.onload()：
 
@@ -527,3 +394,137 @@ Module.prototype.exec = function () {
 > 看到这一行代码了么？ 
 > `var exports = isFunction(factory) ? factory(require, mod.exports = {}, mod) : factory`
 > 真的，整个Sea.js就是为了这行代码能够完美运行
+
+#### 资源定位
+
+资源定位是Sea.js，或者说模块加载器中非常关键部分。那什么是资源定位呢？
+
+资源定位与模块标识相关，而在Sea.js中有三种模块标识。
+
+##### 普通路径
+
+普通路径与网页中超链接一样，相对于当前页面解析，在Sea.js中，普通路径包有以下几种：
+
+```javascript
+// 假设当前页面是 http://example.com/path/to/page/index.html
+
+// 绝对路径是普通路径：
+require.resolve('http://cdn.com/js/a');
+  // => http://cdn.com/js/a.js
+
+// 根路径是普通路径：
+require.resolve('/js/b');
+  // => http://example.com/js/b.js
+
+// use 中的相对路径始终是普通路径：
+seajs.use('./c');
+  // => 加载的是 http://example.com/path/to/page/c.js
+
+seajs.use('../d');
+  // => 加载的是 http://example.com/path/to/d.js
+```
+
+##### 相对标识
+
+在define的factory中的相对路径（`..` `.`）是相对标识，相对标识相对当前的URI来解析。
+
+```javascript
+// File http://example.com/js/b.js
+define(function(require) {
+    var a = require('./a');
+    a.doSomething();
+});
+// => 加载的是http://example.com/js/a.js
+```
+
+这与node模块中相对路径的解析一致。
+
+##### 顶级标识
+
+不以`.`或者'/'开头的模块标识是顶级标识，相对于Sea.js的base路径来解析。
+
+```javascript
+// 假设 base 路径是：http://example.com/assets/
+
+// 在模块代码里：
+require.resolve('gallery/jquery/1.9.1/jquery');
+  // => http://example.com/assets/gallery/jquery/1.9.1/jquery.js
+```
+
+> 在node中即是在paths中搜索模块（node_modules文件夹中）。
+
+##### 模块定位小演
+
+使用seajs.use启动模块，如果不是顶级标识或者是绝对路径，就是相对于页面定位；如果是顶级标识，就从Sea.js的模块系统中加载（即base）；如果是绝对路径，直接加载；
+之后的模块加载都是在define的factory中，如果是相对路径，就是相对标识，相对当前模块路径加载；如果是绝对路径，直接加载；
+由此可见，在Sea.js中，模块的配置被分割成2+x个地方：
+
+- 与页面放在一起；
+- 与Sea.js放在一起；
+- 通过绝对路径添加更多的模块源。
+
+> 由此可见，Sea.js确实海纳百川。
+
+##### factory的依赖分析
+
+在Sea.js的API中，`define(factory)`，并没有指明模块的依赖项，那Sea.js是如何获得的呢？
+
+这段是Sea.js的源码：
+
+```javascript
+/**
+ * util-deps.js - The parser for dependencies
+ * ref: tests/research/parse-dependencies/test.html
+ */
+
+var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^\/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*require|(?:^|[^$])\brequire\s*\(\s*(["'])(.+?)\1\s*\)/g
+var SLASH_RE = /\\\\/g
+
+function parseDependencies(code) {
+  var ret = []
+
+  code.replace(SLASH_RE, "")
+      .replace(REQUIRE_RE, function(m, m1, m2) {
+        if (m2) {
+          ret.push(m2)
+        }
+      })
+
+  return ret
+}
+```
+`REQUIRE_RE`这个硕大无比的正则就是关键。推荐使用[regexper](http://www.regexper.com/)来看看这个正则表达式。非native的函数factory我们可以通过的toString()方法获取源码，Sea.js就是使用`REQUIRE_RE`在factory的源码中匹配出该模块的依赖项。
+
+> 从`REQUIRE_RE`这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。
+
+
+#### 获取真实的加载路径
+
+1. 在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为`http://www.dianping.com/promo/195800`，则cwd为`http://www.dianping.com/promo/`；使用data.base来代表sea.js的加载地址，如果sea.js的路径为`http://i1.dpfile.com/lib/1.0.0/sea.js`，则base为`http://i1.dpfile.com/lib/`。
+
+>  [“当 sea.js 的访问路径中含有版本号或其他东西时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便”](https://github.com/seajs/seajs/issues/258)。看到这一句，我凌乱了，这Sea.js是多么的人性化！但是我觉得这似乎没有必要。
+
+2. seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：
+
+- './a'，则真实加载路径为http://www.dianping.com/promo/a.js；
+- '/a'，则为http://www.dianping.com/a.js；
+- '../a'，则为http://www.dianping.com/a.js；
+
+> 从需求上看，相对页面地址定位在现实生活中并不太适用，如果页面地址或者静态文件的路径稍微变化下，就跪了。
+
+如果模块标识为绝对路径：
+
+- 'https://a.alipayobjects.com/ar/a'，则加载路径就是'https://a.alipayobjects.com/ar/a.js'。
+
+如果模块标识是顶级标识，就基于base来加载：
+
+- 'jquery'，则加载路径为'http://i1.dpfile.com/lib/jquery.js'。
+
+3. 除此之外，就是factory中的模块标识了：
+
+- 'https://a.alipayobjects.com/ar/b'，加载路径为'https://a.alipayobjects.com/ar/b.js'
+- '/c'，加载路径为'http://www.dianping.com/c.js'；
+- './d'，如果父模块的加载路径是'http://i1.dpfile.com/lib/e.js'，则加载路径为'http://i1.dpfile.com/lib/d.js'
+
+> 在模块系统中使用'/c'绝对路径是什么意思？Sea.js会将其解析为相对页面的模块，有点牛马不相及的感觉。
+
