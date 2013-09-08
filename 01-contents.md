@@ -9,5 +9,5 @@
 7. [实战开发](https://github.com/Bodule/HelloSea.js/blob/master/07-seajs-in-action.md)
 8. [Sea.js是如何工作的？](https://github.com/Bodule/HelloSea.js/blob/master/08-how-seajs-works.md)
 9. [编写自己的加载器——bodule.js](https://github.com/Bodule/HelloSea.js/blob/master/09-your-own-loader-bodulejs.md)
-10. [模块化JavaScript的未来](https://github.com/Bodule/HelloSea.js/blob/master/10-the-featrue-of-modular-javascript.md)
+10. [模块化JavaScript的未来](https://github.com/Bodule/HelloSea.js/blob/master/10-the-future-of-modular-javascript.md)
 11. [参考资源](https://github.com/Bodule/HelloSea.js/blob/master/11-reference.md)
