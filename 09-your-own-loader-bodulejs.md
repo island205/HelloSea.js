@@ -252,6 +252,26 @@ use ['addTwice'], (require, exports, module)->
 
 > 很简陋？确实，我们只是用用它来组织代码，最终实现bodule.js这个复杂的commonjs运行时。
 
+### bodule API
+
+我们改从何入手编写一个加载器呢，既然已经有了规范和接口，那我们从接口写起吧。
+
+```coffeescript
+define 'bodule', [], (require, exports, module)->
+    Bodule = 
+        use: (deps, factory)->
+        define: (id, deps, factory)->
+        package: (conf)->
+    
+    module.exports = Bodule
+
+use ['bodule'], (require, exports, module)->
+    
+    Bodule = require 'bodule'
+    window.Bodule = Bodule
+    window.define = ->
+      Bodule.define.apply Bodule, arguments
+```
 
 #### Tea.js
 
