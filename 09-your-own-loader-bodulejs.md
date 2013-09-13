@@ -191,6 +191,68 @@ Bodule.package({
 ```
 完整的例子可以参考[bodule.org.html](https://github.com/Bodule/bodule-engine/blob/master/test/bodule.org/bodule.org.html)。
 
+让我们开始吧！
+
+### coffeescript
+
+coffeescript是一门非常有趣的语言，敲起代码来很舒服，不会被JavaScript各种繁琐的细节所烦扰。所以我打算使用它来实现bodule.js。访问[coffeescript.org]，上面有简洁文档，如果你熟悉JavaScript，我相信你能很快掌握CoffeeScript的。
+
+### commonjs运行时
+
+从bodule的规范中，可以看出，它其实commonjs，或者说是commonjs wrapping的一个实现。因此，我们将直接使用commonjs的方式来组织我们的代码，你会发现，这样的代码非常清晰易读。
+
+```coffeescript
+# This is a **private** CommonJS runtime for `bodule.js`.
+
+# `__modules` for store private module like `util`,`path`, and so on.
+modules = {}
+
+# `__require` is used for getting module's API: `exports` property.
+require = (id)->
+    module = modules[id]
+    module.exports or module.exports = use [], module.factory
+
+# Define a module, save module in `__modules`. use `id` to refer them.
+define = (id, deps, factory)->
+    modules[id] =
+        id: id
+        deps: deps
+        factory:factory
+
+# `__use` to start a CommonJS runtime, or get a module's exports.
+use = (deps, factory)->
+    module = {}
+    exports = module.exports = {}
+
+    # In factory `call`, `this` is global
+    factory require, exports, module
+    module.exports
+```
+
+上面这段代码是commonjs规范一种精简的表达，出自node项目中的module.js。module.js比这复杂多了，包含了多native module、读取、执行module文件、以及支持多种格式的module的事情。而我们上面这段代码就是commonjs最精简的表达，有了它，我们就可以使用common.js的方式来组织代码了。
+
+> 注意，代码中的deps变量完全就是无用的，只是我觉得这样写的话，似乎更清晰一点。
+
+```coffeescript
+define 'add', [], (require, exports, module)->
+    module.exports = (a, b)->
+        a + b
+
+define 'addTwice', ['add'], (require, exports, module)->
+    add = require 'add'
+    exports.addTwice = (a, b)->
+        add add(a, b), b
+
+use ['addTwice'], (require, exports, module)->
+    addTwice = require 'addTwice'
+    cosnole.log "#{2} + #{3} + #{3} = #{addTwice 2, 3}"
+```
+
+上面的代码展示了如何使用这个commonjs运行时，很简单，有木有？
+
+> 很简陋？确实，我们只是用用它来组织代码，最终实现bodule.js这个复杂的commonjs运行时。
+
+
 #### Tea.js
 
 鉴于上面的解释，我们先来实现一个简单运行时——Tea.js。迫不及待了吧，让我们开始吧！
