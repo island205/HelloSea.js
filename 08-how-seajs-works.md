@@ -38,7 +38,7 @@ Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。�
 
 ##### 模块（factory）
 
-顾名思义，factory就是工厂，一个可以产生模块的工厂。node中的工厂就是新的运行时，而在Sea.js中（Tea.js）中也同样，factory就是一个函数。这个函数接受三个参数。
+顾名思义，factory就是工厂，一个可以产生模块的工厂。node中的工厂就是新的运行时，而在Sea.js中（Tea.js中也同样），factory就是一个函数。这个函数接受三个参数。
 
 ```javascript
 function (require, exports, module) {
