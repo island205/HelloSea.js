@@ -22,6 +22,8 @@
 - [pyrocat101](https://github.com/pyrocat101)
 - [GZShi](https://github.com/GZShi)
 - [chuguixin](https://github.com/chuguixin)
+- [dnbsbyhf](https://github.com/dnbsbyhf)
+- [afc163](https://github.com/afc163)
 
 > 排名不分先后。
 
