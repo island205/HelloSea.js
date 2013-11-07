@@ -1,6 +1,6 @@
 ## 小试身手
 
-还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/Bodule/HelloSea.js/blob/master/getting-started)可以找到，用[anywhere](https://github.com/JacksonTian/anywhere)起个静态服务来看看。
+还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/island205/HelloSea.js/tree/master/code/getting-started)可以找到，用[anywhere](https://github.com/JacksonTian/anywhere)起个静态服务来看看。
 
 ### 首先写个模块：
 
@@ -33,7 +33,7 @@ define(function (require, exports) {
     <script src="/js/sea.js"></script>
 </head>
 <body>
-    
+
 </body>
 </html>
 ```
@@ -54,7 +54,7 @@ define(function (require, exports) {
     </script>
 </head>
 <body>
-    
+
 </body>
 </html>
 ```
