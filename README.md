@@ -24,6 +24,7 @@
 - [chuguixin](https://github.com/chuguixin)
 - [dnbsbyhf](https://github.com/dnbsbyhf)
 - [afc163](https://github.com/afc163)
+- [lzysd](https://github.com/lzyzsd)
 
 > 排名不分先后。
 
