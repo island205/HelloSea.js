@@ -1,26 +1,31 @@
-## 使用指南
+---
+layout: chapter
+title:  使用指南
+---
+
+# 使用指南
 
 刚才的示例很简单？实际上Sea.js本身小巧而不失灵活，让我们再来深入地了解下如何使用Sea.js!
 
-### 定义模块
+## 定义模块
 
 Sea.js是[CMD](https://github.com/cmdjs/specification/blob/master/draft/module.md)这个模块系统的一个运行时，Sea.js可以加载的模块，就是CMD规范里所指明的。那我们该如何编写一个CMD模块呢？
 
 Sea.js提供了一个全局方法——`define`，用来定义一个CMD模块。
 
-##### define(factory)
+#### define(factory)
 
-```javascript
+{% highlight javascript %}
 define(function(require, exports, module) {
     // 模块代码
     // 使用require获取依赖模块的接口
     // 使用exports或者module来暴露该模块的对外接口
 })
-```
+{% endhighlight %}
 
 `factory`是这样一个函数`function (require?, exports?, module?) {}`，如果模块本身既不依赖其他模块，也不提供接口，`require`、`exports`和`module`都可以省略。但通常会是以下两种新式：
 
-```javascript
+{% highlight javascript %}
 define(function(require, exports) {
     var Vango = require('vango')
     exports.drawCircle = function () {
@@ -31,13 +36,13 @@ define(function(require, exports) {
                 fillStyle:"red"
             }
         })
-    } 
+    }
 })
-```
+{% endhighlight %}
 
 或者：
 
-```javascript
+{% highlight javascript %}
 define(function(require, exports, module) {
     var Vango = require('vango')
     module.exports = {
@@ -50,13 +55,13 @@ define(function(require, exports, module) {
                 }
             })
         }
-    } 
+    }
 })
-```
+{% endhighlight %}
 
 > **注意**：必须保证参数的顺序，即需要用到exports，require不能省略；在模块中exports对象不可覆盖，如果需要覆盖请使用`module.exports`的形式（这与node的用法一致，在后面的原理介绍会有相关的解释）。你可以使用`module.exports`来export任意的对象（包括字符串、数字等等）。
 
-##### define(id?, dependencies?, factory)
+#### define(id?, dependencies?, factory)
 
 **id**：String 模块标识
 
@@ -64,7 +69,7 @@ define(function(require, exports, module) {
 
 这种写法并不属于CMD规范，而是源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
 
-```javascript
+{% highlight javascript %}
 define('drawCircle', ['vango'], function(require, exports) {
     var Vango = require('vango')
     exports.drawCircle = function () {
@@ -75,29 +80,29 @@ define('drawCircle', ['vango'], function(require, exports) {
                 fillStyle:"red"
             }
         })
-    } 
+    }
 })
-```
+{% endhighlight %}
 
 与CMD的define没有本质区别，我更情愿把它称作“具名模块”。Sea.js从用于生产的角度来说，必须支持具名模块，因为开发时模块拆得太小，生产环境必须把这些模块文件打包为一个文件，如果模块都是匿名的，那就傻逼了。
 
 > 所以Sea.js支持具名模块也是无奈之举。
 
-##### define(anythingelse)
+#### define(anythingelse)
 
 除去以上两种新式，在CMD标准中，可以给define传入任意的字符串或者对象，表示接口就是对象或者字符串。不过这只是包含在标准中，在Sea.js并没有相关的实现。
 
-### 配置Sea.js
+## 配置Sea.js
 
 Sea.js为了能够使用起来更灵活，提供了配置的接口。可配置的内容包括静态服务的位置，简化模块标识或路径。接下来我们来详细地了解下这些内容。
 
-##### seajs.config(config)
+#### seajs.config(config)
 
 **config**：Object，配置键值对。
 
 Sea.js通过`.config`API来进行配置。你甚至可以在多个地方调用seajs.config来配置。Sea.js会mix传入的多个config对象。
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     alias: {
         'jquery': 'path/to/jquery.js',
@@ -105,9 +110,9 @@ seajs.config({
     },
     preload: ['seajs-text']
 })
-```
+{% endhighlight %}
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     alias: {
         'underscore': 'path/to/underscore.js',
@@ -115,11 +120,11 @@ seajs.config({
     },
     preload: ['seajs-combo']
 })
-```
+{% endhighlight %}
 
 上面两个配置会合并为：
 
-```javascript
+{% highlight javascript %}
 {
     alias: {
         'jquery': 'path/to/jquery.js',
@@ -129,11 +134,11 @@ seajs.config({
     preload: ['seajs-text', 'seajs-combo']
 
 }
-```
+{% endhighlight %}
 
 `config`可以配置的键入下：
 
-##### base
+#### base
 
 **base**：String，在解析绝对路径标识的模块时所使用的base路径。
 
@@ -147,103 +152,103 @@ seajs.config({
 
 使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     base: 'http://g.tbcdn.cn/tcc/'
 })
-```
+{% endhighlight %}
 
 > 如果我们有三个CDN域名，如何将静态资源散列到这三个域名上呢？
 
-##### paths
+#### paths
 
 **paths**：Object，如果目录太深，可以使用paths这个配置项来缩写，可以在require时少写些代码。
 
 如果：
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     base: 'http://g.tbcdn.cn/tcc/',
     paths: {
         'index': 's/js/index'
     }
 })
-```
+{% endhighlight %}
 
 则：
 
-```javascript
+{% highlight javascript %}
 define(function(require, exports, module) {
     // http://g.tbcdn.cn/tcc/s/js/index/switch.js
     var Switch = require('index/switch')
 });
-```
+{% endhighlight %}
 
-##### alias
+#### alias
 
 **alias**：Object，本质上看不出和paths有什么区别，区别就在使用的概念上。
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     alias: {
         'jquery': 'jquery/jquery/1.10.1/jquery'
     }
 })
-```
+{% endhighlight %}
 
 然后：
 
-```javascript
+{% highlight javascript %}
 define(function(require, exports, module) {
     // jquery/jquery/1.10.1/jquery
     var $ = require('jquery')
 });
-```
+{% endhighlight %}
 
 > 看出使用概念的区别了么？
 
-##### preload
+#### preload
 
 `preload`配置项可以让你在加载普通模块之前提前加载一些模块。既然所有模块都是在use之后才加载的，preload有何意义？然，看下面这段：
 
-```javascript
+{% highlight javascript %}
 seajs.config({
     preload: [
         Function.prototype.bind ? '' : 'es5-safe',
         this.JSON ? '' : 'json'
     ]
 });
-```
+{% endhighlight %}
 
 preload比较适合用来加载一些核心模块，或者是shim模块。这是一个全局的配置，使用者无需关系核心模块或者是shim模块的加载，把注意力放在核心功能即可。
 
 还有一些别的配置，比如`vars`、`map`等，可以参考[配置](https://github.com/seajs/seajs/issues/262)。
 
-### 使用模块
+## 使用模块
 
-##### seajs.use(id)
+#### seajs.use(id)
 
 Sea.js通过use方法来启动一个模块。
 
-```javascript
+{% highlight javascript %}
 seajs.use('./main')
-```
+{% endhighlight %}
 
 在这里，`./main`是main模块的id，Sea.js在main模块LOADED之后，执行这个模块。
 
 Sea.js还有另外一种启动模块的方式：
 
-##### seajs.use(ids, callbacks)
+#### seajs.use(ids, callbacks)
 
-```javascript
+{% highlight javascript %}
 seajs.use('./main', function(main) {
     main.init()
 })
-```
+{% endhighlight %}
 
 Sea.js执行ids中的所有模块，然后传递给callback使用。
 
-### 插件
+## 插件
 
 Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。
 
@@ -257,7 +262,7 @@ Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。
 
 由此可见，Sea.js的插件主要是解决一些附加问题，或者是给Sea.js添加一些额外的功能。私觉得有些功能并不合适让Sea.js来处理。
 
-##### 插件机制       
+#### 插件机制
 
 总结一下，插件机制大概就是两种：
 
@@ -267,7 +272,7 @@ Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。
 > 私还是觉得Sea.js应该保持纯洁；为了实现插件，在Sea.js中加入的代码，感觉有点不值；combo这种事情，更希望采取别的方式来实现。
 > Sea.js应该做好运行时。
 
-### 构建与部署
+## 构建与部署
 
 很多时候，某个工具或者类库，玩玩可以，但是一用到生产环境，就感觉力不从心了。就拿Sea.js来说，开发的时候根据业务将逻辑拆分到很多小模块，逻辑清晰，开发方便。但是上线后，模块太多，HTTP请求太多，就会拖慢页面速度。
 
@@ -287,24 +292,24 @@ SPM包括：
 
 > SPM心很大，yo、bower和grunt这三个工具，SPM囊括三者。
 
-#### spm
+### spm
 
 > spm is a package manager, it is not build tools.
 
 这句话来自github上[spm2](https://github.com/spmjs/spm2)的README文件。`spm是一个包管理工具，不是构建工具！`，它与npm非常相似。
 
-##### spm的包规范
+#### spm的包规范
 
 一个spm的模块至少包含：
 
-```bash
+{% highlight bash %}
 -- dist
     -- overlay.js
     -- overlay.min.js
 -- package.json
-```
+{% endhighlight %}
 
-###### package.json
+##### package.json
 
 在模块中必须提供一个package.json，该文件遵循[Common Module Definition](https://github.com/cmdjs/specification)模块标准。与node的`package.json`兼容。在此基础上添加了两个key。
 
@@ -313,7 +318,7 @@ SPM包括：
 
 一个典型的`package.json`文件：
 
-```json
+{% highlight json %}
 {
     "family": "arale",
     "name": "base",
@@ -335,23 +340,23 @@ SPM包括：
         }
     }
 }
-```
+{% endhighlight %}
 
-###### dist
+##### dist
 
 `dist`目录包含了模块必要的模块代码；可能是使用spm-build打包的，当然只要满足两个条件，就是一个spm的包。
 
-##### 安装
+#### 安装
 
 `$ npm install spm -g`
 
 安装好了spm，那该如何使用spm呢？让我们从help命令开始：
 
-##### help
+#### help
 
 我们可以运行`spm help`查看`spm`所包含的功能：
 
-```bash
+{% highlight bash %}
 $ spm help
 
   Static Package Manager
@@ -383,13 +388,13 @@ $ spm help
 
     init           init a template
     build          Build a standar cmd module.
-```
+{% endhighlight %}
 
 `spm`包含三种命令，**系统命令**，即与`spm`本身相关（配置、插件和帮助），**包命令**，与包管理相关，**插件命令**，插件并不属于`spm`的核心内容，目前有两个插件`init`和`build`。
 
 也可以使用`help`来查看单个命令的用法：
 
-```bash
+{% highlight bash %}
 $ spm help install
 
   Usage: spm-install [options] family/name[@version]
@@ -412,26 +417,27 @@ $ spm help install
    $ spm install jquery
    $ spm install jquery/jquery arale/class
    $ spm install jquery/jquery@1.8.2
-```
+{% endhighlight %}
 
-##### config
+#### config
 
 我们可以使用`config`来配置用户信息、安装方式以及源。
 
-```bash
+{% highlight bash %}
 ; Config username
 $ spm config user.name island205
 
 ; Or, config default source 
 $ spm config source.default.url http://spmjs.org
+{% endhighlight %}
 
-##### search
+#### search
 
 `spm`是一个包管理工具，与`npm`类似，有自己的源服务器。我们可以使用`search`命令来查看源提供的包。
 
 > 由于`spm`在包规范中加入了`family`的概念，常常想运行`spm install backbone`，发现并没有backbone这个包。原因就是`backbone`是放在`gallery`这族下的。
 
-```bash
+{% highlight bash %}
 $ spm search backbone
 
   1 result
@@ -439,13 +445,13 @@ $ spm search backbone
   gallery/backbone
   keys: model view controller router server client browser
   desc: Give your JS App some Backbone with Models, Views, Collections, and Events.
-```
+{% endhighlight %}
 
-##### install 
+#### install 
 
 然后我们就可以使用`install`来安装了，注意我们必须使用包的全名，即`族名/包名`。
 
-```bash
+{% highlight bash %}
 $ spm install gallery/backbone
 
         install: gallery/backbone@stable
@@ -464,10 +470,11 @@ $ spm install gallery/backbone
         extract: c:\Users\zhi.cun\.spm\cache\gallery\underscore\1.4.4\underscore-1.4.4.tar.gz
           found: dist in the package
       installed: sea-modules\gallery\underscore\1.4.4
-```
+{% endhighlight %}
+
 `spm`将模块安装在了`sea_modules`中，并且在`~/.spm/cache`中做了缓存。
 
-```hash
+{% highlight bash %}
 `~sea-modules/
   `~gallery/
     |~backbone/
@@ -480,33 +487,33 @@ $ spm install gallery/backbone
         |-package.json
         |-underscore-debug.js
         `-underscore.js
-```
+{% endhighlight %}
 
 `spm`还加载了`backbone`的依赖`underscore`。
 
 当然，Sea.js也是一个模块，你可以通过下面的命令来安装：
 
-```bash
+{% highlight bash %}
 $ spm install seajs/seajs
-```
+{% endhighlight %}
 
 `seajs`的安装路径为`sea_modules/seajs/seajs/2.1.1/sea.js`，看到这里，结合seajs顶级模块定位的方式，对于seajs在计算base路径的时，去掉了`seajs/seajs/2.1.1/`的原因。
 
-##### build
+#### build
 
 `spm`并不是以构建工具为目标，它本身是一个包管理器。所以`spm`将构建的功能以插件的功能提供出来。我们可以通过plugin命令来安装`build`：
 
-```bash
+{% highlight bash %}
 $ spm plugin install build
-```
+{% endhighlight %}
 
 安装好之后，如果你使用的是标准的`spm`包模式，就可以直接运行`spm build`来进行标准的打包。
 
 **SPM2的功能和命令就介绍到这里，更多的命令在之后的实践中介绍。**
 
-#### spm与spm2
+### spm与spm2
 
-##### spm与spm2
+#### spm与spm2
 
 其实之前介绍的spm是其第二个版本[spm2](https://github.com/spmjs/spm2)。spm的第一个版本可以在[这里](https://github.com/spmjs/spm)找到。
 
@@ -526,7 +533,7 @@ spm与spm2同样都是包管理工具，那它们之间有什么不同呢？
 
 > spm本身是从业务需求成长起来的一个包管理工具，spm1更多的是一些需求功能的堆砌，而spm2就是对这些功能的提炼，形成一套适用于业界的工具。
 
-##### apm
+#### apm
 
 apm的全称是：
 

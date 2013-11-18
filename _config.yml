@@ -1,0 +1,2 @@
+pygments:    true
+exclude: ['backup', 'code', 'graffle', 'LICENSE', 'README.md']

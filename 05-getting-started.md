@@ -1,10 +1,15 @@
-## 小试身手
+---
+layout: chapter
+title:  小试身手
+---
 
-还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/island205/HelloSea.js/tree/master/code/getting-started)可以找到，用[anywhere](https://github.com/JacksonTian/anywhere)起个静态服务来看看。
+# 小试身手
 
-### 首先写个模块：
+还记得jQuery如何使用的么？Sea.js也是如此。例子在[这里](https://github.com/Bodule/HelloSea.js/blob/master/getting-started)可以找到，用[anywhere](https://github.com/JacksonTian/anywhere)起个静态服务来看看。
 
-```javascript
+## 首先写个模块：
+
+{% highlight javascript %}
 // File:js/module/greet.js
 define(function (require, exports) {
     function helloPython() {
@@ -16,13 +21,13 @@ define(function (require, exports) {
     exports.helloPython = helloPython;
     exports.helloJavaScript = helloJavaScript;
 });
-```
+{% endhighlight %}
 
 如果你对Node.js非常熟悉，你可以把这个模块理解为Node.js的模块加上一个Wrapper。
 
-### 在页面中引入Sea.js：
+## 在页面中引入Sea.js：
 
-```html
+{% highlight html %}
 <!-- File:index.html -->
 <!DOCTYPE HTML>
 <html lang="en">
@@ -33,13 +38,14 @@ define(function (require, exports) {
     <script src="/js/sea.js"></script>
 </head>
 <body>
-
+    
 </body>
 </html>
-```
-### 加载模块文件！
+{% endhighlight %}
 
-```html
+## 加载模块文件！
+
+{% highlight html %}
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -57,6 +63,6 @@ define(function (require, exports) {
 
 </body>
 </html>
-```
+{% endhighlight %}
 
 看到页面上输出的`Hello,JavaScript`么，这确实太简单了！
