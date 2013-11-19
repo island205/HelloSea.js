@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  使用指南
+title:  使用指南-Hello Sea.js
 ---
 
 # 使用指南
@@ -144,10 +144,8 @@ seajs.config({
 
 默认地，在不配置base的情况下，base与sea.js的引用路径。如果引用路径为`http://example.com/assets/sea.js`，则base为`http://example.com/assets/`。
 
-> 在阅读Sea.js这份文档时看到：
-
->> 当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。
-
+> 在阅读Sea.js这份文档时看到：  
+> *当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。*  
 > 即如果sea.js的引用路径为http://example.com/assets/1.0.0/sea.js，则base仍为http://example.com/assets/。这种方便性，我觉得过了点。
 
 使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。

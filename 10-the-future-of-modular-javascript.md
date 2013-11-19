@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  模块化JavaScript的未来
+title:  模块化JavaScript的未来-Hello Sea.js
 ---
 
 # 模块化JavaScript的未来

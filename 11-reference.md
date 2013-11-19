@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  参考资料
+title:  参考资料-Hello Sea.js
 ---
 
 # 参考资料

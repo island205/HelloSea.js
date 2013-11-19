@@ -1,6 +1,13 @@
 .gray {
   background:#eee;
 }
+#header {
+  position: fixed; 
+}
+#header  iframe {
+  display: block;
+  margin: 5px 6px;
+}
 #main {
   width: 600px;
   margin-left: 100px;
@@ -8,13 +15,22 @@
   border: 1px solid #bbb;
   background:white;
 }
-
-p {
-  text-align: justify;
-  font-size: 18px;
+h1, h2, h3, h4, h5, h6 {
+  color: #700;
+}
+ul, ol {
+  font-size: 16px;
+  line-height: 1.8em;
   color: #2f2f2f;
 }
-
+p {
+  font-size: 16px;
+  line-height: 1.8em;
+  color: #2f2f2f;
+}
+iframe{
+  border:0px;
+}
 .highlight {
   border: 1px solid #bbb;
   -webkit-border-radius: 5px;

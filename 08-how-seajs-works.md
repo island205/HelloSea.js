@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  Sea.js是如何工作的？
+title:  Sea.js是如何工作的？-Hello Sea.js
 ---
 
 # Sea.js是如何工作的？
@@ -472,11 +472,11 @@ require.resolve('gallery/jquery/1.9.1/jquery');
 
 ### 获取真实的加载路径
 
-1. 在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为`http://www.dianping.com/promo/195800`，则cwd为`http://www.dianping.com/promo/`；使用data.base来代表sea.js的加载地址，如果sea.js的路径为`http://i1.dpfile.com/lib/1.0.0/sea.js`，则base为`http://i1.dpfile.com/lib/`。
+1.在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为`http://www.dianping.com/promo/195800`，则cwd为`http://www.dianping.com/promo/`；使用data.base来代表sea.js的加载地址，如果sea.js的路径为`http://i1.dpfile.com/lib/1.0.0/sea.js`，则base为`http://i1.dpfile.com/lib/`。
 
 >  [“当 sea.js 的访问路径中含有版本号或其他东西时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便”](https://github.com/seajs/seajs/issues/258)。看到这一句，我凌乱了，这Sea.js是多么的人性化！但是我觉得这似乎没有必要。
 
-2. seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：
+2.seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：
 
 - './a'，则真实加载路径为http://www.dianping.com/promo/a.js；
 - '/a'，则为http://www.dianping.com/a.js；
@@ -492,7 +492,7 @@ require.resolve('gallery/jquery/1.9.1/jquery');
 
 - 'jquery'，则加载路径为'http://i1.dpfile.com/lib/jquery.js'。
 
-3. 除此之外，就是factory中的模块标识了：
+3.除此之外，就是factory中的模块标识了：
 
 - 'https://a.alipayobjects.com/ar/b'，加载路径为'https://a.alipayobjects.com/ar/b.js'
 - '/c'，加载路径为'http://www.dianping.com/c.js'；

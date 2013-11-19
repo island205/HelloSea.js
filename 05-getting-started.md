@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  小试身手
+title:  小试身手-Hello Sea.js
 ---
 
 # 小试身手

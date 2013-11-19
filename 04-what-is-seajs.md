@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  Sea.js是什么？
+title:  Sea.js是什么？-Hello Sea.js
 ---
 
 # Sea.js是什么？

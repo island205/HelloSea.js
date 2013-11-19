@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  实战
+title:  实战-Hello Sea.js
 ---
 
 # 实战

@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  目录
+title:  目录-Hello Sea.js
 ---
 
 <h1>Hello Sea.js</h1>

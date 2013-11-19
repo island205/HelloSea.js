@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  自己实现一个模块加载器——bodule.js
+title:  自己实现一个模块加载器——bodule.js-Hello Sea.js
 ---
 
 # 自己实现一个模块加载器——bodule.js

@@ -1,5 +1,6 @@
 ---
 layout: layout
+title: Hello Sea.js
 ---
 
 <h1>Hello Sea.js</h1>

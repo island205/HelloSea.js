@@ -1,6 +1,6 @@
 ---
 layout: chapter
-title:  介绍
+title:  介绍-Hello Sea.js
 ---
 
 # 介绍
