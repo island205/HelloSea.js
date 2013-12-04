@@ -8,7 +8,7 @@
 
 ## 阅读
 
-从[目录](https://github.com/Bodule/HelloSea.js/blob/master/01-contents.md)开始吧！
+从[目录](http://island205.github.io/HelloSea.js/)开始吧！
 
 ## 如何贡献
 
