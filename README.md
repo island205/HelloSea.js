@@ -25,6 +25,7 @@
 - [dnbsbyhf](https://github.com/dnbsbyhf)
 - [afc163](https://github.com/afc163)
 - [lzysd](https://github.com/lzyzsd)
+- [sunorry](https://github.com/sunorry)
 
 > 排名不分先后。
 
