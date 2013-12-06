@@ -33,7 +33,7 @@ define(function (require, exports) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Getting start width Sea.js</title>
+    <title>Getting start with Sea.js</title>
     <!-- 引入seajs-->
     <script src="/js/sea.js"></script>
 </head>
