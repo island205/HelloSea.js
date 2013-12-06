@@ -26,6 +26,7 @@
 - [afc163](https://github.com/afc163)
 - [lzysd](https://github.com/lzyzsd)
 - [sunorry](https://github.com/sunorry)
+- [zhuochun](https://github.com/zhuochun)
 
 > 排名不分先后。
 
