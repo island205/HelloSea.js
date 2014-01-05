@@ -5,7 +5,7 @@ title:  自己实现一个模块加载器——bodule.js-Hello Sea.js
 
 # 自己实现一个模块加载器——bodule.js
 
-> shout up, show me the code!
+> shut up, show me the code!
 
 要想真正地了解一个加载器是如何工作的，就是自己实现一个！让我们来一步一步地实现一个名为bodule.js的模块加载器。
 
