@@ -27,6 +27,7 @@
 - [lzysd](https://github.com/lzyzsd)
 - [sunorry](https://github.com/sunorry)
 - [zhuochun](https://github.com/zhuochun)
+- [Che Kun](https://github.com/chekun)
 
 > 排名不分先后。
 
