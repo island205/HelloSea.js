@@ -352,7 +352,7 @@ seajs.config({
         '$': 'zepto/zepto/1.0.0/zepto',
         "backbone": "gallery/backbone/1.0.0/backbone",
         "venus": "island205/venus/1.0.0/venus"
-    }   
+    }
 })
 {% endhighlight %}
 
@@ -363,7 +363,7 @@ define(function (require, exports, module) {
     var Tool = require('./tool')
     var Canvas = require('./canvas')
     var $ = require('$')
-    
+
     $(function() {
         var menu = new Menu()
         var tool = new Tool()
