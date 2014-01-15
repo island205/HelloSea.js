@@ -67,7 +67,7 @@ define(function(require, exports, module) {
 
 **dependencies**：Array 模块依赖的模块标识
 
-这种写法并不属于CMD规范，而是源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
+这种写法属于CMD规范中的Transport规范，源自[Module/Transport/D](http://wiki.commonjs.org/wiki/Modules/Transport/D)。
 
 {% highlight javascript %}
 define('drawCircle', ['vango'], function(require, exports) {
