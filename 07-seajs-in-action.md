@@ -209,7 +209,7 @@ define("island205/venus/1.0.0/vango-debug", [], function(require, exports, modul
 
 `spm`将`src`中的vango.js和venus.js根据依赖打到了一起。作为包的主模块，venus.js被放到了最前面。
 
-> 这是Sea.js的约定，打包后的模块文件中的一个define即为该包的主模块，也就是说，你通过`require('island205/venus/1.0.0/venus')`，虽然Sea.js加载的是整个打包的模块，但是会把的一个factory的exports作为venus暴露的接口。
+> 这是Sea.js的默认约定，打包后的模块文件其中的一个define即为该包的主模块（ID 和路径相匹配的那一个），也就是说，你通过`require('island205/venus/1.0.0/venus')`，虽然Sea.js加载的是整个打包的模块，但是会把的一个factory的exports作为venus暴露的接口。
 
 ### 发布
 
