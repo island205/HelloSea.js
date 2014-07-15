@@ -19,8 +19,7 @@ title:  Sea.js是什么？-Hello Sea.js
 
 我们来定义一个Python的模块：
 ```Python
-{% highlight python %}
-# !/usr/bin/python
+#!/usr/bin/env python
 # Filename: greet.py
 
 def hello_python():
@@ -28,12 +27,11 @@ def hello_python():
 
 def hello_javascript():
     print "Hello,JavaScript"
-{% endhighlight %}
 ```
 真的，就是这么简单，我们可以这样使用：
 
-{% highlight python %}
-# !/usr/bin/python
+```Python
+#!/usr/bin/env python
 # Filename: use_greet.py
 
 import greet
@@ -41,12 +39,12 @@ import greet
 # call greet module's func
 # print "Hello,Python"
 greet.hello_python()
-{% endhighlight %}
+```
 
 greet.py的模块中有两个方法，把它们import到use_greet.py中，我们就可以使用了。
 Python还提供了另外一种引入模块的方法：
 
-{% highlight python %}
+```
 # !/usr/bin/python
 # Filename: use_greet.py
 
@@ -55,7 +53,7 @@ from greet import hello_python
 # call greet module's func
 # print "Hello,Python"
 hello_python()
-{% endhighlight %}
+```
 
 可以引入模块特定的API。
 
@@ -63,7 +61,7 @@ hello_python()
 
 那JavaScript有模块化吗？我想说有，而且是与它一样的，看下面的例子：
 
-{% highlight javascript %}
+```JavaScript
 // File: greet.js
 function helloPython(){
     document.write("Hello,Python");
@@ -74,15 +72,14 @@ function helloJavaScript(){
 
 // File:usegreet.js
 helloJavaScript();
-{% endhighlight %}
+```
 
-{% highlight html %}
+```html
 <!DOCTYPE html>
 <!--index.html-->
 <script src="./greet.js"></script>
 <script src="./usegreet.js"></script>
-{% endhighlight %}
-
+```
 在浏览器中打开index.html：
 
 > Hello,JavaScript
