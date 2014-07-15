@@ -44,7 +44,7 @@ greet.hello_python()
 greet.py的模块中有两个方法，把它们import到use_greet.py中，我们就可以使用了。
 Python还提供了另外一种引入模块的方法：
 
-```
+```Python
 #!/usr/bin/python
 # Filename: use_greet.py
 
