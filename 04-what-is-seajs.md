@@ -18,7 +18,7 @@ title:  Sea.js是什么？-Hello Sea.js
 > 模块基本上就是一个包含了所有你定义的函数和变量的文件。
 
 我们来定义一个Python的模块：
-
+```Python
 {% highlight python %}
 # !/usr/bin/python
 # Filename: greet.py
@@ -29,7 +29,7 @@ def hello_python():
 def hello_javascript():
     print "Hello,JavaScript"
 {% endhighlight %}
-
+```
 真的，就是这么简单，我们可以这样使用：
 
 {% highlight python %}
