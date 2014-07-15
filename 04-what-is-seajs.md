@@ -95,7 +95,7 @@ helloJavaScript();
 
 这些问题如何解决呢？我们要不再来看一下Node.js的模块。你应该知道Node.js，现在它是火得不行！
 
-{% highlight javascript %}
+```JavaScript
 // File:greet.js
 exports.helloPython = function() {
     console.log("Hello,Python");
@@ -107,19 +107,19 @@ exports.helloJavaScript = function() {
 // File: usegreet.js
 var greet = require("./greet");
 greet.helloJavaScript();
-{% endhighlight %}
+```
 
 运行`node usegreet.js`，控制台会打印：
 
 > Hello,JavaScript
 
-Node.js把JavaScript移植到了Server端的开发中，Node.js通过export和require来实现了代码的模块化组织。在一个Node.js的模块文件中，我们可以使用exports把对外的接口暴露出来，其他模块可以使用require函数加载其他文件，获得这些接口，从而使用模块提供出来的功能，而不关心其实现。在npmjs.org上已经有上万的Node.js开源模块了！
+Node.js把JavaScript移植到了Server端的开发中，Node.js通过exports和require来实现了代码的模块化组织。在一个Node.js的模块文件中，我们可以使用exports把对外的接口暴露出来，其他模块可以使用require函数加载其他文件，获得这些接口，从而使用模块提供出来的功能，而不关心其实现。在npmjs.org上已经有上万的Node.js开源模块了！
 
 ## ECMA标准草案
 
 Node.js模块化的组织方案是Server端的实现，并不能直接在浏览器中使用。JavaScript原生并没有支持`exports`和`require`关键字。ECMAScript6标准草案harmony已经考虑到了这种模块化的需求。举个例子：
 
-{% highlight javascript %}
+```JavaScript
 // Define a module
 module 'greet' {
     export function helloPython() {
@@ -142,7 +142,7 @@ Greet.helloJavaScript()
 // Or remote module
 module Greet from 'http://bodule.org/greet.js'
 Greet.helloJavaScript()
-{% endhighlight %}
+```
 
 可以到这里查看更多的[例子](http://wiki.ecmascript.org/doku.php?id=harmony:modules_examples)。
 
@@ -152,19 +152,19 @@ Greet.helloJavaScript()
 
 ## LABjs
 
-[LABjs](https://github.com/getify/LABjs)是一个动态的脚本加载类库，替代难看的，低性能的`script`标签。该类库可以并行地加载多个脚本，可按照需求顺序执行依赖的代码，这样在保证依赖的同时大大提高的脚本的加载速度。
+[LABjs](https://github.com/getify/LABjs)是一个动态的脚本加载类库，替代难看的，低性能的`<script>`标签。该类库可以并行地加载多个脚本，可按照需求顺序执行依赖的代码，这样在保证依赖的同时大大提高的脚本的加载速度。
 
 LABjs已经三岁了，其作者getify声称，由于社区里大家更喜欢使用AMD模式，随在2012年7月25号停止对该类库的更新。但LABjs绝对是JavaScript在浏览器端模块化的鼻祖，在脚本加载方面做了大量的工作。
 
 ## requirejs
 
-与LABjs不同的地方在于，RequireJS是一个动态的模块加载器。其作者James Burke曾是Dojo核心库loader和build system的开发者。2009年随着JavaScript代码加载之需要，在Dojo XDloader的开发经验基础之上，它开始了新项目RunJS。后更名为RequireJS，在AMD模块提案指定方面，他起到了重要的作用。james从xdloader 到 runjs 再到requirejs一直在思考着该如何实现一个module wrapper，让更多的js、更多的node模块等等等可以在浏览器环境中无痛使用。
+与LABjs不同的地方在于，RequireJS是一个动态的模块加载器。其作者James Burke曾是Dojo核心库loader和build system的开发者。2009年随着JavaScript代码加载之需要，在Dojo XDloader的开发经验基础之上，它开始了新项目RunJS。后更名为RequireJS，在AMD模块提案指定方面，他起到了重要的作用。James从XDloader到RunJS 再到RequireJS一直在思考着该如何实现一个module wrapper，让更多的js、更多的node模块等等可以在浏览器环境中无痛使用。
 
 ## seajs
 
 seajs相对于前两者就比较年轻，2010年玉伯发起了这个开源项目，SeaJS遵循CMD规范，与RequireJS类似，同样做为模块加载器。那我们如何使用seajs来封装刚才的示例呢？
 
-{% highlight javascript %}
+```JavaScript
 // File:greet.js
 define(function (require, exports) {
     function helloPython() {
@@ -181,4 +181,4 @@ define(function (require, exports) {
 sea.use("greet", function (Greet) {
     greet.helloJavaScript();
 });
-{% endhighlight %}
+```
