@@ -45,7 +45,7 @@ greet.py的模块中有两个方法，把它们import到use_greet.py中，我们
 Python还提供了另外一种引入模块的方法：
 
 ```
-# !/usr/bin/python
+#!/usr/bin/python
 # Filename: use_greet.py
 
 from greet import hello_python
