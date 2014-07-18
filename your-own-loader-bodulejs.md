@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  自己实现一个模块加载器——bodule.js-Hello Sea.js
----
-
 # 自己实现一个模块加载器——bodule.js
 
 > shut up, show me the code!
@@ -28,7 +23,7 @@ Function：function(require, [exports,] [module])：
 
 非Function：直接作为该meta模块的exports。
 
-{% highlight javascript %}
+```javascript
 define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
   //CommonJS
 })
@@ -42,7 +37,7 @@ define('http://bodule.org/island205/venus/1.0.0/conststring', 'bodule.js')
 
 define('http://bodule.org/island205/venus/1.0.0/undefined', undefined)
 
-{% endhighlight %}
+```
 
 dependancies中的字符串以及CommonJS中的require的参数，必须为url、相对路径或顶级路径的解析依赖于前面的id。
 
@@ -51,7 +46,7 @@ dependancies中的字符串以及CommonJS中的require的参数，必须为url�
 `http://bodule.org/island205/venus/1.0.0/venus.js` 对应的模块文件内容为：
 
 
-{% highlight javascript %}
+```javascript
 define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
   //CommonJS for venus
 })
@@ -59,7 +54,7 @@ define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (r
 define('http://bodule.org/venus/1.0.0/vango', [], function (require, exports, module) {
   //CommonJS for vango
 })
-{% endhighlight %}
+```
 
 该模块文件包含两个meta module，而第一个是必须的。但这两个meta模块的顺序不做要求。
 
@@ -67,27 +62,27 @@ define('http://bodule.org/venus/1.0.0/vango', [], function (require, exports, mo
 
 为了简化代码，针对
 
-{% highlight javascript %}
+```javascript
 define('http://bodule.org/island205/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
   //CommonJS for venus
 })
-{% endhighlight %}
+```
 这样的代码我们可以将其简化为：
 
-{% highlight javascript %}
+```javascript
 define('./venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
   //CommonJS for venus
 })
-{% endhighlight %}
+```
 
 或者：
 
 
-{% highlight javascript %}
+```javascript
 define('/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
   //CommonJS for venus
 })
-{% endhighlight %}
+```
 
 这样的形式，然相对路径或者顶级路径必须要由一个绝对路径可参照，在bodule.js中，这个绝对路径来自于当前页面的url地址，或者使用bodule.package进行配置。
 
@@ -101,7 +96,7 @@ define('/venus/1.0.0/venus', ['./vango'], function (require, exports, module) {
 
 npm非常流行，bodule.js将其作为模块的源。我们采取与npm包一致的策略。典型的npm的package.json为（以underscore为例）：
 
-{% highlight json %}
+```json
 {
   "name"          : "underscore",
   "description"   : "JavaScript's functional programming helper library.",
@@ -125,7 +120,7 @@ npm非常流行，bodule.js将其作为模块的源。我们采取与npm包一�
   ],
   "files"         : ["underscore.js", "LICENSE"]
 }
-{% endhighlight %}
+```
 
 bodule.js将会使用工具将其转化为bodule模块，最终会以`http://bodule.org/underscore/1.5.1`这样的地址地提供出来。注意：该地址会根据package.json中的main，变为`http://bodule.org/underscore/1.5.1/underscore`。
 
@@ -142,14 +137,14 @@ bodule.js将会使用工具将其转化为bodule模块，最终会以`http://bod
 
 在页面上定义一个即时的模块，该模块依赖于dependancies，并use该模块。等价于：
 
-{% highlight javascript %}
+```javascript
 define('a-random-id', dependencies, factory)
 Bodule.use('a-random-id')
-{% endhighlight %}
+```
 
 .use比较简单的例子，[simplest.html](https://github.com/Bodule/bodule-engine/blob/master/test/simplest.html#L10)：
 
-{% highlight html %}
+```html
 <script type="text/javascript">
     Bodule.use('./a.js')
     Bodule.use('/b.js')
@@ -163,7 +158,7 @@ Bodule.use('a-random-id')
         console.log(e)
     })
 </script>
-{% endhighlight %}
+```
 
 ### define
 
@@ -181,7 +176,7 @@ Bodule.use('a-random-id')
 
 配置模块和bodule模块的位置，还可以配置依赖的bodule模块的版本号。
 
-{% highlight javascript %}
+```javascript
 Bodule.package({
   cwd: 'http://bodule.org:8080/',
   path: '/bodule.org/',
@@ -193,7 +188,7 @@ Bodule.package({
     }
   }
 })
-{% endhighlight %}
+```
 完整的例子可以参考[bodule.org.html](https://github.com/Bodule/bodule-engine/blob/master/test/bodule.org/bodule.org.html)。
 
 让我们开始吧！
@@ -206,7 +201,7 @@ coffeescript是一门非常有趣的语言，敲起代码来很舒服，不会�
 
 从bodule的规范中，可以看出，它其实commonjs，或者说是commonjs wrapping的一个实现。因此，我们将直接使用commonjs的方式来组织我们的代码，你会发现，这样的代码非常清晰易读。
 
-{% highlight coffeescript %}
+```coffeescript
 # This is a **private** CommonJS runtime for `bodule.js`.
 
 # `__modules` for store private module like `util`,`path`, and so on.
@@ -232,13 +227,13 @@ use = (deps, factory)->
     # In factory `call`, `this` is global
     factory require, exports, module
     module.exports
-{% endhighlight %}
+```
 
 上面这段代码是commonjs规范一种精简的表达，出自node项目中的module.js。module.js比这复杂多了，包含了多native module、读取、执行module文件、以及支持多种格式的module的事情。而我们上面这段代码就是commonjs最精简的表达，有了它，我们就可以使用common.js的方式来组织代码了。
 
 > 注意，代码中的deps变量完全就是无用的，只是我觉得这样写的话，似乎更清晰一点。
 
-{% highlight coffeescript %}
+```coffeescript
 define 'add', [], (require, exports, module)->
     module.exports = (a, b)->
         a + b
@@ -251,7 +246,7 @@ define 'addTwice', ['add'], (require, exports, module)->
 use ['addTwice'], (require, exports, module)->
     addTwice = require 'addTwice'
     cosnole.log "#{2} + #{3} + #{3} = #{addTwice 2, 3}"
-{% endhighlight %}
+```
 
 上面的代码展示了如何使用这个commonjs运行时，很简单，有木有？
 
@@ -261,7 +256,7 @@ use ['addTwice'], (require, exports, module)->
 
 我们改从何入手编写一个加载器呢，既然已经有了规范和接口，那我们从接口写起吧。
 
-{% highlight coffeescript %}
+```coffeescript
 define 'bodule', [], (require, exports, module)->
     Bodule = 
         use: (deps, factory)->
@@ -276,4 +271,4 @@ use ['bodule'], (require, exports, module)->
     window.Bodule = Bodule
     window.define = ->
       Bodule.define.apply Bodule, arguments
-{% endhighlight %}
+```

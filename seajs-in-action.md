@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  实战-Hello Sea.js
----
-
 # 实战
 
 ## venus-in-cmd
@@ -13,21 +8,21 @@ Venus是一个javascript类库，是一个canvas的wrapper，为了学习spm，�
 
 spm提供了初始cmd模块的脚手架，我们可以使用下面的命令来安装这个脚手架：
 
-{% highlight bash %}
+```bash
 $ spm plugin install init
-{% endhighlight %}
+```
 
 ### 初始化一个cmd项目
 
 运行：
 
-{% highlight bash %}
+```bash
 $ spm init
-{% endhighlight %}
+```
 
 就可以初始化一个cmd模块的项目，回答一些spm的问题，就能在当前目录生成必要的文件和文件夹：
 
-{% highlight bash %}
+```bash
 |~examples/
 | `-index.md
 |~src/
@@ -38,7 +33,7 @@ $ spm init
 |-Makefile
 |-package.json
 `-README.md
-{% endhighlight %}
+```
 
 我们在`src`中添加`venus`的代码。
 
@@ -50,7 +45,7 @@ $ spm init
 
 在Venus的源码中我惊喜地发现这段代码：
 
-{% highlight javascript %}
+```javascript
 // File: vango.js
 
 /*
@@ -70,13 +65,13 @@ $ spm init
 })(this, function() {
     // Factory for build Vango
 })
-{% endhighlight %}
+```
 
 这段代码可以令`vango.js`支持浏览器（通过script直接引入）、node环境以及AMD加载器。
 
 于是事情就简单了，因为我们可以很简单地将一个Node模块转成CMD模块，添加如下的wrapper即可：
 
-{% highlight javascript %}
+```javascript
 // File: vango.js
 define(function (require, exports, module) {
     (function(root, factory) {
@@ -95,13 +90,13 @@ define(function (require, exports, module) {
         // return Vango
     })
 })
-{% endhighlight %}
+```
 
 #### UMD
 
 上面那段有点黑魔法的代码还有一个更复杂的形式，即[Universal Module Definition](https://github.com/umdjs/umd)：
 
-{% highlight javascript %}
+```javascript
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -121,18 +116,18 @@ define(function (require, exports, module) {
   return Backbone;
 
 }));
-{% endhighlight %}
+```
 
 当然并不是所有的CMD模块都得这么写，你可以按照自己的方式，使用`require`、`exports`和`module`这三个关键字，遵循CMD的规范即可。
 
 最后`src`有两个文件，`venus.js`就很简单了：
 
-{% highlight javascript %}
+```javascript
 define(function (require, exports, module) {
 	var Vango = require('./vango');
 	exports.Vango = Vango;
 })
-{% endhighlight %}
+```
 
 我们的venus的cmd版本搞定了，vango.js作为vango具体实现，而venus.js只是这些将这些画家暴露出来。
 
@@ -142,7 +137,7 @@ define(function (require, exports, module) {
 
 在项目的根目录下运行`spm build`：
 
-{% highlight bash %}
+```bash
 $ spm build
            Task: "clean:build" (clean) task
 
@@ -180,21 +175,21 @@ $ spm build
          create: dist/venus.js
 
            Done: without errors.
-{% endhighlight %}
+```
 
 从构建的log中可以看出，`spm`完全就是使用grunt来构建的，涉及到多个grunt task。你完全可以自己编写Gruntfile.js来实现自定义的构建过程。
 
 venus就被构建好了，`spm`在目录中生成了一个`dist`文件夹：
 
-{% highlight bash %}
+```bash
 |~dist/
   |-venus-debug.js
   `-venus.js
-{% endhighlight %}
+```
 
 `venus-debug.js`中的内容为：
 
-{% highlight javascript %}
+```javascript
 define("island205/venus/1.0.0/venus-debug", [ "./vango-debug" ], function(require, exports, module) {
     var Vango = require("./vango-debug");
     exports.Vango = Vango;
@@ -203,7 +198,7 @@ define("island205/venus/1.0.0/venus-debug", [ "./vango-debug" ], function(requir
 define("island205/venus/1.0.0/vango-debug", [], function(require, exports, module) {
     // Vango's code
 })
-{% endhighlight %}
+```
 
 `venus.js`的内容与之一样，只是经过了压缩，去掉了模块名最后的`-debug`。
 
@@ -215,7 +210,7 @@ define("island205/venus/1.0.0/vango-debug", [], function(require, exports, modul
 
 如果你用过npm，那你对spm的发布功能应该不会陌生了。spm也像npm一样，有一个公共仓库，我们可以通过`spm plublish`将venus发布到仓库中，与大家共享。
 
-{% highlight bash %}
+```bash
 $ spm publish
         publish: island205/venus@1.0.0
           found: readme in markdown.
@@ -223,18 +218,18 @@ $ spm publish
         execute: git rev-parse HEAD
            yuan: Authorization required.
            yuan: `spm login` first
-{% endhighlight %}
+```
 
 如果你碰到上面这种情况，你需要登录下。
 
-{% highlight bash %}
+```bash
 $ spm publish
         publish: island205/venus@1.0.0
           found: readme in markdown.
         tarfile: venus-1.0.0.tar.gz
         execute: git rev-parse HEAD
       published: island205/venus@1.0.0
-{% endhighlight %}
+```
 
 接下来我们使用venus编写一个名为pixelegos的网页程序，你可以使用这个程序来生成一些头像的位图。例如，spmjs的头像(这是github为spmjs生成的随机头像)：
 
@@ -250,10 +245,10 @@ pixelegos完成后的样子：
 
 创建一个名为`pixelegos`的文件夹，初始化一个npm项目：
 
-{% highlight bash %}
+```bash
 $ mkdir pixelegos && cd pixelegos && npm init
 
-{% endhighlight %}
+```
 
 在目录中多了一个packege.json文件，在这个文件中包含了一些pixelegos的信息，之后还会保存一些node module和spm的配置。
 
@@ -261,13 +256,13 @@ $ mkdir pixelegos && cd pixelegos && npm init
 
 本项目中需要依赖的cmd模块包括`backbone`、`seajs`、`venus`、`zepto`。我们运行下面的命令安装这些依赖:
 
-{% highlight bash %}
+```bash
 $ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
-{% endhighlight %}
+```
 
 在`pixelegos`目录下增加了一个`sea-modules`目录，上面的cmd依赖都安装在这个目录中，由于backone依赖于underscore，spm自动安装了依赖。
 
-{% highlight bash %}
+```bash
 ├── gallery
 │   ├── backbone
 │   │   └── 1.0.0
@@ -298,13 +293,13 @@ $ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
             ├── package.json
             ├── zepto-debug.js
             └── zepto.js
-{% endhighlight %}
+```
 
 ### 开始
 
 新建一些html、css、js文件，结构如下：
 
-{% highlight bash %}
+```bash
 ├── index.css
 ├── index.html
 ├── js
@@ -319,11 +314,11 @@ $ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
     ├── island205
     ├── seajs
     └── zepto
-{% endhighlight %}
+```
 
 给index.html添加如下内容：
 
-{% highlight html %}
+```html
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -341,11 +336,11 @@ $ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
 <body>
 </body>
 </html>
-{% endhighlight %}
+```
 
 其中，config.js在开发时用来配置alias，pixelegos作为整个程序的启动模块。
 
-{% highlight javascript %}
+```javascript
 // config.js
 seajs.config({
     alias: {
@@ -354,9 +349,9 @@ seajs.config({
         "venus": "island205/venus/1.0.0/venus"
     }
 })
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```javascript
 // pixelegos.js
 define(function (require, exports, module) {
     var Menu = require('./menu')
@@ -376,11 +371,11 @@ define(function (require, exports, module) {
         })
     })
 })
-{% endhighlight %}
+```
 
 在其他js文件中分别基于backbone实现一些pixelegos的组件。例如：
 
-{% highlight javascript %}
+```javascript
 // menu.js
 define(function (require, exports, module) {
     var Backbone = require('backbone')
@@ -412,7 +407,7 @@ define(function (require, exports, module) {
 
     module.exports = Menu
 })
-{% endhighlight %}
+```
 menu.js依赖于backbone和$（在config.js将zepto alias为了$），实现了顶部的菜单。
 
 ### 当当当当
@@ -436,13 +431,13 @@ spm为自定义构建提供了两个工具:
 
 grunt是目前JavaScript最炙手可热的构建工具，我们先来安装下：
 
-{% highlight bash %}
+```javascript
 " 在全部安装grunt的命令行接口
 $ npm install grunt-cli -g
 
 " 安装需要用的grunt task
 $ npm install grunt grunt-cmd-concat grunt-cmd-transport grunt-contrib-concat grunt-contrib-jshint grunt-contrib-uglify  --dev-save
-{% endhighlight %}
+```
 
 整个打包的流程为：
 
@@ -454,7 +449,7 @@ $ npm install grunt grunt-cmd-concat grunt-cmd-transport grunt-contrib-concat gr
 
 第一步先把js文件夹中的业务js转换成具名模块：
 
-{% highlight javascript %}
+```javascript
 transport : {
     options: {
         idleading: '/dist/',
@@ -469,14 +464,14 @@ transport : {
         }]
     }
 }
-{% endhighlight %}
+```
 
 这是一些transport的配置，即将js/中的js transport到.build中间文件夹中。
 
 
 接下来，将.build中的文件合并到一起（包含sea-modules中的依赖项。）：
 
-{% highlight javascript %}
+```javascript
 concat : {
     options : {
         include : 'all'
@@ -493,7 +488,7 @@ concat : {
         ]
     }
 }
-{% endhighlight %}
+```
 
 这里我们只对pixelegos.js进行concat，因为它是app的入口文件，将`include`配置成`all`，只需要concat这个文件，就能将所有的依赖项打包到一起。`include`还可以配置成其他值：
 
@@ -502,7 +497,7 @@ concat : {
 
 既然我们已经transport和concat好了文件，那我们直接使用整个文件就行了，于是我们的发布页面可写成：
 
-{% highlight html %}
+```javascript
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -520,37 +515,37 @@ concat : {
 ...
 </body>
 </html>
-{% endhighlight %}
+```
 
 当我运行index-product.html时我遇到了坑。在backbone包中并没有指明$依赖的具体包，导致打包后的js无法找到$.js文件。原本以为backbone中的$会被业务级的配置所替换，但是事实并非如此。如何解决？
 
 我们必须使用seajs.config接口提供一个dom的engine，在js/中创建engine.js文件：
 
-{% highlight javascript %}
+```javascript
 // engine.js
 seajs.config({
     alias: {
         '$': 'zepto/zepto/1.0.0/zepto'
     }
 })
-{% endhighlight %}
+```
 
 接下来把这个文件和pixelegos.js concat在一起：
 
-{% highlight javascript %}
+```javascript
 normalconcat: {
     app: {
         src: ['js/engine.js', 'dist/pixelegos.js'],
         dest: 'dist/pixelegos.js'
     }
 }
-{% endhighlight %}
+```
 
 由于grunt-contrib-concat和grunt-cmd-concat产生了task name的冲突，可以通过grunt.renameTask来修改task名。
 
 下一步，uglify！
 
-{% highlight javascript %}
+```javascript
 uglify : {
     app : {
         files: [
@@ -564,11 +559,11 @@ uglify : {
         ]
     }
 }
-{% endhighlight %}
+```
 
 大功告成，完整的Gruntfile.js如下:
 
-{% highlight javascript %}
+```javascript
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg : grunt.file.readJSON("package.json"),
@@ -636,7 +631,7 @@ module.exports = function (grunt) {
      grunt.registerTask('build', ['clean', 'transport:app', 'concat:app', 'normalconcat:app', 'uglify:app'])
      grunt.registerTask('default', ['build'])
 }
-{% endhighlight %}
+```
 
 ## 总结
 

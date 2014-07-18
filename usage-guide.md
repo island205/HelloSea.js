@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  使用指南-Hello Sea.js
----
-
 # 使用指南
 
 刚才的示例很简单？实际上Sea.js本身小巧而不失灵活，让我们再来深入地了解下如何使用Sea.js!

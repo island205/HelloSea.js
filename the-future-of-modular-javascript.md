@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  模块化JavaScript的未来-Hello Sea.js
----
-
 # 模块化JavaScript的未来
 
 JavaScript未来的模块化会是什么样子？这很难讲。如前所说，ES6已经开始起草这一块的标准，而AMD，CommonJS已经流行起来。通常，标准的制定，都是在有了实现的前提之下。不管怎样，我们先来展望一二吧。

@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  Sea.js是如何工作的？-Hello Sea.js
----
-
 # Sea.js是如何工作的？
 
 > 蒙惠者虽知其然，而未必知其所以然也。
@@ -45,11 +40,11 @@ Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。�
 
 顾名思义，factory就是工厂，一个可以产生模块的工厂。node中的工厂就是新的运行时，而在Sea.js中（Tea.js中也同样），factory就是一个函数。这个函数接受三个参数。
 
-{% highlight javascript %}
+```javascript
 function (require, exports, module) {
     // here is module body
 }
-{% endhighlight %}
+```
 
 在整个运行时中只有模块，即只有factory。
 
@@ -71,11 +66,11 @@ JavaScript作为一门解释型语言，在复杂的浏览器环境中，Sea.js�
 
 想要解释这个问题，我们还是从Node模块说起，node于Ruby类似，用我们之前使用过的一个模块作为例子：
 
-{% highlight javascript %}
+```javascript
 // File: usegreet.js
 var greet = require("./greet");
 greet.helloJavaScript();
-{% endhighlight %}
+```
 
 当我们使用`node usegreet.js`来运行这个模块时，实际上node会构建一个运行的上下文，在这个上下文中运行这个模块。运行到`require('./greet')`这句话时，会通过注入的API，在新的上下文中解析greet.js这个模块，然后通过注入的`exports`或`module`这两个关键字获取该模块的接口，将接口暴露出来给usegreet.js使用，即通过`greet`这个对象来引用这些接口。例如，`helloJavaScript`这个函数。详细细节可以参看node源码中的[module.js](https://github.com/joyent/node/blob/master/lib/module.js)。
 
@@ -148,7 +143,7 @@ pixelegos通过同步的require函数获取tool、canvas和menu，后三者同�
 
 由于浏览器端与Node的环境差异，模块存在加载期和执行期，所以Sea.js中为模块定义了六种状态。
 
-{% highlight javascript %}
+```javascript
 var STATUS = Module.STATUS = {
   // 1 - The `module.uri` is being fetched
   FETCHING: 1,
@@ -163,7 +158,7 @@ var STATUS = Module.STATUS = {
   // 6 - The `module.exports` is available
   EXECUTED: 6
 }
-{% endhighlight %}
+```
 
 分别为：
 
@@ -192,7 +187,7 @@ var STATUS = Module.STATUS = {
 
 - Sea.use调用Module.use构造一个没有factory的模块，该模块即为这个运行期的根节点。
 
-{% highlight javascript %}
+```javascript
 // Use function is equal to load a anonymous module
 Module.use = function (ids, callback, uri) {
     var mod = Module.get(uri, isArray(ids) ? ids: [ids])
@@ -214,13 +209,13 @@ Module.use = function (ids, callback, uri) {
 
     mod.load()
 }
-{% endhighlight %}
+```
 
 模块构造完成，则调用mod.load()来同步其子模块；直接跳过fetching这一步；mod.callback也是Sea.js不纯粹的一点，在模块加载完成后，会调用这个callback。
 
 - 在load方法中，获取子模块，加载子模块，在子模块加载完成后，会触发mod.onload()：
 
-{% highlight javascript %}
+```javascript
 // Load module.dependencies and fire onload when all done
 Module.prototype.load = function () {
     var mod = this
@@ -278,13 +273,13 @@ Module.prototype.load = function () {
         }
     }
 }
-{% endhighlight %}
+```
 
 模块的状态是最关键的，模块状态的流转决定了加载的行为；
 
 - 是否触发onload是由模块的_remian属性来确定，在load和子模块的onload函数中都对_remain进行了计算，如果为0，则表示模块加载完成，调用onload：
 
-{% highlight javascript %}
+```javascript
 // Call this method when module is loaded
 Module.prototype.onload = function () {
     var mod = this
@@ -312,12 +307,12 @@ Module.prototype.onload = function () {
     delete mod._waitings
     delete mod._remain
 }
-{% endhighlight %}
+```
 模块的_remain和_waitings是两个非常关键的属性，子模块通过_waitings获得父模块，通过_remain来判断模块是否加载完成。
 
 - 当这个没有factory的根模块触发onload之后，会调用其方法callback，callback是这样的：
 
-{% highlight javascript %}
+```javascript
 mod.callback = function () {
     var exports = []
     var uris = mod.resolve()
@@ -332,13 +327,13 @@ mod.callback = function () {
 
     delete mod.callback
 }
-{% endhighlight %}
+```
 
 这预示着加载期结束，开始执行期；
 
 - 而执行期相对比较无脑，首先是直接调用根模块依赖模块的exec方法获取其exports，用它们来调用use传经来的callback。而子模块在执行时，都是按照标准的模块解析方式执行的：
 
-{% highlight javascript %}
+```javascript
 // Execute a module
 Module.prototype.exec = function () {
     var mod = this
@@ -394,7 +389,7 @@ Module.prototype.exec = function () {
 
     return exports
 }
-{% endhighlight %}
+```
 
 > 看到这一行代码了么？ 
 > `var exports = isFunction(factory) ? factory(require, mod.exports = {}, mod) : factory`
@@ -410,7 +405,7 @@ Module.prototype.exec = function () {
 
 普通路径与网页中超链接一样，相对于当前页面解析，在Sea.js中，普通路径包有以下几种：
 
-{% highlight javascript %}
+```javascript
 // 假设当前页面是 http://example.com/path/to/page/index.html
 
 // 绝对路径是普通路径：
@@ -427,20 +422,20 @@ seajs.use('./c');
 
 seajs.use('../d');
   // => 加载的是 http://example.com/path/to/d.js
-{% endhighlight %}
+```
 
 #### 相对标识
 
 在define的factory中的相对路径（`..` `.`）是相对标识，相对标识相对当前的URI来解析。
 
-{% highlight javascript %}
+```javascript
 // File http://example.com/js/b.js
 define(function(require) {
     var a = require('./a');
     a.doSomething();
 });
 // => 加载的是http://example.com/js/a.js
-{% endhighlight %}
+```
 
 这与node模块中相对路径的解析一致。
 
@@ -448,13 +443,13 @@ define(function(require) {
 
 不以`.`或者'/'开头的模块标识是顶级标识，相对于Sea.js的base路径来解析。
 
-{% highlight javascript %}
+```javascript
 // 假设 base 路径是：http://example.com/assets/
 
 // 在模块代码里：
 require.resolve('gallery/jquery/1.9.1/jquery');
   // => http://example.com/assets/gallery/jquery/1.9.1/jquery.js
-{% endhighlight %}
+```
 
 > 在node中即是在paths中搜索模块（node_modules文件夹中）。
 
@@ -506,7 +501,7 @@ require.resolve('gallery/jquery/1.9.1/jquery');
 
 这段是Sea.js的源码：
 
-{% highlight javascript %}
+```javascript
 /**
  * util-deps.js - The parser for dependencies
  * ref: tests/research/parse-dependencies/test.html
@@ -527,7 +522,7 @@ function parseDependencies(code) {
 
   return ret
 }
-{% endhighlight %}
+```
 `REQUIRE_RE`这个硕大无比的正则就是关键。推荐使用[regexper](http://www.regexper.com/)来看看这个正则表达式。非native的函数factory我们可以通过的toString()方法获取源码，Sea.js就是使用`REQUIRE_RE`在factory的源码中匹配出该模块的依赖项。
 
 > 从`REQUIRE_RE`这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。

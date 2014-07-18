@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  感谢-Hello Sea.js
----
-
 # 感谢
 
 首先当然得感谢JavaScript社区。在JavaScript的世界里，几乎都是开源的，社区内充满了交流和碰撞，在蓬勃发展。我也从中汲取了很多养料。

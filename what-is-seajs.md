@@ -1,8 +1,3 @@
----
-layout: chapter
-title:  Sea.js是什么？-Hello Sea.js
----
-
 # Sea.js是什么？
 
 起初被看作是一门玩具语言的JavaScript，最近已经发生了很大的变化。变化之一就是从HTML中的`<script>`标签转向了模块化。
