@@ -1,0 +1,911 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="./manifest.appcache">
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <title>开发实战 | Hello Sea.js</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 0.6.0">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    
+    
+    <meta name="author" content="island205">
+    
+    
+    <link rel="next" href="./how-seajs-works.html" />
+    
+    
+    <link rel="prev" href="./usage-guide.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+<link rel="stylesheet" href="gitbook/style.css">
+
+
+        
+    <div class="book" data-github="island205/HelloSea.js" data-level="6" data-basepath="." data-revision="1405703280663">
+    <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
+    
+    <a href="https://github.com/island205/HelloSea.js" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings" aria-label="Toggle font settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="btn-group btn-block">
+        <button id="reduce-font-size" class="btn btn-default">A</button>
+        <button id="enlarge-font-size" class="btn btn-default">A</button>
+    </div>
+
+    <ul class="list-group font-family-list">
+        <li class="list-group-item" data-font="0">Serif</li>
+        <li class="list-group-item" data-font="1">Sans</li>
+    </ul>
+
+    <div class="btn-group btn-group-xs btn-block color-theme-list">
+        <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Share on Google Plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Share on Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Share on Twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+    <a href="https://github.com/island205/HelloSea.js/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/island205/HelloSea.js/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="./" >Hello Sea.js</a>
+    </h1>
+</div>
+
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        <li>
+            <a href="https://github.com/island205" target="blank" class="author-link">About the author</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/issues" target="blank"class="issues-link">Questions and Issues</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/edit/master/seajs-in-action.md" target="blank" class="contribute-link">Edit and Contribute</a>
+        </li>
+        
+
+	
+
+        
+        <li class="divider"></li>
+        
+
+        
+    
+        
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                        <i class="fa fa-check"></i>
+                        
+                         Introduction
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="1" data-path="introduction.html">
+            
+                
+                    <a href="./introduction.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                         前言
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="2" data-path="acknowledgments.html">
+            
+                
+                    <a href="./acknowledgments.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                         感谢
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="3" data-path="what-is-seajs.html">
+            
+                
+                    <a href="./what-is-seajs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                         Sea.js是什么？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="4" data-path="getting-started.html">
+            
+                
+                    <a href="./getting-started.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                         快速入门
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="5" data-path="usage-guide.html">
+            
+                
+                    <a href="./usage-guide.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                         使用指南
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter active" data-level="6" data-path="seajs-in-action.html">
+            
+                
+                    <a href="./seajs-in-action.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                         开发实战
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="7" data-path="how-seajs-works.html">
+            
+                
+                    <a href="./how-seajs-works.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                         Sea.js是如何工作的？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="8" data-path="your-own-loader-bodulejs.html">
+            
+                
+                    <a href="./your-own-loader-bodulejs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                         编写自己的模块加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="9" data-path="the-future-of-modular-javascript.html">
+            
+                
+                    <a href="./the-future-of-modular-javascript.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                         JavaScript模块化的未来
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="10" data-path="reference.html">
+            
+                
+                    <a href="./reference.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                         参考资料
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank" class="gitbook-link">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 60%;min-width: 50%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="./index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="./introduction.html" title="前言" class="chapter done new-chapter" data-progress="1" style="left: 10%;"></a>
+    
+        <a href="./acknowledgments.html" title="感谢" class="chapter done new-chapter" data-progress="2" style="left: 20%;"></a>
+    
+        <a href="./what-is-seajs.html" title="Sea.js是什么？" class="chapter done new-chapter" data-progress="3" style="left: 30%;"></a>
+    
+        <a href="./getting-started.html" title="快速入门" class="chapter done new-chapter" data-progress="4" style="left: 40%;"></a>
+    
+        <a href="./usage-guide.html" title="使用指南" class="chapter done new-chapter" data-progress="5" style="left: 50%;"></a>
+    
+        <a href="./seajs-in-action.html" title="开发实战" class="chapter done new-chapter" data-progress="6" style="left: 60%;"></a>
+    
+        <a href="./how-seajs-works.html" title="Sea.js是如何工作的？" class="chapter  new-chapter" data-progress="7" style="left: 70%;"></a>
+    
+        <a href="./your-own-loader-bodulejs.html" title="编写自己的模块加载器" class="chapter  new-chapter" data-progress="8" style="left: 80%;"></a>
+    
+        <a href="./the-future-of-modular-javascript.html" title="JavaScript模块化的未来" class="chapter  new-chapter" data-progress="9" style="left: 90%;"></a>
+    
+        <a href="./reference.html" title="参考资料" class="chapter  " data-progress="10" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_9">
+                    
+                        <h1 id="">实战</h1>
+<h2 id="venus-in-cmd">venus-in-cmd</h2>
+<p>Venus是一个javascript类库，是一个canvas的wrapper，为了学习spm，我们使用cmd的模式来重构这个类库。</p>
+<h3 id="spm-init">安装spm-init</h3>
+<p>spm提供了初始cmd模块的脚手架，我们可以使用下面的命令来安装这个脚手架：</p>
+<pre><code class="lang-bash">$ spm plugin install init
+</code></pre>
+<h3 id="cmd">初始化一个cmd项目</h3>
+<p>运行：</p>
+<pre><code class="lang-bash">$ spm init
+</code></pre>
+<p>就可以初始化一个cmd模块的项目，回答一些spm的问题，就能在当前目录生成必要的文件和文件夹：</p>
+<pre><code class="lang-bash">|~examples/
+| `-index.md
+|~src/
+| `-venus.js
+|~tests/
+| `-venus-spec.js
+|-LICENSE
+|-Makefile
+|-package.json
+`-README.md
+</code></pre>
+<p>我们在<code>src</code>中添加<code>venus</code>的代码。</p>
+<h3 id="cmd">编写cmd模块</h3>
+<p>或者将现有的模块转化为cmd模块。</p>
+<p>本例中的<a href="https://github.com/island205/Venus" target="_blank">Venus</a>本来就已经存在，那我们如何将其转成cmd模块呢？</p>
+<p>在Venus的源码中我惊喜地发现这段代码：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// File: vango.js</span>
+
+<span class="hljs-comment">/*
+ * wrapper for browser,nodejs or AMD loader evn
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root, factory)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">"object"</span>) {
+        <span class="hljs-comment">// Node</span>
+        module.exports = factory();
+    <span class="hljs-comment">// AMD loader</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">"function"</span> &amp;&amp; define.amd) {
+        define(factory);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Browser</span>
+        root.Vango = factory();
+    }
+})(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// Factory for build Vango</span>
+})
+</code></pre>
+<p>这段代码可以令<code>vango.js</code>支持浏览器（通过script直接引入）、node环境以及AMD加载器。</p>
+<p>于是事情就简单了，因为我们可以很简单地将一个Node模块转成CMD模块，添加如下的wrapper即可：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// File: vango.js</span>
+define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+    (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root, factory)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">"object"</span>) {
+            <span class="hljs-comment">// Node</span>
+            module.exports = factory();
+        <span class="hljs-comment">// AMD loader</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">"function"</span> &amp;&amp; define.amd) {
+            define(factory);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Browser</span>
+            root.Vango = factory();
+        }
+    })(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">// Factory for build Vango</span>
+        <span class="hljs-comment">// return Vango</span>
+    })
+})
+</code></pre>
+<h4 id="umd">UMD</h4>
+<p>上面那段有点黑魔法的代码还有一个更复杂的形式，即<a href="https://github.com/umdjs/umd" target="_blank">Universal Module Definition</a>：</p>
+<pre><code class="lang-javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(root, factory)</span> {</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {
+    <span class="hljs-comment">// AMD</span>
+    define(<span class="hljs-string">'backbone'</span>, [<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'underscore'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jQuery, _)</span> {</span>
+      <span class="hljs-keyword">return</span> factory(jQuery, _);
+    });
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {
+  <span class="hljs-comment">// Node.js</span>
+    module.exports = factory(<span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>), <span class="hljs-built_in">require</span>(<span class="hljs-string">'underscore'</span>));
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// Browser globals</span>
+    root.Backbone = factory(root.jQuery, root._);
+  }
+}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jQuery, _)</span> {</span>
+  <span class="hljs-keyword">var</span> Backbone = {};
+  <span class="hljs-comment">// Backbone code that depends on jQuery and _</span>
+  <span class="hljs-keyword">return</span> Backbone;
+
+}));
+</code></pre>
+<p>当然并不是所有的CMD模块都得这么写，你可以按照自己的方式，使用<code>require</code>、<code>exports</code>和<code>module</code>这三个关键字，遵循CMD的规范即可。</p>
+<p>最后<code>src</code>有两个文件，<code>venus.js</code>就很简单了：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-keyword">var</span> Vango = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./vango'</span>);
+    exports.Vango = Vango;
+})
+</code></pre>
+<p>我们的venus的cmd版本搞定了，vango.js作为vango具体实现，而venus.js只是这些将这些画家暴露出来。</p>
+<h3 id="">构建</h3>
+<p>作为标准的cmd模块，我们可以使用<code>spm-build</code>来构建，别忘了之前提到的，你可以使用<code>spm plugin install build</code>来安装。</p>
+<p>在项目的根目录下运行<code>spm build</code>：</p>
+<pre><code class="lang-bash">$ spm build
+           Task: <span class="hljs-string">"clean:build"</span> (clean) task
+
+           Task: <span class="hljs-string">"spm-install"</span> task
+
+           Task: <span class="hljs-string">"transport:src"</span> (transport) task
+      transport: <span class="hljs-number">2</span> files
+
+           Task: <span class="hljs-string">"concat:css"</span> (concat) task
+       concated: <span class="hljs-number">0</span> files
+
+           Task: <span class="hljs-string">"transport:css"</span> (transport) task
+      transport: <span class="hljs-number">0</span> files
+
+           Task: <span class="hljs-string">"concat:js"</span> (concat) task
+       concated: <span class="hljs-number">2</span> files
+
+           Task: <span class="hljs-string">"copy:build"</span> (copy) task
+
+           Task: <span class="hljs-string">"cssmin:css"</span> (cssmin) task
+
+           Task: <span class="hljs-string">"uglify:js"</span> (uglify) task
+           file: <span class="hljs-string">".build/dist/venus.js"</span> created.
+
+           Task: <span class="hljs-string">"clean:dist"</span> (clean) task
+
+           Task: <span class="hljs-string">"copy:dist"</span> (copy) task
+         copied: <span class="hljs-number">2</span> files
+
+           Task: <span class="hljs-string">"clean:build"</span> (clean) task
+       cleaning: <span class="hljs-string">".build"</span>...
+
+           Task: <span class="hljs-string">"spm-newline"</span> task
+         create: dist/venus-debug.js
+         create: dist/venus.js
+
+           Done: without errors.
+</code></pre>
+<p>从构建的log中可以看出，<code>spm</code>完全就是使用grunt来构建的，涉及到多个grunt task。你完全可以自己编写Gruntfile.js来实现自定义的构建过程。</p>
+<p>venus就被构建好了，<code>spm</code>在目录中生成了一个<code>dist</code>文件夹：</p>
+<pre><code class="lang-bash">|~dist/
+  |-venus-debug.js
+  `-venus.js
+</code></pre>
+<p><code>venus-debug.js</code>中的内容为：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">"island205/venus/1.0.0/venus-debug"</span>, [ <span class="hljs-string">"./vango-debug"</span> ], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-keyword">var</span> Vango = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./vango-debug"</span>);
+    exports.Vango = Vango;
+});
+
+define(<span class="hljs-string">"island205/venus/1.0.0/vango-debug"</span>, [], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-comment">// Vango's code</span>
+})
+</code></pre>
+<p><code>venus.js</code>的内容与之一样，只是经过了压缩，去掉了模块名最后的<code>-debug</code>。</p>
+<p><code>spm</code>将<code>src</code>中的vango.js和venus.js根据依赖打到了一起。作为包的主模块，venus.js被放到了最前面。</p>
+<blockquote>
+<p>这是Sea.js的默认约定，打包后的模块文件其中的一个define即为该包的主模块（ID 和路径相匹配的那一个），也就是说，你通过<code>require(&#39;island205/venus/1.0.0/venus&#39;)</code>，虽然Sea.js加载的是整个打包的模块，但是会把的一个factory的exports作为venus暴露的接口。</p>
+</blockquote>
+<h3 id="">发布</h3>
+<p>如果你用过npm，那你对spm的发布功能应该不会陌生了。spm也像npm一样，有一个公共仓库，我们可以通过<code>spm plublish</code>将venus发布到仓库中，与大家共享。</p>
+<pre><code class="lang-bash">$ spm publish
+        publish: island205/venus@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+          found: readme <span class="hljs-keyword">in</span> markdown.
+        tarfile: venus-<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>.tar.gz
+        execute: git rev-parse HEAD
+           yuan: Authorization required.
+           yuan: `spm login` first
+</code></pre>
+<p>如果你碰到上面这种情况，你需要登录下。</p>
+<pre><code class="lang-bash">$ spm publish
+        publish: island205/venus@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+          found: readme <span class="hljs-keyword">in</span> markdown.
+        tarfile: venus-<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>.tar.gz
+        execute: git rev-parse HEAD
+      published: island205/venus@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+</code></pre>
+<p>接下来我们使用venus编写一个名为pixelegos的网页程序，你可以使用这个程序来生成一些头像的位图。例如，spmjs的头像(这是github为spmjs生成的随机头像)：</p>
+<p><img src="https://identicons.github.com/1e5ac2bf13d0dc1b93e8d663f2fdf885.png" alt="spmjs"></p>
+<h2 id="pixelegos">pixelegos</h2>
+<p>pixelegos完成后的样子：</p>
+<p><img src="http://pic.yupoo.com/island205/D7v3BdKT/Aiuue.jpg" alt="pixelegos"></p>
+<h3 id="">准备</h3>
+<p>创建一个名为<code>pixelegos</code>的文件夹，初始化一个npm项目：</p>
+<pre><code class="lang-bash">$ mkdir pixelegos &amp;&amp; <span class="hljs-built_in">cd</span> pixelegos &amp;&amp; npm init
+</code></pre>
+<p>在目录中多了一个packege.json文件，在这个文件中包含了一些pixelegos的信息，之后还会保存一些node module和spm的配置。</p>
+<h3 id="">安装依赖</h3>
+<p>本项目中需要依赖的cmd模块包括<code>backbone</code>、<code>seajs</code>、<code>venus</code>、<code>zepto</code>。我们运行下面的命令安装这些依赖:</p>
+<pre><code class="lang-bash">$ spm install seajs/seajs gallery/backbone zepto/zepto island205/venus
+</code></pre>
+<p>在<code>pixelegos</code>目录下增加了一个<code>sea-modules</code>目录，上面的cmd依赖都安装在这个目录中，由于backone依赖于underscore，spm自动安装了依赖。</p>
+<pre><code class="lang-bash">├── gallery
+│   ├── backbone
+│   │   └── <span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+│   │       ├── backbone-debug.js
+│   │       ├── backbone.js
+│   │       └── package.json
+│   └── underscore
+│       └── <span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>
+│           ├── package.json
+│           ├── underscore-debug.js
+│           └── underscore.js
+├── island205
+│   └── venus
+│       └── <span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+│           ├── package.json
+│           ├── venus-debug.js
+│           └── venus.js
+├── seajs
+│   └── seajs
+│       └── <span class="hljs-number">2.1</span>.<span class="hljs-number">1</span>
+│           ├── package.json
+│           ├── sea-debug.js
+│           ├── sea.js
+│           └── sea.js.map
+└── zepto
+    └── zepto
+        └── <span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+            ├── package.json
+            ├── zepto-debug.js
+            └── zepto.js
+</code></pre>
+<h3 id="">开始</h3>
+<p>新建一些html、css、js文件，结构如下：</p>
+<pre><code class="lang-bash">├── index.css
+├── index.html
+├── js
+│   ├── canvas.js
+│   ├── config.js
+│   ├── menu.js
+│   ├── pixelegos.js
+│   └── tool.js
+├── package.json
+└── sea-modules
+    ├── gallery
+    ├── island205
+    ├── seajs
+    └── zepto
+</code></pre>
+<p>给index.html添加如下内容：</p>
+<pre><code class="lang-html"><span class="hljs-doctype">&lt;!DOCTYPE HTML&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">'viewport'</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/index.css"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/sea-modules/seajs/seajs/2.1.1/sea-debug.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/config.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        seajs.use(<span class="hljs-string">'/js/pixelegos'</span>)
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>其中，config.js在开发时用来配置alias，pixelegos作为整个程序的启动模块。</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// config.js</span>
+seajs.config({
+    alias: {
+        <span class="hljs-string">'$'</span>: <span class="hljs-string">'zepto/zepto/1.0.0/zepto'</span>,
+        <span class="hljs-string">"backbone"</span>: <span class="hljs-string">"gallery/backbone/1.0.0/backbone"</span>,
+        <span class="hljs-string">"venus"</span>: <span class="hljs-string">"island205/venus/1.0.0/venus"</span>
+    }
+})
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">// pixelegos.js</span>
+define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-keyword">var</span> Menu = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./menu'</span>)
+    <span class="hljs-keyword">var</span> Tool = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./tool'</span>)
+    <span class="hljs-keyword">var</span> Canvas = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./canvas'</span>)
+    <span class="hljs-keyword">var</span> $ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'$'</span>)
+
+    $(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> menu = <span class="hljs-keyword">new</span> Menu()
+        <span class="hljs-keyword">var</span> tool = <span class="hljs-keyword">new</span> Tool()
+        <span class="hljs-keyword">var</span> canvas = <span class="hljs-keyword">new</span> Canvas()
+        tool.on(<span class="hljs-string">'select'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(color)</span> {</span>
+            canvas.color = color
+        })
+        tool.on(<span class="hljs-string">'erase'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            canvas.color = <span class="hljs-string">'white'</span>
+        })
+    })
+})
+</code></pre>
+<p>在其他js文件中分别基于backbone实现一些pixelegos的组件。例如：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// menu.js</span>
+define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-keyword">var</span> Backbone = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>)
+    <span class="hljs-keyword">var</span> $ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'$'</span>)
+
+    <span class="hljs-keyword">var</span> Menu = Backbone.View.extend({
+        el: $(<span class="hljs-string">'header'</span>),
+        show: <span class="hljs-literal">false</span>,
+        events: {
+            <span class="hljs-string">'click .menu-trigger'</span>: <span class="hljs-string">'toogle'</span>
+        },
+        initialize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.menu = <span class="hljs-keyword">this</span>.$el.next()
+            <span class="hljs-keyword">this</span>.render()
+        },
+        toogle: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+            e.preventDefault()
+            <span class="hljs-keyword">this</span>.show = ! <span class="hljs-keyword">this</span>.show
+            <span class="hljs-keyword">this</span>.render()
+        },
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.show) {
+                <span class="hljs-keyword">this</span>.menu.css(<span class="hljs-string">'height'</span>, <span class="hljs-number">172</span>)
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.menu.css(<span class="hljs-string">'height'</span>, <span class="hljs-number">0</span>)
+            }
+        }
+    })
+
+    module.exports = Menu
+})
+</code></pre>
+<p>menu.js依赖于backbone和$（在config.js将zepto alias为了$），实现了顶部的菜单。</p>
+<h3 id="">当当当当</h3>
+<p>当当当当，巴拉巴拉，我们敲敲打打完成了pixelegos得功能，我们已经可以画出那只Octocat了！</p>
+<h3 id="">构建发布</h3>
+<p>终于来到了我们的重点，关于cmd模块的构建。</p>
+<blockquote>
+<p>有童靴觉得spm提供出来的构建工具很难用，搞不懂。我用下来确实些奇怪的地方，等我慢慢到来吧。</p>
+</blockquote>
+<p>spm为自定义构建提供了两个工具:</p>
+<ul>
+<li>grunt-cmd-transport：将cmd模块转换成具名模块，即将<code>define(function (require, exports, module) {})</code>转换为<code>define(id, deps, function(require, exports, module) {})</code>，可基于package.json中的spm配置来替换被alias掉的路径等等。本身还可以将css或者html文件转换为cmd包。</li>
+<li>grunt-cmd-concat：根据依赖树，将多个具名的cmd模块打包到一起。</li>
+</ul>
+<p>接下来就是用这些工具将我们零散的js打包成一个名为pixelegos.js的文件。</p>
+<h4 id="grunt">grunt</h4>
+<p>grunt是目前JavaScript最炙手可热的构建工具，我们先来安装下：</p>
+<pre><code class="lang-javascript">&quot; 在全部安装grunt的命令行接口
+$ npm install grunt-cli -g
+
+&quot; 安装需要用的grunt task
+$ npm install grunt grunt-cmd-concat grunt-cmd-transport grunt-contrib-concat grunt-contrib-jshint grunt-contrib-uglify  --dev-save
+</code></pre>
+<p>整个打包的流程为：</p>
+<ol>
+<li>将业务代码transport成cmd的具名模块</li>
+<li>concat所有的文件到一个文件pixelegos.js</li>
+<li>uglify</li>
+</ol>
+<h4 id="gruntfilejs">编写Gruntfile.js文件</h4>
+<p>第一步先把js文件夹中的业务js转换成具名模块：</p>
+<pre><code class="lang-javascript">transport : {
+    options: {
+        idleading: <span class="hljs-string">'/dist/'</span>,
+        alias: <span class="hljs-string">'&lt;%= pkg.spm.alias %&gt;'</span>,
+        debug: <span class="hljs-literal">false</span>
+    },
+    app:{
+        files:[{
+            cwd: <span class="hljs-string">'js/'</span>,
+            src: <span class="hljs-string">'**/*'</span>,
+            dest: <span class="hljs-string">'.build'</span>
+        }]
+    }
+}
+</code></pre>
+<p>这是一些transport的配置，即将js/中的js transport到.build中间文件夹中。</p>
+<p>接下来，将.build中的文件合并到一起（包含sea-modules中的依赖项。）：</p>
+<pre><code class="lang-javascript">concat : {
+    options : {
+        include : <span class="hljs-string">'all'</span>
+    },
+    app: {
+        files: [
+            {
+                expand: <span class="hljs-literal">true</span>,
+                cwd: <span class="hljs-string">'.build/'</span>,
+                src: [<span class="hljs-string">'pixelegos.js'</span>],
+                dest: <span class="hljs-string">'dist/'</span>,
+                ext: <span class="hljs-string">'.js'</span>
+            }
+        ]
+    }
+}
+</code></pre>
+<p>这里我们只对pixelegos.js进行concat，因为它是app的入口文件，将<code>include</code>配置成<code>all</code>，只需要concat这个文件，就能将所有的依赖项打包到一起。<code>include</code>还可以配置成其他值：</p>
+<ul>
+<li>self，相当于不做concat，只是copy该文件</li>
+<li>relative，只concat通过想对路径依赖的模块</li>
+</ul>
+<p>既然我们已经transport和concat好了文件，那我们直接使用整个文件就行了，于是我们的发布页面可写成：</p>
+<pre><code class="lang-javascript">&lt;!DOCTYPE HTML&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">'viewport'</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/index.css"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/sea-modules/seajs/seajs/2.1.1/sea.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        seajs.use(<span class="hljs-string">'/dist/pixelegos'</span>)
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+...
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></span>
+</code></pre>
+<p>当我运行index-product.html时我遇到了坑。在backbone包中并没有指明$依赖的具体包，导致打包后的js无法找到$.js文件。原本以为backbone中的$会被业务级的配置所替换，但是事实并非如此。如何解决？</p>
+<p>我们必须使用seajs.config接口提供一个dom的engine，在js/中创建engine.js文件：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// engine.js</span>
+seajs.config({
+    alias: {
+        <span class="hljs-string">'$'</span>: <span class="hljs-string">'zepto/zepto/1.0.0/zepto'</span>
+    }
+})
+</code></pre>
+<p>接下来把这个文件和pixelegos.js concat在一起：</p>
+<pre><code class="lang-javascript">normalconcat: {
+    app: {
+        src: [<span class="hljs-string">'js/engine.js'</span>, <span class="hljs-string">'dist/pixelegos.js'</span>],
+        dest: <span class="hljs-string">'dist/pixelegos.js'</span>
+    }
+}
+</code></pre>
+<p>由于grunt-contrib-concat和grunt-cmd-concat产生了task name的冲突，可以通过grunt.renameTask来修改task名。</p>
+<p>下一步，uglify！</p>
+<pre><code class="lang-javascript">uglify : {
+    app : {
+        files: [
+            {
+                expand: <span class="hljs-literal">true</span>,
+                cwd: <span class="hljs-string">'dist/'</span>,
+                src: [<span class="hljs-string">'**/*.js'</span>, <span class="hljs-string">'!**/*-debug.js'</span>],
+                dest: <span class="hljs-string">'dist/'</span>,
+                ext: <span class="hljs-string">'.js'</span>
+            }
+        ]
+    }
+}
+</code></pre>
+<p>大功告成，完整的Gruntfile.js如下:</p>
+<pre><code class="lang-javascript">module.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(grunt)</span> {</span>
+    grunt.initConfig({
+        pkg : grunt.file.readJSON(<span class="hljs-string">"package.json"</span>),
+        transport : {
+            options: {
+                idleading: <span class="hljs-string">'/dist/'</span>,
+                alias: <span class="hljs-string">'&lt;%= pkg.spm.alias %&gt;'</span>,
+                debug: <span class="hljs-literal">false</span>
+            },
+            app:{
+                files:[{
+                    cwd: <span class="hljs-string">'js/'</span>,
+                    src: <span class="hljs-string">'**/*'</span>,
+                    dest: <span class="hljs-string">'.build'</span>
+                }]
+            }
+        },
+        concat : {
+            options : {
+                include : <span class="hljs-string">'all'</span>
+            },
+            app: {
+                files: [
+                    {
+                        expand: <span class="hljs-literal">true</span>,
+                        cwd: <span class="hljs-string">'.build/'</span>,
+                        src: [<span class="hljs-string">'pixelegos.js'</span>],
+                        dest: <span class="hljs-string">'dist/'</span>,
+                        ext: <span class="hljs-string">'.js'</span>
+                    }
+                ]
+            }
+        },
+        normalconcat: {
+            app: {
+                src: [<span class="hljs-string">'js/engine.js'</span>, <span class="hljs-string">'dist/pixelegos.js'</span>],
+                dest: <span class="hljs-string">'dist/pixelegos.js'</span>
+            }
+        },
+        uglify : {
+            app : {
+                files: [
+                    {
+                        expand: <span class="hljs-literal">true</span>,
+                        cwd: <span class="hljs-string">'dist/'</span>,
+                        src: [<span class="hljs-string">'**/*.js'</span>, <span class="hljs-string">'!**/*-debug.js'</span>],
+                        dest: <span class="hljs-string">'dist/'</span>,
+                        ext: <span class="hljs-string">'.js'</span>
+                    }
+                ]
+            }
+        },
+        clean:{
+            app:[<span class="hljs-string">'.build'</span>, <span class="hljs-string">'dist'</span>]
+        }
+    })
+
+     grunt.loadNpmTasks(<span class="hljs-string">'grunt-cmd-transport'</span>)
+     grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-concat'</span>)
+     grunt.renameTask(<span class="hljs-string">'concat'</span>, <span class="hljs-string">'normalconcat'</span>)
+     grunt.loadNpmTasks(<span class="hljs-string">'grunt-cmd-concat'</span>)
+     grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-uglify'</span>)
+     grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-clean'</span>)
+
+     grunt.registerTask(<span class="hljs-string">'build'</span>, [<span class="hljs-string">'clean'</span>, <span class="hljs-string">'transport:app'</span>, <span class="hljs-string">'concat:app'</span>, <span class="hljs-string">'normalconcat:app'</span>, <span class="hljs-string">'uglify:app'</span>])
+     grunt.registerTask(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'build'</span>])
+}
+</code></pre>
+<h2 id="">总结</h2>
+<p>我们使用spm将一个非cmd模块venus转成了标准的cmd模块venus-in-cmd，然后我们用它结合多个cmd模块构建了一个简单的网页程序。很有成就，有没有！接下来我们要进入hard模式了，我们来看看，Sea.js是如何实现的？只有了解了它的内部是如何运作的，在使用它的过程才能游刃有余！</p>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./usage-guide.html" class="navigation navigation-prev " aria-label="Previous page: 使用指南"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./how-seajs-works.html" class="navigation navigation-next " aria-label="Next page: Sea.js是如何工作的？"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+<script src="gitbook/app.js"></script>
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

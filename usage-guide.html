@@ -1,0 +1,805 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="./manifest.appcache">
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <title>使用指南 | Hello Sea.js</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 0.6.0">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    
+    
+    <meta name="author" content="island205">
+    
+    
+    <link rel="next" href="./seajs-in-action.html" />
+    
+    
+    <link rel="prev" href="./getting-started.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+<link rel="stylesheet" href="gitbook/style.css">
+
+
+        
+    <div class="book" data-github="island205/HelloSea.js" data-level="5" data-basepath="." data-revision="1405703280663">
+    <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
+    
+    <a href="https://github.com/island205/HelloSea.js" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings" aria-label="Toggle font settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="btn-group btn-block">
+        <button id="reduce-font-size" class="btn btn-default">A</button>
+        <button id="enlarge-font-size" class="btn btn-default">A</button>
+    </div>
+
+    <ul class="list-group font-family-list">
+        <li class="list-group-item" data-font="0">Serif</li>
+        <li class="list-group-item" data-font="1">Sans</li>
+    </ul>
+
+    <div class="btn-group btn-group-xs btn-block color-theme-list">
+        <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Share on Google Plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Share on Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Share on Twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+    <a href="https://github.com/island205/HelloSea.js/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/island205/HelloSea.js/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="./" >Hello Sea.js</a>
+    </h1>
+</div>
+
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        <li>
+            <a href="https://github.com/island205" target="blank" class="author-link">About the author</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/issues" target="blank"class="issues-link">Questions and Issues</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/edit/master/usage-guide.md" target="blank" class="contribute-link">Edit and Contribute</a>
+        </li>
+        
+
+	
+
+        
+        <li class="divider"></li>
+        
+
+        
+    
+        
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                        <i class="fa fa-check"></i>
+                        
+                         Introduction
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="1" data-path="introduction.html">
+            
+                
+                    <a href="./introduction.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                         前言
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="2" data-path="acknowledgments.html">
+            
+                
+                    <a href="./acknowledgments.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                         感谢
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="3" data-path="what-is-seajs.html">
+            
+                
+                    <a href="./what-is-seajs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                         Sea.js是什么？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="4" data-path="getting-started.html">
+            
+                
+                    <a href="./getting-started.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                         快速入门
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter active" data-level="5" data-path="usage-guide.html">
+            
+                
+                    <a href="./usage-guide.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                         使用指南
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="6" data-path="seajs-in-action.html">
+            
+                
+                    <a href="./seajs-in-action.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                         开发实战
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="7" data-path="how-seajs-works.html">
+            
+                
+                    <a href="./how-seajs-works.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                         Sea.js是如何工作的？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="8" data-path="your-own-loader-bodulejs.html">
+            
+                
+                    <a href="./your-own-loader-bodulejs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                         编写自己的模块加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="9" data-path="the-future-of-modular-javascript.html">
+            
+                
+                    <a href="./the-future-of-modular-javascript.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                         JavaScript模块化的未来
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="10" data-path="reference.html">
+            
+                
+                    <a href="./reference.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                         参考资料
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank" class="gitbook-link">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 50%;min-width: 40%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="./index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="./introduction.html" title="前言" class="chapter done new-chapter" data-progress="1" style="left: 10%;"></a>
+    
+        <a href="./acknowledgments.html" title="感谢" class="chapter done new-chapter" data-progress="2" style="left: 20%;"></a>
+    
+        <a href="./what-is-seajs.html" title="Sea.js是什么？" class="chapter done new-chapter" data-progress="3" style="left: 30%;"></a>
+    
+        <a href="./getting-started.html" title="快速入门" class="chapter done new-chapter" data-progress="4" style="left: 40%;"></a>
+    
+        <a href="./usage-guide.html" title="使用指南" class="chapter done new-chapter" data-progress="5" style="left: 50%;"></a>
+    
+        <a href="./seajs-in-action.html" title="开发实战" class="chapter  new-chapter" data-progress="6" style="left: 60%;"></a>
+    
+        <a href="./how-seajs-works.html" title="Sea.js是如何工作的？" class="chapter  new-chapter" data-progress="7" style="left: 70%;"></a>
+    
+        <a href="./your-own-loader-bodulejs.html" title="编写自己的模块加载器" class="chapter  new-chapter" data-progress="8" style="left: 80%;"></a>
+    
+        <a href="./the-future-of-modular-javascript.html" title="JavaScript模块化的未来" class="chapter  new-chapter" data-progress="9" style="left: 90%;"></a>
+    
+        <a href="./reference.html" title="参考资料" class="chapter  " data-progress="10" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_10">
+                    
+                        <h1 id="">使用指南</h1>
+<p>刚才的示例很简单？实际上Sea.js本身小巧而不失灵活，让我们再来深入地了解下如何使用Sea.js!</p>
+<h2 id="">定义模块</h2>
+<p>Sea.js是<a href="https://github.com/cmdjs/specification/blob/master/draft/module.md" target="_blank">CMD</a>这个模块系统的一个运行时，Sea.js可以加载的模块，就是CMD规范里所指明的。那我们该如何编写一个CMD模块呢？</p>
+<p>Sea.js提供了一个全局方法——<code>define</code>，用来定义一个CMD模块。</p>
+<h4 id="definefactory"><code>define(factory)</code></h4>
+<pre><code class="lang-JavaScript">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-comment">// 模块代码</span>
+    <span class="hljs-comment">// 使用require获取依赖模块的接口</span>
+    <span class="hljs-comment">// 使用exports或者module来暴露该模块的对外接口</span>
+})
+</code></pre>
+<p><code>factory</code>是这样一个函数<code>function (require?, exports?, module?) {}</code>，如果模块本身既不依赖其他模块，也不提供接口，<code>require</code>、<code>exports</code>和<code>module</code>都可以省略。但通常会是以下两种形式：</p>
+<pre><code class="lang-JavaScript">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports)</span> {</span>
+    <span class="hljs-keyword">var</span> Vango = <span class="hljs-built_in">require</span>(<span class="hljs-string">'vango'</span>)
+    exports.drawCircle = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> vango = <span class="hljs-keyword">new</span> Vango(document.body, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)
+        vango.circle(<span class="hljs-number">50</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>, {
+            fill: <span class="hljs-literal">true</span>,
+            styles:{
+                fillStyle:<span class="hljs-string">"red"</span>
+            }
+        })
+    }
+})
+</code></pre>
+<p>或者：</p>
+<pre><code class="lang-JavaScript">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-keyword">var</span> Vango = <span class="hljs-built_in">require</span>(<span class="hljs-string">'vango'</span>);
+    module.exports = {
+        drawCircle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> vango = <span class="hljs-keyword">new</span> Vango(document.body, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>);
+            vango.circle(<span class="hljs-number">50</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>, {
+                fill: <span class="hljs-literal">true</span>,
+                styles:{
+                    fillStyle:<span class="hljs-string">"red"</span>
+                }
+            });
+        }
+    };
+});
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：必须保证参数的顺序，即需要用到require， exports不能省略；在模块中exports对象不可覆盖，如果需要覆盖请使用<code>module.exports</code>的形式（这与node的用法一致，在后面的原理介绍会有相关的解释）。你可以使用<code>module.exports</code>来export任意的对象（包括字符串、数字等等）。</p>
+</blockquote>
+<h4 id="defineid-dependencies-factory"><code>define(id?, dependencies?, factory)</code></h4>
+<p><strong>id</strong>：String 模块标识</p>
+<p><strong>dependencies</strong>：Array 模块依赖的模块标识</p>
+<p>这种写法属于<a href="http://wiki.commonjs.org/wiki/Modules/Transport/D" target="_blank">Modules/Transport/D</a>规范。</p>
+<pre><code class="lang-JavaScript">define(<span class="hljs-string">'drawCircle'</span>, [<span class="hljs-string">'vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports)</span> {</span>
+    <span class="hljs-keyword">var</span> Vango = <span class="hljs-built_in">require</span>(<span class="hljs-string">'vango'</span>);
+    exports.drawCircle = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> vango = <span class="hljs-keyword">new</span> Vango(document.body, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>);
+        vango.circle(<span class="hljs-number">50</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>, {
+            fill: <span class="hljs-literal">true</span>,
+            styles:{
+                fillStyle:<span class="hljs-string">"red"</span>
+            }
+        });
+    };
+})
+</code></pre>
+<p>与CMD的<code>define</code>没有本质区别，我更情愿把它称作“具名模块”。Sea.js从用于生产的角度来说，必须支持具名模块，因为开发时模块拆得太小，生产环境必须把这些模块文件打包为一个文件，如果模块都是匿名的，那就傻逼了。（<a href="https://github.com/seajs/seajs/issues/930" target="_blank">为什么会傻逼？</a>）</p>
+<blockquote>
+<p>所以Sea.js支持具名模块也是无奈之举。</p>
+</blockquote>
+<h4 id="defineanythingelse"><code>define(anythingelse)</code></h4>
+<p>除去以上两种形式，在CMD标准中，可以给define传入任意的字符串或者对象，表示接口就是对象或者字符串。不过这只是包含在标准中，在Sea.js并没有相关的实现。</p>
+<h2 id="seajs">配置Sea.js</h2>
+<p>Sea.js为了能够使用起来更灵活，提供了配置的接口。可配置的内容包括静态服务的位置，简化模块标识或路径。接下来我们来详细地了解下这些内容。</p>
+<h4 id="seajsconfigconfig">seajs.config(config)</h4>
+<p><strong>config</strong>：Object，配置键值对。</p>
+<p>Sea.js通过<code>.config</code>API来进行配置。你甚至可以在多个地方调用seajs.config来配置。Sea.js会mix传入的多个config对象。</p>
+<pre><code class="lang-JavaScript">seajs.config({
+    alias: {
+        <span class="hljs-string">'jquery'</span>: <span class="hljs-string">'path/to/jquery.js'</span>,
+        <span class="hljs-string">'a'</span>: <span class="hljs-string">'path/to/a.js'</span>
+    },
+    preload: [<span class="hljs-string">'seajs-text'</span>]
+})
+</code></pre>
+<pre><code class="lang-JavaScript">seajs.config({
+    alias: {
+        <span class="hljs-string">'underscore'</span>: <span class="hljs-string">'path/to/underscore.js'</span>,
+        <span class="hljs-string">'a'</span>: <span class="hljs-string">'path/to/biz/a.js'</span>
+    },
+    preload: [<span class="hljs-string">'seajs-combo'</span>]
+})
+</code></pre>
+<p>上面两个配置会合并为：</p>
+<pre><code class="lang-JavaScript">{
+    alias: {
+        <span class="hljs-string">'jquery'</span>: <span class="hljs-string">'path/to/jquery.js'</span>,
+        <span class="hljs-string">'underscore'</span>: <span class="hljs-string">'path/to/underscore.js'</span>,
+        <span class="hljs-string">'a'</span>: <span class="hljs-string">'path/to/biz/a.js'</span>
+    },
+    preload: [<span class="hljs-string">'seajs-text'</span>, <span class="hljs-string">'seajs-combo'</span>]
+
+}
+</code></pre>
+<p><code>config</code>可以配置的键入下：</p>
+<h4 id="base">base</h4>
+<p><strong>base</strong>：String，在解析绝对路径标识的模块时所使用的base路径。</p>
+<p>默认地，在不配置base的情况下，base与sea.js的引用路径。如果引用路径为<code>http://example.com/assets/sea.js</code>，则base为<code>http://example.com/assets/</code>。</p>
+<blockquote>
+<p>在阅读Sea.js这份文档时看到：<br><em>当 sea.js 的访问路径中含有版本号时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便。</em><br>即如果sea.js的引用路径为<a href="http://example.com/assets/1.0.0/sea.js，则base仍为http://example.com/assets/。这种方便性，我觉得过了点。" target="_blank">http://example.com/assets/1.0.0/sea.js，则base仍为http://example.com/assets/。这种方便性，我觉得过了点。</a></p>
+</blockquote>
+<p>使用base配置，根本上可以分离静态文件的位置，比如使用CDN等等。</p>
+<pre><code class="lang-JavaScript">seajs.config({
+    base: <span class="hljs-string">'http://g.tbcdn.cn/tcc/'</span>
+})
+</code></pre>
+<blockquote>
+<p>如果我们有三个CDN域名，如何将静态资源散列到这三个域名上呢？</p>
+</blockquote>
+<h4 id="paths">paths</h4>
+<p><strong>paths</strong>：Object，如果目录太深，可以使用paths这个配置项来缩写，可以在require时少写些代码。</p>
+<p>如果：</p>
+<pre><code class="lang-JavaScript">seajs.config({
+    base: <span class="hljs-string">'http://g.tbcdn.cn/tcc/'</span>,
+    paths: {
+        <span class="hljs-string">'index'</span>: <span class="hljs-string">'s/js/index'</span>
+    }
+})
+</code></pre>
+<p>则：</p>
+<pre><code class="lang-JavaScript">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-comment">// http://g.tbcdn.cn/tcc/s/js/index/switch.js</span>
+    <span class="hljs-keyword">var</span> Switch = <span class="hljs-built_in">require</span>(<span class="hljs-string">'index/switch'</span>)
+});
+</code></pre>
+<h4 id="alias">alias</h4>
+<p><strong>alias</strong>：Object，本质上看不出和paths有什么区别，区别就在使用的概念上。</p>
+<pre><code class="lang-JavaScript">seajs.config({
+    alias: {
+        <span class="hljs-string">'jquery'</span>: <span class="hljs-string">'jquery/jquery/1.10.1/jquery'</span>
+    }
+})
+</code></pre>
+<p>然后：</p>
+<pre><code class="lang-JavaScript">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-comment">// jquery/jquery/1.10.1/jquery</span>
+    <span class="hljs-keyword">var</span> $ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>);
+});
+</code></pre>
+<blockquote>
+<p>看出使用概念的区别了么？</p>
+</blockquote>
+<h4 id="preload">preload</h4>
+<p><code>preload</code>配置项可以让你在加载普通模块之前提前加载一些模块。既然所有模块都是在use之后才加载的，preload有何意义？然，看下面这段：</p>
+<pre><code class="lang-JavaScript">seajs.config({
+    preload: [
+        <span class="hljs-built_in">Function</span>.prototype.bind ? <span class="hljs-string">''</span> : <span class="hljs-string">'es5-safe'</span>,
+        <span class="hljs-keyword">this</span>.JSON ? <span class="hljs-string">''</span> : <span class="hljs-string">'json'</span>
+    ]
+});
+</code></pre>
+<p>preload比较适合用来加载一些核心模块，或者是shim模块。这是一个全局的配置，使用者无需关系核心模块或者是shim模块的加载，把注意力放在核心功能即可。</p>
+<p>还有一些别的配置，比如<code>vars</code>、<code>map</code>等，可以参考<a href="https://github.com/seajs/seajs/issues/262" target="_blank">配置</a>。</p>
+<h2 id="">使用模块</h2>
+<h4 id="seajsuseid"><code>seajs.use(id)</code></h4>
+<p>Sea.js通过use方法来启动一个模块。</p>
+<pre><code class="lang-JavaScript">seajs.use(<span class="hljs-string">'./main'</span>)
+</code></pre>
+<p>在这里，<code>./main</code>是main模块的id，Sea.js在main模块LOADED之后，执行这个模块。</p>
+<p>Sea.js还有另外一种启动模块的方式：</p>
+<h4 id="seajsuseids-callbacks">seajs.use(ids, callbacks)</h4>
+<pre><code class="lang-JavaScript">seajs.use(<span class="hljs-string">'./main'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(main)</span> {</span>
+    main.init()
+})
+</code></pre>
+<p>Sea.js执行ids中的所有模块，然后传递给callback使用。</p>
+<h2 id="">插件</h2>
+<p>Sea.js官方提供了7个插件，对Sea.js的功能进行了补充。</p>
+<ul>
+<li>seajs-text：用来加载HTML或者模板文件；</li>
+<li>seajs-style：提供了<code>importStyle</code>，动态地向页面中插入css；</li>
+<li>seajs-combo：该插件提供了依赖combo的功能，能把多个依赖的模块uri combo，减少HTTP请求；</li>
+<li>seajs-flush：该插件是对seajs-combo的补充，或者是大杀器，可以先hold住前面的模块请求，最后将请求的模块combo成一个url，一次加载hold住的模块；</li>
+<li>seajs-debug：Fiddler用过么？这个插件基本就是提供了这样一种功能，可以通过修改config，将线上文件proxy到本地服务器，便于线上开发调试和排错；</li>
+<li>seajs-log：提供一个seajs.log API，私觉得比较鸡肋；</li>
+<li>seajs-health：目标功能是，分析当前网页的模块健康情况。</li>
+</ul>
+<p>由此可见，Sea.js的插件主要是解决一些附加问题，或者是给Sea.js添加一些额外的功能。私觉得有些功能并不合适让Sea.js来处理。</p>
+<h4 id="">插件机制</h4>
+<p>总结一下，插件机制大概就是两种：</p>
+<ul>
+<li>使用Sea.js在加载过程中的事件，注入一些插件代码，修改Sea.js的运行流程，实现插件的功能；</li>
+<li>给seajs加入一些方法，提供一些额外的功能。</li>
+</ul>
+<blockquote>
+<p>私还是觉得Sea.js应该保持纯洁；为了实现插件，在Sea.js中加入的代码，感觉有点不值；combo这种事情，更希望采取别的方式来实现。
+Sea.js应该做好运行时。</p>
+</blockquote>
+<h2 id="">构建与部署</h2>
+<p>很多时候，某个工具或者类库，玩玩可以，但是一用到生产环境，就感觉力不从心了。就拿Sea.js来说，开发的时候根据业务将逻辑拆分到很多小模块，逻辑清晰，开发方便。但是上线后，模块太多，HTTP请求太多，就会拖慢页面速度。</p>
+<p>所以我们必须对模块进行打包压缩。这也是SPM的初衷。</p>
+<p>SPM是什么？</p>
+<p>使用者认为SPM是Sea.js Package Manager，但是实际上代表的是Static Package Manager，及静态包管理工具。如果大家有用过npm，你可以认为SPM是一个针对前端模块的包管理工具。当然它不仅仅如此。</p>
+<p>SPM包括：</p>
+<ul>
+<li>源服务：类似于npm源服务器的源服务；</li>
+<li>包管理工具：相当于npm的命令行，安装、发布模块，解决模块依赖；</li>
+<li>构建工具：模块CMD化、合并模块、压缩等；都是针对我们一开始提到的问题；</li>
+<li>配置管理：管理配置；</li>
+<li>辅助功能：比较像Yeoman，以插件提供一些便于平时开发的组件。</li>
+</ul>
+<blockquote>
+<p>SPM心很大，SPM囊括yo、bower和grunt这三个工具。</p>
+</blockquote>
+<h3 id="spm">spm</h3>
+<blockquote>
+<p>spm is a package manager, it is not build tools.</p>
+</blockquote>
+<p>这句话来自github上<a href="https://github.com/spmjs/spm2" target="_blank">spm2</a>的README文件。<code>spm是一个包管理工具，不是构建工具！</code>，它与npm非常相似。</p>
+<h4 id="spm">spm的包规范</h4>
+<p>一个spm的模块至少包含：</p>
+<pre><code class="lang-bash">-- dist
+    -- overlay.js
+    -- overlay.min.js
+-- package.json
+</code></pre>
+<h5 id="packagejson">package.json</h5>
+<p>在模块中必须提供一个package.json，该文件遵循<a href="https://github.com/cmdjs/specification" target="_blank">Common Module Definition</a>模块标准。与node的<code>package.json</code>兼容。在此基础上添加了两个key。</p>
+<ul>
+<li>family，即是包发布者在spmjs.org上的用户名；</li>
+<li>spm，针对spm的配置。</li>
+</ul>
+<p>一个典型的<code>package.json</code>文件：</p>
+<pre><code class="lang-JSON">{
+    "<span class="hljs-attribute">family</span>": <span class="hljs-value"><span class="hljs-string">"arale"</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"base"</span></span>,
+    "<span class="hljs-attribute">version</span>": <span class="hljs-value"><span class="hljs-string">"1.0.0"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"base is ...."</span></span>,
+    "<span class="hljs-attribute">homepage</span>": <span class="hljs-value"><span class="hljs-string">"http://aralejs.org/base/"</span></span>,
+    "<span class="hljs-attribute">repository</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"git"</span></span>,
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"https://github.com/aralejs/base.git"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">keywords</span>": <span class="hljs-value">[<span class="hljs-string">"class"</span>]</span>,
+
+    "<span class="hljs-attribute">spm</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"src"</span></span>,
+        "<span class="hljs-attribute">output</span>": <span class="hljs-value">[<span class="hljs-string">"base.js"</span>, <span class="hljs-string">"i18n/*"</span>]</span>,
+        "<span class="hljs-attribute">alias</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">class</span>": <span class="hljs-value"><span class="hljs-string">"arale/class/1.0.0/class"</span></span>,
+            "<span class="hljs-attribute">events</span>": <span class="hljs-value"><span class="hljs-string">"arale/events/1.0.0/events"</span>
+        </span>}
+    </span>}
+</span>}
+</code></pre>
+<h5 id="dist">dist</h5>
+<p><code>dist</code>目录包含了模块必要的模块代码；可能是使用spm-build打包的，当然只要满足两个条件，就是一个spm的包。</p>
+<h4 id="">安装</h4>
+<p><code>$ npm install spm -g</code></p>
+<p>安装好了spm，那该如何使用spm呢？让我们从help命令开始：</p>
+<h4 id="help">help</h4>
+<p>我们可以运行<code>spm help</code>查看<code>spm</code>所包含的功能：</p>
+<pre><code class="lang-bash">$ spm <span class="hljs-built_in">help</span>
+
+  Static Package Manager
+
+  Usage: spm &lt;command&gt; [options]
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+
+  System Commands:
+
+    plugin         plugin system <span class="hljs-keyword">for</span> spm
+    config         configuration <span class="hljs-keyword">for</span> spm
+    <span class="hljs-built_in">help</span>           show <span class="hljs-built_in">help</span> information
+
+  Package Commands:
+
+    tree           show dependencies tree
+    info           information of a module
+    login          login your account
+    search         search modules
+    install        install a module
+    publish        publish a module
+    unpublish      unpublish a module
+
+  Plugin Commands:
+
+    init           init a template
+    build          Build a standar cmd module.
+</code></pre>
+<p><code>spm</code>包含三种命令，<strong>系统命令</strong>，即与<code>spm</code>本身相关（配置、插件和帮助），<strong>包命令</strong>，与包管理相关，<strong>插件命令</strong>，插件并不属于<code>spm</code>的核心内容，目前有两个插件<code>init</code>和<code>build</code>。</p>
+<p>也可以使用<code>help</code>来查看单个命令的用法：</p>
+<pre><code class="lang-bash">$ spm <span class="hljs-built_in">help</span> install
+
+  Usage: spm-install [options] family/name[@version]
+
+  Options:
+
+    -h, --help               output usage information
+    <span class="hljs-operator">-s</span>, --source [name]      the <span class="hljs-built_in">source</span> repo name
+    <span class="hljs-operator">-d</span>, --destination [dir]  the destination, default: sea-modules
+    -g, --global             install the package to ~/.spm/sea-modules
+    <span class="hljs-operator">-f</span>, --force              force to download a unstable module
+    -v, --verbose            show more logs
+    -q, --quiet              show less logs
+    --parallel [number]      parallel installation
+    --no-color               disable colorful print
+
+
+  Examples:
+
+   $ spm install jquery
+   $ spm install jquery/jquery arale/class
+   $ spm install jquery/jquery@<span class="hljs-number">1.8</span>.<span class="hljs-number">2</span>
+</code></pre>
+<h4 id="config">config</h4>
+<p>我们可以使用<code>config</code>来配置用户信息、安装方式以及源。</p>
+<pre><code class="lang-bash">; Config username
+$ spm config user.name island205
+
+; Or, config default <span class="hljs-built_in">source</span> 
+$ spm config source.default.url http://spmjs.org
+</code></pre>
+<h4 id="search">search</h4>
+<p><code>spm</code>是一个包管理工具，与<code>npm</code>类似，有自己的源服务器。我们可以使用<code>search</code>命令来查看源提供的包。</p>
+<blockquote>
+<p>由于<code>spm</code>在包规范中加入了<code>family</code>的概念，常常想运行<code>spm install backbone</code>，发现并没有backbone这个包。原因就是<code>backbone</code>是放在<code>gallery</code>这族下的。</p>
+</blockquote>
+<pre><code class="lang-bash">$ spm search backbone
+
+  <span class="hljs-number">1</span> result
+
+  gallery/backbone
+  keys: model view controller router server client browser
+  desc: Give your JS App some Backbone with Models, Views, Collections, and Events.
+</code></pre>
+<h4 id="install">install</h4>
+<p>然后我们就可以使用<code>install</code>来安装了，注意我们必须使用包的全名，即<code>族名/包名</code>。</p>
+<pre><code class="lang-bash">$ spm install gallery/backbone
+
+        install: gallery/backbone@stable
+          fetch: gallery/backbone@stable
+       download: repository/gallery/backbone/<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>/backbone-<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>.tar.gz
+           save: c:\Users\zhi.cun\.spm\cache\gallery\backbone\<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>\backbone-<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>.tar.gz
+        extract: c:\Users\zhi.cun\.spm\cache\gallery\backbone\<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>\backbone-<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>.tar.gz
+          found: dist <span class="hljs-keyword">in</span> the package
+      installed: sea-modules\gallery\backbone\<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>
+        depends: gallery/underscore@<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>
+
+        install: gallery/underscore@<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>
+          fetch: gallery/underscore@<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>
+       download: repository/gallery/underscore/<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>/underscore-<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>.tar.gz
+           save: c:\Users\zhi.cun\.spm\cache\gallery\underscore\<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>\underscore-<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>.tar.gz
+        extract: c:\Users\zhi.cun\.spm\cache\gallery\underscore\<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>\underscore-<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>.tar.gz
+          found: dist <span class="hljs-keyword">in</span> the package
+      installed: sea-modules\gallery\underscore\<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>
+</code></pre>
+<p><code>spm</code>将模块安装在了<code>sea_modules</code>中，并且在<code>~/.spm/cache</code>中做了缓存。</p>
+<pre><code class="lang-bash">`~sea-modules/
+  `~gallery/
+    |~backbone/
+    | `~<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span>/
+    |   |-backbone-debug.js
+    |   |-backbone.js
+    |   `-package.json
+    `~underscore/
+      `~<span class="hljs-number">1.4</span>.<span class="hljs-number">4</span>/
+        |-package.json
+        |-underscore-debug.js
+        `-underscore.js
+</code></pre>
+<p><code>spm</code>还加载了<code>backbone</code>的依赖<code>underscore</code>。</p>
+<p>当然，Sea.js也是一个模块，你可以通过下面的命令来安装：</p>
+<pre><code class="lang-bash">$ spm install seajs/seajs
+</code></pre>
+<p><code>seajs</code>的安装路径为<code>sea_modules/seajs/seajs/2.1.1/sea.js</code>，看到这里，结合seajs顶级模块定位的方式，对于seajs在计算base路径的时，去掉了<code>seajs/seajs/2.1.1/</code>的原因。</p>
+<h4 id="build">build</h4>
+<p><code>spm</code>并不是以构建工具为目标，它本身是一个包管理器。所以<code>spm</code>将构建的功能以插件的功能提供出来。我们可以通过plugin命令来安装<code>build</code>：</p>
+<pre><code class="lang-bash">$ spm plugin install build
+</code></pre>
+<p>安装好之后，如果你使用的是标准的<code>spm</code>包模式，就可以直接运行<code>spm build</code>来进行标准的打包。</p>
+<p><strong>SPM2的功能和命令就介绍到这里，更多的命令在之后的实践中介绍。</strong></p>
+<h3 id="spmspm2">spm与spm2</h3>
+<h4 id="spmspm2">spm与spm2</h4>
+<p>其实之前介绍的spm是其第二个版本<a href="https://github.com/spmjs/spm2" target="_blank">spm2</a>。spm的第一个版本可以在<a href="https://github.com/spmjs/spm" target="_blank">这里</a>找到。</p>
+<p>spm与spm2同样都是包管理工具，那它们之间有什么不同呢？</p>
+<ul>
+<li>从定位上，spm2更加强调该工具是一个CMD包管理工具；</li>
+<li>从提供的用户接口（cmd命令）spm2比起spm更加规范，作为包管理工具，在使用方式和命令都更趋同于npm；</li>
+<li>在spm2中，构建命令以插件的方式独立出来，并且分层清晰；Transport和Concat封装成了grunt，便于自定义build方式；基于基础的grunt，构建了一个标准的spm-build工具，用于构建标准的CMD模块；</li>
+<li>与此类似，deploy和init的功能都是以插件的形式提供的；</li>
+<li>修改了package.json规范。</li>
+</ul>
+<p>为什么作者对spm进行了大量的重构？</p>
+<p>之所以进行大量的重构，就是为了保持spm作为包管理工具的特征。如npm一般，只指定最少的规范（package.json），提供包管理的命令，但是这个包如何构建，代码如何压缩并不是spm关心的事情。</p>
+<p>只有规则简单合理，只定义接口，不关心具体实现，才有更广的实用性。</p>
+<blockquote>
+<p>spm本身是从业务需求成长起来的一个包管理工具，spm1更多的是一些需求功能的堆砌，而spm2就是对这些功能的提炼，形成一套适用于业界的工具。</p>
+</blockquote>
+<h4 id="apm">apm</h4>
+<p>apm的全称是：</p>
+<blockquote>
+<p>Alipay package manager</p>
+</blockquote>
+<p>即支付宝的包管理工具。</p>
+<p>apm是基于spm的一套专门为支付宝开发的工具集。我们可以这么看，spm2和apm是spm升级后的两个产物，spm2更加专注于包管理和普适性，而apm更加专注于支付宝业务。由于业务细节和规模的不同，apm可能并不适合其他公司所用，所以需要spm2，而又因为支付宝业务的特殊性和基因，必须apm。</p>
+<p>谢谢 @lepture 的指正：</p>
+<blockquote>
+<p>不一定要用 apm，只是 apm 把所有要用到的插件都打包好了，同时相应的默认配置也为支付宝做了处理，方便内部员工使用，不用再配置了。</p>
+</blockquote>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./getting-started.html" class="navigation navigation-prev " aria-label="Previous page: 快速入门"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./seajs-in-action.html" class="navigation navigation-next " aria-label="Next page: 开发实战"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+<script src="gitbook/app.js"></script>
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="./manifest.appcache">
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <title>编写自己的模块加载器 | Hello Sea.js</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 0.6.0">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    
+    
+    <meta name="author" content="island205">
+    
+    
+    <link rel="next" href="./the-future-of-modular-javascript.html" />
+    
+    
+    <link rel="prev" href="./how-seajs-works.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+<link rel="stylesheet" href="gitbook/style.css">
+
+
+        
+    <div class="book" data-github="island205/HelloSea.js" data-level="8" data-basepath="." data-revision="1405703280663">
+    <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
+    
+    <a href="https://github.com/island205/HelloSea.js" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings" aria-label="Toggle font settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="btn-group btn-block">
+        <button id="reduce-font-size" class="btn btn-default">A</button>
+        <button id="enlarge-font-size" class="btn btn-default">A</button>
+    </div>
+
+    <ul class="list-group font-family-list">
+        <li class="list-group-item" data-font="0">Serif</li>
+        <li class="list-group-item" data-font="1">Sans</li>
+    </ul>
+
+    <div class="btn-group btn-group-xs btn-block color-theme-list">
+        <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Share on Google Plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Share on Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Share on Twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+    <a href="https://github.com/island205/HelloSea.js/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/island205/HelloSea.js/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="./" >Hello Sea.js</a>
+    </h1>
+</div>
+
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        <li>
+            <a href="https://github.com/island205" target="blank" class="author-link">About the author</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/issues" target="blank"class="issues-link">Questions and Issues</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/edit/master/your-own-loader-bodulejs.md" target="blank" class="contribute-link">Edit and Contribute</a>
+        </li>
+        
+
+	
+
+        
+        <li class="divider"></li>
+        
+
+        
+    
+        
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                        <i class="fa fa-check"></i>
+                        
+                         Introduction
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="1" data-path="introduction.html">
+            
+                
+                    <a href="./introduction.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                         前言
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="2" data-path="acknowledgments.html">
+            
+                
+                    <a href="./acknowledgments.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                         感谢
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="3" data-path="what-is-seajs.html">
+            
+                
+                    <a href="./what-is-seajs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                         Sea.js是什么？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="4" data-path="getting-started.html">
+            
+                
+                    <a href="./getting-started.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                         快速入门
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="5" data-path="usage-guide.html">
+            
+                
+                    <a href="./usage-guide.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                         使用指南
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="6" data-path="seajs-in-action.html">
+            
+                
+                    <a href="./seajs-in-action.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                         开发实战
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="7" data-path="how-seajs-works.html">
+            
+                
+                    <a href="./how-seajs-works.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                         Sea.js是如何工作的？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter active" data-level="8" data-path="your-own-loader-bodulejs.html">
+            
+                
+                    <a href="./your-own-loader-bodulejs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                         编写自己的模块加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="9" data-path="the-future-of-modular-javascript.html">
+            
+                
+                    <a href="./the-future-of-modular-javascript.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                         JavaScript模块化的未来
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="10" data-path="reference.html">
+            
+                
+                    <a href="./reference.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                         参考资料
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank" class="gitbook-link">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 80%;min-width: 70%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="./index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="./introduction.html" title="前言" class="chapter done new-chapter" data-progress="1" style="left: 10%;"></a>
+    
+        <a href="./acknowledgments.html" title="感谢" class="chapter done new-chapter" data-progress="2" style="left: 20%;"></a>
+    
+        <a href="./what-is-seajs.html" title="Sea.js是什么？" class="chapter done new-chapter" data-progress="3" style="left: 30%;"></a>
+    
+        <a href="./getting-started.html" title="快速入门" class="chapter done new-chapter" data-progress="4" style="left: 40%;"></a>
+    
+        <a href="./usage-guide.html" title="使用指南" class="chapter done new-chapter" data-progress="5" style="left: 50%;"></a>
+    
+        <a href="./seajs-in-action.html" title="开发实战" class="chapter done new-chapter" data-progress="6" style="left: 60%;"></a>
+    
+        <a href="./how-seajs-works.html" title="Sea.js是如何工作的？" class="chapter done new-chapter" data-progress="7" style="left: 70%;"></a>
+    
+        <a href="./your-own-loader-bodulejs.html" title="编写自己的模块加载器" class="chapter done new-chapter" data-progress="8" style="left: 80%;"></a>
+    
+        <a href="./the-future-of-modular-javascript.html" title="JavaScript模块化的未来" class="chapter  new-chapter" data-progress="9" style="left: 90%;"></a>
+    
+        <a href="./reference.html" title="参考资料" class="chapter  " data-progress="10" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_1">
+                    
+                        <h1 id="bodulejs">自己实现一个模块加载器——bodule.js</h1>
+<blockquote>
+<p>shut up, show me the code!</p>
+</blockquote>
+<p>要想真正地了解一个加载器是如何工作的，就是自己实现一个！让我们来一步一步地实现一个名为bodule.js的模块加载器。</p>
+<h2 id="">约定</h2>
+<p>一个模块系统，必然有一些约定，下面是bodule.js的规范。</p>
+<h3 id="">模块</h3>
+<p>bodule.js的模块由以下几个概念组成：</p>
+<ul>
+<li>url，一个url地址对应一个模块；</li>
+<li>meta module：如下形式为一个meta module：</li>
+</ul>
+<p><strong>define(id, dependancies?, factory)</strong></p>
+<p>id必须为完整的url，dependancies如果没有依赖，则可以省略，factory包含两种形式：</p>
+<p>Function：function(require, [exports,] [module])：</p>
+<p>非Function：直接作为该meta模块的exports。</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'http://bodule.org/island205/venus/1.0.0/venus'</span>, [<span class="hljs-string">'./vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS</span>
+})
+
+<span class="hljs-comment">// or</span>
+
+
+define(<span class="hljs-string">'http://bodule.org/island205/venus/1.0.0/conststring'</span>, <span class="hljs-string">'bodule.js'</span>)
+
+<span class="hljs-comment">// even or</span>
+
+define(<span class="hljs-string">'http://bodule.org/island205/venus/1.0.0/undefined'</span>, <span class="hljs-literal">undefined</span>)
+</code></pre>
+<p>dependancies中的字符串以及CommonJS中的require的参数，必须为url、相对路径或顶级路径的解析依赖于前面的id。</p>
+<ul>
+<li>一个模块文件包含一个或多个meta module，但是，在该模块文件中，必须包含一个该模块文件url作为id的meta module，例如：</li>
+</ul>
+<p><code>http://bodule.org/island205/venus/1.0.0/venus.js</code> 对应的模块文件内容为：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'http://bodule.org/island205/venus/1.0.0/venus'</span>, [<span class="hljs-string">'./vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS for venus</span>
+})
+
+define(<span class="hljs-string">'http://bodule.org/venus/1.0.0/vango'</span>, [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS for vango</span>
+})
+</code></pre>
+<p>该模块文件包含两个meta module，而第一个是必须的。但这两个meta模块的顺序不做要求。</p>
+<h3 id="">简化</h3>
+<p>为了简化代码，针对</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'http://bodule.org/island205/venus/1.0.0/venus'</span>, [<span class="hljs-string">'./vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS for venus</span>
+})
+</code></pre>
+<p>这样的代码我们可以将其简化为：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'./venus/1.0.0/venus'</span>, [<span class="hljs-string">'./vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS for venus</span>
+})
+</code></pre>
+<p>或者：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'/venus/1.0.0/venus'</span>, [<span class="hljs-string">'./vango'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+  <span class="hljs-comment">//CommonJS for venus</span>
+})
+</code></pre>
+<p>这样的形式，然相对路径或者顶级路径必须要由一个绝对路径可参照，在bodule.js中，这个绝对路径来自于当前页面的url地址，或者使用bodule.package进行配置。</p>
+<h3 id="bodule-cloud">bodule cloud</h3>
+<p>在node中，可以使用require(&#39;underscore&#39;)来引用node_modules中的模块，作为bodule.js的目标，将commonjs桥接到浏览器端来使用，所以允许使用类似的写法，这种模块我们把它称作bodule模块，resovle后映射到<code>http://bodule.org/underscore/stable</code>，bodule.js会在bodule.org上提供一个云服务，来支持你从这里加载这些bodule模块。</p>
+<p>如果你想使用自己的bodule服务器，可以使用bodule.package来配置boduleServer。</p>
+<h3 id="npm">npm</h3>
+<p>npm非常流行，bodule.js将其作为模块的源。我们采取与npm包一致的策略。典型的npm的package.json为（以underscore为例）：</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">name</span>"          : <span class="hljs-value"><span class="hljs-string">"underscore"</span></span>,
+  "<span class="hljs-attribute">description</span>"   : <span class="hljs-value"><span class="hljs-string">"JavaScript's functional programming helper library."</span></span>,
+  "<span class="hljs-attribute">homepage</span>"      : <span class="hljs-value"><span class="hljs-string">"http://underscorejs.org"</span></span>,
+  "<span class="hljs-attribute">keywords</span>"      : <span class="hljs-value">[<span class="hljs-string">"util"</span>, <span class="hljs-string">"functional"</span>, <span class="hljs-string">"server"</span>, <span class="hljs-string">"client"</span>, <span class="hljs-string">"browser"</span>]</span>,
+  "<span class="hljs-attribute">author</span>"        : <span class="hljs-value"><span class="hljs-string">"Jeremy Ashkenas &lt;jeremy@documentcloud.org&gt;"</span></span>,
+  "<span class="hljs-attribute">repository</span>"    : <span class="hljs-value">{"<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"git"</span></span>, "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"git://github.com/jashkenas/underscore.git"</span></span>}</span>,
+  "<span class="hljs-attribute">main</span>"          : <span class="hljs-value"><span class="hljs-string">"underscore.js"</span></span>,
+  "<span class="hljs-attribute">version</span>"       : <span class="hljs-value"><span class="hljs-string">"1.5.1"</span></span>,
+  "<span class="hljs-attribute">devDependencies</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">phantomjs</span>": <span class="hljs-value"><span class="hljs-string">"1.9.0-1"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">scripts</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">test</span>": <span class="hljs-value"><span class="hljs-string">"phantomjs test/vendor/runner.js test/index.html?noglobals=true"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">licenses</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"MIT"</span></span>,
+      "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"https://raw.github.com/jashkenas/underscore/master/LICENSE"</span>
+    </span>}
+  ]</span>,
+  "<span class="hljs-attribute">files</span>"         : <span class="hljs-value">[<span class="hljs-string">"underscore.js"</span>, <span class="hljs-string">"LICENSE"</span>]
+</span>}
+</code></pre>
+<p>bodule.js将会使用工具将其转化为bodule模块，最终会以<code>http://bodule.org/underscore/1.5.1</code>这样的地址地提供出来。注意：该地址会根据package.json中的main，变为<code>http://bodule.org/underscore/1.5.1/underscore</code>。</p>
+<h2 id="bodulejsapi">bodule.js的API</h2>
+<h3 id="use">.use</h3>
+<h4 id="useid">.use(id)</h4>
+<p>在页面中使用一个模块，相当于<code>node id.js</code>。</p>
+<h4 id="usedependancies-factory">.use(dependancies, factory)</h4>
+<p>在页面上定义一个即时的模块，该模块依赖于dependancies，并use该模块。等价于：</p>
+<pre><code class="lang-javascript">define(<span class="hljs-string">'a-random-id'</span>, dependencies, factory)
+Bodule.use(<span class="hljs-string">'a-random-id'</span>)
+</code></pre>
+<p>.use比较简单的例子，<a href="https://github.com/Bodule/bodule-engine/blob/master/test/simplest.html#L10" target="_blank">simplest.html</a>：</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+    Bodule.use(<span class="hljs-string">'./a.js'</span>)
+    Bodule.use(<span class="hljs-string">'/b.js'</span>)
+    Bodule.use([<span class="hljs-string">'./c.js'</span>, <span class="hljs-string">'./d'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+        <span class="hljs-keyword">var</span> c = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./c.js'</span>)
+        <span class="hljs-keyword">var</span> d = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./d'</span>)
+        console.log(c + d)
+    })
+    Bodule.use([<span class="hljs-string">'./e'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require)</span> {</span>
+        <span class="hljs-keyword">var</span> e = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./e'</span>)
+        console.log(e)
+    })
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<h3 id="define">define</h3>
+<h4 id="defineid-dependencies-factory">define(id, dependencies, factory)</h4>
+<p>定义一个meta module；</p>
+<h4 id="defineid-anythingnotfunction">define(id, anythingNotFunction)</h4>
+<p>定义一个meta module，该模块的exports即为anythingNotFunction；</p>
+<p>几个例子：<a href="https://github.com/Bodule/bodule-engine/blob/master/test/d.js" target="_blank">d.js</a>，<a href="https://github.com/Bodule/bodule-engine/blob/master/test/e.js" target="_blank">e.js</a>，<a href="https://github.com/Bodule/bodule-engine/blob/master/bodule.org/bower_components/backbone/1.0.0/backbone.js" target="_blank">backbone.js</a></p>
+<h3 id="packageconfig">.package(config)</h3>
+<p>配置模块和bodule模块的位置，还可以配置依赖的bodule模块的版本号。</p>
+<pre><code class="lang-javascript">Bodule.package({
+  cwd: <span class="hljs-string">'http://bodule.org:8080/'</span>,
+  path: <span class="hljs-string">'/bodule.org/'</span>,
+  bodule_modules:{
+    cwd: <span class="hljs-string">'http://bodule.org:3000/'</span>,
+    path: <span class="hljs-string">'/bower_components/'</span>,
+    dependencies: {
+      <span class="hljs-string">'backbone'</span>: <span class="hljs-string">'1.0.0'</span>
+    }
+  }
+})
+</code></pre>
+<p>完整的例子可以参考<a href="https://github.com/Bodule/bodule-engine/blob/master/test/bodule.org/bodule.org.html" target="_blank">bodule.org.html</a>。</p>
+<p>让我们开始吧！</p>
+<h2 id="coffeescript">coffeescript</h2>
+<p>coffeescript是一门非常有趣的语言，敲起代码来很舒服，不会被JavaScript各种繁琐的细节所烦扰。所以我打算使用它来实现bodule.js。访问[coffeescript.org]，上面有简洁文档，如果你熟悉JavaScript，我相信你能很快掌握CoffeeScript的。</p>
+<h2 id="commonjs">commonjs运行时</h2>
+<p>从bodule的规范中，可以看出，它其实commonjs，或者说是commonjs wrapping的一个实现。因此，我们将直接使用commonjs的方式来组织我们的代码，你会发现，这样的代码非常清晰易读。</p>
+<pre><code class="lang-coffeescript"><span class="hljs-comment"># This is a **private** CommonJS runtime for `bodule.js`.</span>
+
+<span class="hljs-comment"># `__modules` for store private module like `util`,`path`, and so on.</span>
+modules = {}
+
+<span class="hljs-comment"># `__require` is used for getting module's API: `exports` property.</span>
+<span class="hljs-function"><span class="hljs-title">require</span> = <span class="hljs-params">(id)</span>-&gt;</span>
+    <span class="hljs-built_in">module</span> = modules[id]
+    <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = use [], <span class="hljs-built_in">module</span>.factory
+
+<span class="hljs-comment"># Define a module, save module in `__modules`. use `id` to refer them.</span>
+<span class="hljs-function"><span class="hljs-title">define</span> = <span class="hljs-params">(id, deps, factory)</span>-&gt;</span>
+    modules[id] =
+        <span class="hljs-attribute">id</span>: id
+        <span class="hljs-attribute">deps</span>: deps
+        <span class="hljs-attribute">factory</span>:factory
+
+<span class="hljs-comment"># `__use` to start a CommonJS runtime, or get a module's exports.</span>
+<span class="hljs-function"><span class="hljs-title">use</span> = <span class="hljs-params">(deps, factory)</span>-&gt;</span>
+    <span class="hljs-built_in">module</span> = {}
+    <span class="hljs-built_in">exports</span> = <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = {}
+
+    <span class="hljs-comment"># In factory `call`, `this` is global</span>
+    factory <span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>
+    <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>
+</code></pre>
+<p>上面这段代码是commonjs规范一种精简的表达，出自node项目中的module.js。module.js比这复杂多了，包含了多native module、读取、执行module文件、以及支持多种格式的module的事情。而我们上面这段代码就是commonjs最精简的表达，有了它，我们就可以使用common.js的方式来组织代码了。</p>
+<blockquote>
+<p>注意，代码中的deps变量完全就是无用的，只是我觉得这样写的话，似乎更清晰一点。</p>
+</blockquote>
+<pre><code class="lang-coffeescript">define <span class="hljs-string">'add'</span>, [], <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>)</span>-&gt;</span>
+    <span class="hljs-built_in">module</span>.<span class="hljs-function"><span class="hljs-title">exports</span> = <span class="hljs-params">(a, b)</span>-&gt;</span>
+        a + b
+
+define <span class="hljs-string">'addTwice'</span>, [<span class="hljs-string">'add'</span>], <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>)</span>-&gt;</span>
+    add = <span class="hljs-built_in">require</span> <span class="hljs-string">'add'</span>
+    <span class="hljs-built_in">exports</span>.<span class="hljs-function"><span class="hljs-title">addTwice</span> = <span class="hljs-params">(a, b)</span>-&gt;</span>
+        add add(a, b), b
+
+use [<span class="hljs-string">'addTwice'</span>], <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>)</span>-&gt;</span>
+    addTwice = <span class="hljs-built_in">require</span> <span class="hljs-string">'addTwice'</span>
+    cosnole.log <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-number">2</span>}</span> + <span class="hljs-subst">#{<span class="hljs-number">3</span>}</span> + <span class="hljs-subst">#{<span class="hljs-number">3</span>}</span> = <span class="hljs-subst">#{addTwice <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}</span>"</span>
+</code></pre>
+<p>上面的代码展示了如何使用这个commonjs运行时，很简单，有木有？</p>
+<blockquote>
+<p>很简陋？确实，我们只是用用它来组织代码，最终实现bodule.js这个复杂的commonjs运行时。</p>
+</blockquote>
+<h3 id="bodule-api">bodule API</h3>
+<p>我们改从何入手编写一个加载器呢，既然已经有了规范和接口，那我们从接口写起吧。</p>
+<pre><code class="lang-coffeescript">define <span class="hljs-string">'bodule'</span>, [], <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>)</span>-&gt;</span>
+    Bodule = 
+        <span class="hljs-attribute">use</span>: <span class="hljs-function"><span class="hljs-params">(deps, factory)</span>-&gt;</span>
+        <span class="hljs-attribute">define</span>: <span class="hljs-function"><span class="hljs-params">(id, deps, factory)</span>-&gt;</span>
+        <span class="hljs-attribute">package</span>: <span class="hljs-function"><span class="hljs-params">(conf)</span>-&gt;</span>
+
+    <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = Bodule
+
+use [<span class="hljs-string">'bodule'</span>], <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">require</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">module</span>)</span>-&gt;</span>
+
+    Bodule = <span class="hljs-built_in">require</span> <span class="hljs-string">'bodule'</span>
+    <span class="hljs-built_in">window</span>.Bodule = Bodule
+    <span class="hljs-built_in">window</span>.<span class="hljs-function"><span class="hljs-title">define</span> = -&gt;</span>
+      Bodule.define.apply Bodule, arguments
+</code></pre>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./how-seajs-works.html" class="navigation navigation-prev " aria-label="Previous page: Sea.js是如何工作的？"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./the-future-of-modular-javascript.html" class="navigation navigation-next " aria-label="Next page: JavaScript模块化的未来"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+<script src="gitbook/app.js"></script>
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

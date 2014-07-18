@@ -1,0 +1,852 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="./manifest.appcache">
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <title>Sea.js是如何工作的？ | Hello Sea.js</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 0.6.0">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    
+    
+    <meta name="author" content="island205">
+    
+    
+    <link rel="next" href="./your-own-loader-bodulejs.html" />
+    
+    
+    <link rel="prev" href="./seajs-in-action.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+<link rel="stylesheet" href="gitbook/style.css">
+
+
+        
+    <div class="book" data-github="island205/HelloSea.js" data-level="7" data-basepath="." data-revision="1405703280663">
+    <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
+    
+    <a href="https://github.com/island205/HelloSea.js" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings" aria-label="Toggle font settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="btn-group btn-block">
+        <button id="reduce-font-size" class="btn btn-default">A</button>
+        <button id="enlarge-font-size" class="btn btn-default">A</button>
+    </div>
+
+    <ul class="list-group font-family-list">
+        <li class="list-group-item" data-font="0">Serif</li>
+        <li class="list-group-item" data-font="1">Sans</li>
+    </ul>
+
+    <div class="btn-group btn-group-xs btn-block color-theme-list">
+        <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Share on Google Plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Share on Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Share on Twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+    <a href="https://github.com/island205/HelloSea.js/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/island205/HelloSea.js/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="./" >Hello Sea.js</a>
+    </h1>
+</div>
+
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        <li>
+            <a href="https://github.com/island205" target="blank" class="author-link">About the author</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/issues" target="blank"class="issues-link">Questions and Issues</a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a href="https://github.com/island205/HelloSea.js/edit/master/how-seajs-works.md" target="blank" class="contribute-link">Edit and Contribute</a>
+        </li>
+        
+
+	
+
+        
+        <li class="divider"></li>
+        
+
+        
+    
+        
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                        <i class="fa fa-check"></i>
+                        
+                         Introduction
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="1" data-path="introduction.html">
+            
+                
+                    <a href="./introduction.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                         前言
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="2" data-path="acknowledgments.html">
+            
+                
+                    <a href="./acknowledgments.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                         感谢
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="3" data-path="what-is-seajs.html">
+            
+                
+                    <a href="./what-is-seajs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                         Sea.js是什么？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="4" data-path="getting-started.html">
+            
+                
+                    <a href="./getting-started.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                         快速入门
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="5" data-path="usage-guide.html">
+            
+                
+                    <a href="./usage-guide.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                         使用指南
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="6" data-path="seajs-in-action.html">
+            
+                
+                    <a href="./seajs-in-action.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                         开发实战
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter active" data-level="7" data-path="how-seajs-works.html">
+            
+                
+                    <a href="./how-seajs-works.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                         Sea.js是如何工作的？
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="8" data-path="your-own-loader-bodulejs.html">
+            
+                
+                    <a href="./your-own-loader-bodulejs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                         编写自己的模块加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="9" data-path="the-future-of-modular-javascript.html">
+            
+                
+                    <a href="./the-future-of-modular-javascript.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                         JavaScript模块化的未来
+                    </a>
+                
+            
+            
+        </li>
+    
+        
+        <li class="chapter " data-level="10" data-path="reference.html">
+            
+                
+                    <a href="./reference.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                         参考资料
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank" class="gitbook-link">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 70%;min-width: 60%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="./index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="./introduction.html" title="前言" class="chapter done new-chapter" data-progress="1" style="left: 10%;"></a>
+    
+        <a href="./acknowledgments.html" title="感谢" class="chapter done new-chapter" data-progress="2" style="left: 20%;"></a>
+    
+        <a href="./what-is-seajs.html" title="Sea.js是什么？" class="chapter done new-chapter" data-progress="3" style="left: 30%;"></a>
+    
+        <a href="./getting-started.html" title="快速入门" class="chapter done new-chapter" data-progress="4" style="left: 40%;"></a>
+    
+        <a href="./usage-guide.html" title="使用指南" class="chapter done new-chapter" data-progress="5" style="left: 50%;"></a>
+    
+        <a href="./seajs-in-action.html" title="开发实战" class="chapter done new-chapter" data-progress="6" style="left: 60%;"></a>
+    
+        <a href="./how-seajs-works.html" title="Sea.js是如何工作的？" class="chapter done new-chapter" data-progress="7" style="left: 70%;"></a>
+    
+        <a href="./your-own-loader-bodulejs.html" title="编写自己的模块加载器" class="chapter  new-chapter" data-progress="8" style="left: 80%;"></a>
+    
+        <a href="./the-future-of-modular-javascript.html" title="JavaScript模块化的未来" class="chapter  new-chapter" data-progress="9" style="left: 90%;"></a>
+    
+        <a href="./reference.html" title="参考资料" class="chapter  " data-progress="10" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_5">
+                    
+                        <h1 id="seajs">Sea.js是如何工作的？</h1>
+<blockquote>
+<p>蒙惠者虽知其然，而未必知其所以然也。</p>
+</blockquote>
+<p>写了这么多，必须证明一下本书并不是一份乏味的使用文档，我们来深入看看Sea.js，搞清楚它时如何工作的吧！</p>
+<h2 id="cmd">CMD规范</h2>
+<p>要想了解Sea.js的运作机制，就不得不先了解其CMD规范。</p>
+<p>Sea.js采用了和Node相似的CMD规范，我觉得它们应该是一样的。使用require、exports和module来组织模块。但Sea.js比起Node的不同点在于，前者的运行环境是在浏览器中，这就导致A依赖的B模块不能同步地读取过来，所以Sea.js比起Node，除了运行之外，还提供了两个额外的东西：</p>
+<ol>
+<li>模块的管理</li>
+<li>模块从服务端的同步</li>
+</ol>
+<p>即Sea.js必须分为模块加载期和执行期。加载期需要将执行期所有用到的模块从服务端同步过来，在再执行期按照代码的逻辑顺序解析执行模块。本身执行期与node的运行期没什么区别。</p>
+<p>所以Sea.js需要三个接口：</p>
+<ol>
+<li>define用来wrapper模块，指明依赖，同步依赖；</li>
+<li>use用来启动加载期；</li>
+<li>require关键字，实际上是执行期的桥梁。</li>
+</ol>
+<blockquote>
+<p>并不太喜欢Sea.js的use API，因为其回调函数并没有使用与Define一样的参数列表。</p>
+</blockquote>
+<h4 id="id">模块标识（id）</h4>
+<p>模块id的标准参考<a href="http://wiki.commonjs.org/wiki/Modules/1.1.1#Module_Identifiers" target="_blank">Module Identifiers</a>，简单说来就是作为一个模块的唯一标识。</p>
+<p>出于学习的目的，我将它们翻译引用在这里：</p>
+<ol>
+<li>模块标识由数个被斜杠（/）隔开的词项组成；</li>
+<li>每次词项必须是小写的标识、“.”或“..”；</li>
+<li>模块标识并不是必须有像“.js”这样的文件扩展名；</li>
+<li>模块标识不是相对的，就是顶级的。相对的模块标识开头要么是“.”，要么是“..”；</li>
+<li>顶级标识根据模块系统的基础路径来解析；</li>
+<li>相对的模块标识被解释为相对于某模块的标识，“require”语句是写在这个模块中，并在这个模块中调用的。</li>
+</ol>
+<h4 id="factory">模块（factory）</h4>
+<p>顾名思义，factory就是工厂，一个可以产生模块的工厂。node中的工厂就是新的运行时，而在Sea.js中（Tea.js中也同样），factory就是一个函数。这个函数接受三个参数。</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require, exports, module)</span> {</span>
+    <span class="hljs-comment">// here is module body</span>
+}
+</code></pre>
+<p>在整个运行时中只有模块，即只有factory。</p>
+<h4 id="dependencies">依赖（dependencies）</h4>
+<p>依赖就是一个id的数组，即模块所依赖模块的标识。</p>
+<h2 id="">依赖加载的原理</h2>
+<p>有很多语言都有模块化的结构，比如c/c++的<code>#include</code>语句，Ruby的<code>require</code>语句等等。模块的执行，必然需要其依赖的模块准备就绪才能顺利执行。</p>
+<p>c/c++是编译语言，在预编译时，替换<code>#include</code>语句，将依赖的文件内容包含进来，在编译后的执行期，所有的模块才会开始执行；</p>
+<p>而Ruby是解释型语言，在模块执行前，并不知道它依赖什么模块，待到执行到<code>require</code>语句时，执行将暂停，从外部读取并执行依赖，然后再回来继续执行当前模块。</p>
+<p>JavaScript作为一门解释型语言，在复杂的浏览器环境中，Sea.js是如何处理CMD模块间的依赖的呢？</p>
+<h2 id="node-require">node的方式-同步的<code>require</code></h2>
+<p>想要解释这个问题，我们还是从Node模块说起，node于Ruby类似，用我们之前使用过的一个模块作为例子：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// File: usegreet.js</span>
+<span class="hljs-keyword">var</span> greet = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./greet"</span>);
+greet.helloJavaScript();
+</code></pre>
+<p>当我们使用<code>node usegreet.js</code>来运行这个模块时，实际上node会构建一个运行的上下文，在这个上下文中运行这个模块。运行到<code>require(&#39;./greet&#39;)</code>这句话时，会通过注入的API，在新的上下文中解析greet.js这个模块，然后通过注入的<code>exports</code>或<code>module</code>这两个关键字获取该模块的接口，将接口暴露出来给usegreet.js使用，即通过<code>greet</code>这个对象来引用这些接口。例如，<code>helloJavaScript</code>这个函数。详细细节可以参看node源码中的<a href="https://github.com/joyent/node/blob/master/lib/module.js" target="_blank">module.js</a>。</p>
+<p>node的模块方案的特点如下：</p>
+<ol>
+<li>使用require、exports和module作为模块化组织的关键字；</li>
+<li>每个模块只加载一次，作为单例存在于内存中，每次require时使用的是它的接口；</li>
+<li>require是同步的，通俗地讲，就是node运行A模块，发现需要B模块，会停止运行A模块，把B模块加载好，获取的B的接口，才继续运行A模块。如果B模块已经加载到内存中了，当然require B可以直接使用B的接口，否则会通过fs模块化同步地将B文件内存，开启新的上下文解析B模块，获取B的API。</li>
+</ol>
+<p>实际上node如果通过fs异步的读取文件的话，require也可以是异步的，所以曾经node中有require.async这个API。</p>
+<h2 id="seajs-">Sea.js的方式-加载期与执行期</h2>
+<p>由于在浏览器端，采用与node同样的依赖加载方式是不可行的，因为依赖只有在执行期才能知道，但是此时在浏览器端，我们无法像node一样直接同步地读取一个依赖文件并执行！我们只能采用异步的方式。于是Sea.js的做法是，分成两个时期——加载期和执行期；</p>
+<blockquote>
+<p>的确，我们可以使用同步的XHR从服务端加载依赖，但是本身就是单进程的JavaScript还需要等待文件的加载，那性能将大打折扣。</p>
+</blockquote>
+<ul>
+<li><strong>加载期</strong>：即在执行一个模块之前，将其直接或间接依赖的模块从服务器端同步到浏览器端；</li>
+<li><strong>执行期</strong>：在确认该模块直接或间接依赖的模块都加载完毕之后，执行该模块。</li>
+</ul>
+<h3 id="">加载期</h3>
+<p>不难想见，模块间的依赖就像一棵树。启动模块作为根节点，依赖模块作为叶子节点。下面是pixelegos的依赖树：</p>
+<p><img src="https://raw.github.com/island205/HelloSea.js/master/images/loadingperiod.png" alt="loadingperiod"></p>
+<p>如上图，在页面中通过<code>seajs.use(&#39;/js/pixelegos&#39;)</code>调用，目的是执行pixelegos这个模块。Sea.js并不知道pixelegos还依赖于其他什么模块，只是到服务端加载pixelegos.js，将其加载到浏览器端之后，通过分析发现它还依赖于其他的模块，于是Sea.js又去加载其他的模块。随着更多的模块同步到浏览器端后，一棵依赖树才慢慢地通过递归显现出来。</p>
+<blockquote>
+<p>那Sea.js如何确定pixelegos所有依赖的模块都加载好了呢？</p>
+</blockquote>
+<p>从依赖树中可以看出，如果pixelegos.js所依赖的直接子节点加载好了（此种加载好，即为节点和其依赖的子节点都加载好），那就表示它就加载好了，于是就可以启动该模块。明显，这种加载完成的过程也是一个递归的过程。</p>
+<p>从最底层的叶子节点开始（例如undercore），由于没有再依赖于其他模块，所以它从服务端同步过来之后，就加载好了。然后开始询问其父节点backbone是否已经加载好了，即询问backbone所依赖的所有节点都加载好了。同理对于pixelegos模块，其子节点menu、tool、canvas都会询问pixelegos其子节点加载好了没有。</p>
+<p>如果三个依赖都已loading完毕，则pixelgos也加载完成，即其整棵依赖树都加载好了，然后就可以启动pixelegos这个模块了。</p>
+<h3 id="">执行期</h3>
+<p>在执行期，执行也是从根节点开始，本质上是按照代码的顺序结构，对整棵树进行了遍历。有的模块可能已经EXECUTED，而有的还需要执行获取其exports。由于在执行期时，所有依赖的模块都加载好了，所以与node执行过程有点类似。</p>
+<p>pixelegos通过同步的require函数获取tool、canvas和menu，后三者同样通过require来执行各自的依赖模块，于是通过这样一个递归的过程，pixelegos就执行完毕了。</p>
+<h2 id="">打包模块的加载过程</h2>
+<p>在Sea.js中，为了支持模块的combo，存在一个js文件包含多个模块的情况。根据依赖情况，使用grunt-cmd-concat可以将一个模块以及其依赖的子模块打包成一个js文件。</p>
+<p>打包的方式有三种，self,relative和all。</p>
+<ul>
+<li>self，只是自己做了transport</li>
+<li>relative，将多有相对路径的模块transport，concat</li>
+<li>all，包括相对路径模块和库模块（即在<code>seajs-modules</code>文件夹中的），transport，concat</li>
+</ul>
+<p>例如，我们<code>seajs.use(&#39;/dist/pixelegos&#39;)</code>，解析为需要加载<code>http://127.0.0.1:81/dist/pixelegos.js</code>这个文件，且这个文件是all全打包的。其加载过程如下：</p>
+<h4 id="">加载方式</h4>
+<ol>
+<li>在use时，定义一个匿名的<code>use_</code>模块，依赖于<code>/dist/pixelegos</code>模块，匿名的<code>use_</code>模块<code>load</code>依赖，开始加载<code>http://127.0.0.1:81/dist/pixelegos.js</code>模块；</li>
+<li><code>http://127.0.0.1:81/dist/pixelegos.js</code>加载执行，所有打包在里面的模块被<code>define</code>；</li>
+<li><code>http://127.0.0.1:81/dist/pixelegos.js</code>的<code>onload</code>回调执行，调用<code>/dist/pixelegos</code>模块的load，加载其依赖模块，但依赖的模块都加载好了；</li>
+<li>通知匿名的<code>use_</code>加载完成，开始执行期。</li>
+</ol>
+<p>针对每一次执行期，对应的加载依赖树与整个模块依赖树是有区别的，因为子模块已经加载好了的模块，并不在加载树中。</p>
+<h2 id="seajs">Sea.js的实现</h2>
+<h3 id="">模块的状态</h3>
+<p>由于浏览器端与Node的环境差异，模块存在加载期和执行期，所以Sea.js中为模块定义了六种状态。</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> STATUS = Module.STATUS = {
+  <span class="hljs-comment">// 1 - The `module.uri` is being fetched</span>
+  FETCHING: <span class="hljs-number">1</span>,
+  <span class="hljs-comment">// 2 - The meta data has been saved to cachedMods</span>
+  SAVED: <span class="hljs-number">2</span>,
+  <span class="hljs-comment">// 3 - The `module.dependencies` are being loaded</span>
+  LOADING: <span class="hljs-number">3</span>,
+  <span class="hljs-comment">// 4 - The module are ready to execute</span>
+  LOADED: <span class="hljs-number">4</span>,
+  <span class="hljs-comment">// 5 - The module is being executed</span>
+  EXECUTING: <span class="hljs-number">5</span>,
+  <span class="hljs-comment">// 6 - The `module.exports` is available</span>
+  EXECUTED: <span class="hljs-number">6</span>
+}
+</code></pre>
+<p>分别为：</p>
+<ul>
+<li>FETCHING：开始从服务端加载模块</li>
+<li>SAVED：模块加载完成</li>
+<li>LOADING：加载依赖模块中</li>
+<li>LOADED：依赖模块加载完成</li>
+<li>EXECUTING：模块执行中</li>
+<li>EXECUTED：模块执行完成</li>
+</ul>
+<p><a href="https://github.com/seajs/seajs/blob/master/src/module.js" target="_blank">module.js</a>是Sea.js的核心，我们来看一下，module.js是如何控制模块加载过程的。</p>
+<h3 id="">如何确定整个依赖树加载好了呢？</h3>
+<ol>
+<li>定义A模块，如果有模块依赖于A，把该模块加入到等待A的模块队列中；</li>
+<li>加载A模块，状态变为FETCHING</li>
+<li>A加载完成，获取A模块依赖的BCDEFG模块，发现B模块没有定义，而C加载中，D自己已加载好，E加载子模块中，F加载完成，运行中，G已经解析好，SAVED；</li>
+<li>由于FG本身以及子模块都已加载好，因此A模块要确定已经加载好了，必须等待BCDE加载好；开始加载必须的子模块，LOADING；</li>
+<li>针对B重复步骤1；</li>
+<li>将A加入到CDE的等待队列中；</li>
+<li>BCDE加载好之后都会从自己的等待队列中取出等待自己加载好的模块，通知A自己已经加载好了；</li>
+<li>A每次收到子模块加载好的通知，都看一遍自己依赖的模块是否状态都变成了加载完成，如果加载完成，则A加载完成，A通知其等待队列中的模块自己已加载完成，LOADED；</li>
+</ol>
+<h3 id="">加载过程</h3>
+<ul>
+<li>Sea.use调用Module.use构造一个没有factory的模块，该模块即为这个运行期的根节点。</li>
+</ul>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Use function is equal to load a anonymous module</span>
+Module.use = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ids, callback, uri)</span> {</span>
+    <span class="hljs-keyword">var</span> mod = Module.get(uri, isArray(ids) ? ids: [ids])
+
+    mod.callback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> exports = []
+        <span class="hljs-keyword">var</span> uris = mod.resolve()
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = uris.length; i &lt; len; i++) {
+            exports[i] = cachedMods[uris[i]].exec()
+        }
+
+        <span class="hljs-keyword">if</span> (callback) {
+            callback.apply(global, exports)
+        }
+
+        <span class="hljs-keyword">delete</span> mod.callback
+    }
+
+    mod.load()
+}
+</code></pre>
+<p>模块构造完成，则调用mod.load()来同步其子模块；直接跳过fetching这一步；mod.callback也是Sea.js不纯粹的一点，在模块加载完成后，会调用这个callback。</p>
+<ul>
+<li>在load方法中，获取子模块，加载子模块，在子模块加载完成后，会触发mod.onload()：</li>
+</ul>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Load module.dependencies and fire onload when all done</span>
+Module.prototype.load = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> mod = <span class="hljs-keyword">this</span>
+
+    <span class="hljs-comment">// If the module is being loaded, just wait it onload call</span>
+    <span class="hljs-keyword">if</span> (mod.status &gt;= STATUS.LOADING) {
+        <span class="hljs-keyword">return</span>
+    }
+
+    mod.status = STATUS.LOADING
+
+    <span class="hljs-comment">// Emit `load` event for plugins such as combo plugin</span>
+    <span class="hljs-keyword">var</span> uris = mod.resolve()
+    emit(<span class="hljs-string">"load"</span>, uris)
+
+    <span class="hljs-keyword">var</span> len = mod._remain = uris.length
+    <span class="hljs-keyword">var</span> m
+
+    <span class="hljs-comment">// Initialize modules and register waitings</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        m = Module.get(uris[i])
+
+        <span class="hljs-keyword">if</span> (m.status &lt; STATUS.LOADED) {
+            <span class="hljs-comment">// Maybe duplicate</span>
+            m._waitings[mod.uri] = (m._waitings[mod.uri] || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+        }
+        <span class="hljs-keyword">else</span> {
+            mod._remain--
+        }
+    }
+
+    <span class="hljs-keyword">if</span> (mod._remain === <span class="hljs-number">0</span>) {
+        mod.onload()
+        <span class="hljs-keyword">return</span>
+    }
+
+    <span class="hljs-comment">// Begin parallel loading</span>
+    <span class="hljs-keyword">var</span> requestCache = {}
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        m = cachedMods[uris[i]]
+
+        <span class="hljs-keyword">if</span> (m.status &lt; STATUS.FETCHING) {
+            m.fetch(requestCache)
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (m.status === STATUS.SAVED) {
+            m.load()
+        }
+    }
+
+    <span class="hljs-comment">// Send all requests at last to avoid cache bug in IE6-9. Issues#808</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> requestUri <span class="hljs-keyword">in</span> requestCache) {
+        <span class="hljs-keyword">if</span> (requestCache.hasOwnProperty(requestUri)) {
+            requestCache[requestUri]()
+        }
+    }
+}
+</code></pre>
+<p>模块的状态是最关键的，模块状态的流转决定了加载的行为；</p>
+<ul>
+<li>是否触发onload是由模块的_remian属性来确定，在load和子模块的onload函数中都对_remain进行了计算，如果为0，则表示模块加载完成，调用onload：</li>
+</ul>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Call this method when module is loaded</span>
+Module.prototype.onload = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> mod = <span class="hljs-keyword">this</span>
+    mod.status = STATUS.LOADED
+
+    <span class="hljs-keyword">if</span> (mod.callback) {
+        mod.callback()
+    }
+
+    <span class="hljs-comment">// Notify waiting modules to fire onload</span>
+    <span class="hljs-keyword">var</span> waitings = mod._waitings
+    <span class="hljs-keyword">var</span> uri, m
+
+    <span class="hljs-keyword">for</span> (uri <span class="hljs-keyword">in</span> waitings) {
+        <span class="hljs-keyword">if</span> (waitings.hasOwnProperty(uri)) {
+            m = cachedMods[uri]
+            m._remain -= waitings[uri]
+            <span class="hljs-keyword">if</span> (m._remain === <span class="hljs-number">0</span>) {
+                m.onload()
+            }
+        }
+    }
+
+    <span class="hljs-comment">// Reduce memory taken</span>
+    <span class="hljs-keyword">delete</span> mod._waitings
+    <span class="hljs-keyword">delete</span> mod._remain
+}
+</code></pre>
+<p>模块的_remain和_waitings是两个非常关键的属性，子模块通过_waitings获得父模块，通过_remain来判断模块是否加载完成。</p>
+<ul>
+<li>当这个没有factory的根模块触发onload之后，会调用其方法callback，callback是这样的：</li>
+</ul>
+<pre><code class="lang-javascript">mod.callback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> exports = []
+    <span class="hljs-keyword">var</span> uris = mod.resolve()
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = uris.length; i &lt; len; i++) {
+        exports[i] = cachedMods[uris[i]].exec()
+    }
+
+    <span class="hljs-keyword">if</span> (callback) {
+        callback.apply(global, exports)
+    }
+
+    <span class="hljs-keyword">delete</span> mod.callback
+}
+</code></pre>
+<p>这预示着加载期结束，开始执行期；</p>
+<ul>
+<li>而执行期相对比较无脑，首先是直接调用根模块依赖模块的exec方法获取其exports，用它们来调用use传经来的callback。而子模块在执行时，都是按照标准的模块解析方式执行的：</li>
+</ul>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Execute a module</span>
+Module.prototype.exec = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> mod = <span class="hljs-keyword">this</span>
+
+    <span class="hljs-comment">// When module is executed, DO NOT execute it again. When module</span>
+    <span class="hljs-comment">// is being executed, just return `module.exports` too, for avoiding</span>
+    <span class="hljs-comment">// circularly calling</span>
+    <span class="hljs-keyword">if</span> (mod.status &gt;= STATUS.EXECUTING) {
+        <span class="hljs-keyword">return</span> mod.exports
+    }
+
+    mod.status = STATUS.EXECUTING
+
+    <span class="hljs-comment">// Create require</span>
+    <span class="hljs-keyword">var</span> uri = mod.uri
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">require</span><span class="hljs-params">(id)</span> {</span>
+        <span class="hljs-keyword">return</span> Module.get(<span class="hljs-built_in">require</span>.resolve(id)).exec()
+    }
+
+    <span class="hljs-built_in">require</span>.resolve = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+        <span class="hljs-keyword">return</span> Module.resolve(id, uri)
+    }
+
+    <span class="hljs-built_in">require</span>.async = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ids, callback)</span> {</span>
+        Module.use(ids, callback, uri + <span class="hljs-string">"_async_"</span> + cid())
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>
+    }
+
+    <span class="hljs-comment">// Exec factory</span>
+    <span class="hljs-keyword">var</span> factory = mod.factory
+
+    <span class="hljs-keyword">var</span> exports = isFunction(factory) ? factory(<span class="hljs-built_in">require</span>, mod.exports = {},
+    mod) : factory
+
+    <span class="hljs-keyword">if</span> (exports === <span class="hljs-literal">undefined</span>) {
+        exports = mod.exports
+    }
+
+    <span class="hljs-comment">// Emit `error` event</span>
+    <span class="hljs-keyword">if</span> (exports === <span class="hljs-literal">null</span> &amp;&amp; ! IS_CSS_RE.test(uri)) {
+        emit(<span class="hljs-string">"error"</span>, mod)
+    }
+
+    <span class="hljs-comment">// Reduce memory leak</span>
+    <span class="hljs-keyword">delete</span> mod.factory
+
+    mod.exports = exports
+    mod.status = STATUS.EXECUTED
+
+    <span class="hljs-comment">// Emit `exec` event</span>
+    emit(<span class="hljs-string">"exec"</span>, mod)
+
+    <span class="hljs-keyword">return</span> exports
+}
+</code></pre>
+<blockquote>
+<p>看到这一行代码了么？ 
+<code>var exports = isFunction(factory) ? factory(require, mod.exports = {}, mod) : factory</code>
+真的，整个Sea.js就是为了这行代码能够完美运行</p>
+</blockquote>
+<h3 id="">资源定位</h3>
+<p>资源定位是Sea.js，或者说模块加载器中非常关键部分。那什么是资源定位呢？</p>
+<p>资源定位与模块标识相关，而在Sea.js中有三种模块标识。</p>
+<h4 id="">普通路径</h4>
+<p>普通路径与网页中超链接一样，相对于当前页面解析，在Sea.js中，普通路径包有以下几种：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// 假设当前页面是 http://example.com/path/to/page/index.html</span>
+
+<span class="hljs-comment">// 绝对路径是普通路径：</span>
+<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'http://cdn.com/js/a'</span>);
+  <span class="hljs-comment">// =&gt; http://cdn.com/js/a.js</span>
+
+<span class="hljs-comment">// 根路径是普通路径：</span>
+<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'/js/b'</span>);
+  <span class="hljs-comment">// =&gt; http://example.com/js/b.js</span>
+
+<span class="hljs-comment">// use 中的相对路径始终是普通路径：</span>
+seajs.use(<span class="hljs-string">'./c'</span>);
+  <span class="hljs-comment">// =&gt; 加载的是 http://example.com/path/to/page/c.js</span>
+
+seajs.use(<span class="hljs-string">'../d'</span>);
+  <span class="hljs-comment">// =&gt; 加载的是 http://example.com/path/to/d.js</span>
+</code></pre>
+<h4 id="">相对标识</h4>
+<p>在define的factory中的相对路径（<code>..</code> <code>.</code>）是相对标识，相对标识相对当前的URI来解析。</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// File http://example.com/js/b.js</span>
+define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require)</span> {</span>
+    <span class="hljs-keyword">var</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./a'</span>);
+    a.doSomething();
+});
+<span class="hljs-comment">// =&gt; 加载的是http://example.com/js/a.js</span>
+</code></pre>
+<p>这与node模块中相对路径的解析一致。</p>
+<h4 id="">顶级标识</h4>
+<p>不以<code>.</code>或者&#39;/&#39;开头的模块标识是顶级标识，相对于Sea.js的base路径来解析。</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// 假设 base 路径是：http://example.com/assets/</span>
+
+<span class="hljs-comment">// 在模块代码里：</span>
+<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'gallery/jquery/1.9.1/jquery'</span>);
+  <span class="hljs-comment">// =&gt; http://example.com/assets/gallery/jquery/1.9.1/jquery.js</span>
+</code></pre>
+<blockquote>
+<p>在node中即是在paths中搜索模块（node_modules文件夹中）。</p>
+</blockquote>
+<h4 id="">模块定位小演</h4>
+<p>使用seajs.use启动模块，如果不是顶级标识或者是绝对路径，就是相对于页面定位；如果是顶级标识，就从Sea.js的模块系统中加载（即base）；如果是绝对路径，直接加载；
+之后的模块加载都是在define的factory中，如果是相对路径，就是相对标识，相对当前模块路径加载；如果是绝对路径，直接加载；
+由此可见，在Sea.js中，模块的配置被分割成2+x个地方：</p>
+<ul>
+<li>与页面放在一起；</li>
+<li>与Sea.js放在一起；</li>
+<li>通过绝对路径添加更多的模块源。</li>
+</ul>
+<blockquote>
+<p>由此可见，Sea.js确实海纳百川。</p>
+</blockquote>
+<h3 id="">获取真实的加载路径</h3>
+<p>1.在Sea.js中，使用data.cwd来代表当前页面的目录，如果当前页面地址为<code>http://www.dianping.com/promo/195800</code>，则cwd为<code>http://www.dianping.com/promo/</code>；使用data.base来代表sea.js的加载地址，如果sea.js的路径为<code>http://i1.dpfile.com/lib/1.0.0/sea.js</code>，则base为<code>http://i1.dpfile.com/lib/</code>。</p>
+<blockquote>
+<p> <a href="https://github.com/seajs/seajs/issues/258" target="_blank">“当 sea.js 的访问路径中含有版本号或其他东西时，base 不会包含 seajs/x.y.z 字串。 当 sea.js 有多个版本时，这样会很方便”</a>。看到这一句，我凌乱了，这Sea.js是多么的人性化！但是我觉得这似乎没有必要。</p>
+</blockquote>
+<p>2.seajs.use是，除了绝对路径，其他都是相对于cwd定位，即如果模块标识为：</p>
+<ul>
+<li>&#39;./a&#39;，则真实加载路径为<a href="http://www.dianping.com/promo/a.js；" target="_blank">http://www.dianping.com/promo/a.js；</a></li>
+<li>&#39;/a&#39;，则为<a href="http://www.dianping.com/a.js；" target="_blank">http://www.dianping.com/a.js；</a></li>
+<li>&#39;../a&#39;，则为<a href="http://www.dianping.com/a.js；" target="_blank">http://www.dianping.com/a.js；</a></li>
+</ul>
+<blockquote>
+<p>从需求上看，相对页面地址定位在现实生活中并不太适用，如果页面地址或者静态文件的路径稍微变化下，就跪了。</p>
+</blockquote>
+<p>如果模块标识为绝对路径：</p>
+<ul>
+<li>&#39;<a href="https://a.alipayobjects.com/ar/a&#39;，则加载路径就是&#39;https://a.alipayobjects.com/ar/a.js&#39;。" target="_blank">https://a.alipayobjects.com/ar/a&#39;，则加载路径就是&#39;https://a.alipayobjects.com/ar/a.js&#39;。</a></li>
+</ul>
+<p>如果模块标识是顶级标识，就基于base来加载：</p>
+<ul>
+<li>&#39;jquery&#39;，则加载路径为&#39;<a href="http://i1.dpfile.com/lib/jquery.js&#39;。" target="_blank">http://i1.dpfile.com/lib/jquery.js&#39;。</a></li>
+</ul>
+<p>3.除此之外，就是factory中的模块标识了：</p>
+<ul>
+<li>&#39;<a href="https://a.alipayobjects.com/ar/b&#39;，加载路径为&#39;https://a.alipayobjects.com/ar/b.js" target="_blank">https://a.alipayobjects.com/ar/b&#39;，加载路径为&#39;https://a.alipayobjects.com/ar/b.js</a>&#39;</li>
+<li>&#39;/c&#39;，加载路径为&#39;<a href="http://www.dianping.com/c.js&#39;；" target="_blank">http://www.dianping.com/c.js&#39;；</a></li>
+<li>&#39;./d&#39;，如果父模块的加载路径是&#39;<a href="http://i1.dpfile.com/lib/e.js&#39;，则加载路径为&#39;http://i1.dpfile.com/lib/d.js" target="_blank">http://i1.dpfile.com/lib/e.js&#39;，则加载路径为&#39;http://i1.dpfile.com/lib/d.js</a>&#39;</li>
+</ul>
+<blockquote>
+<p>在模块系统中使用&#39;/c&#39;绝对路径是什么意思？Sea.js会将其解析为相对页面的模块，有点牛马不相及的感觉。</p>
+</blockquote>
+<h4 id="factory">factory的依赖分析</h4>
+<p>在Sea.js的API中，<code>define(factory)</code>，并没有指明模块的依赖项，那Sea.js是如何获得的呢？</p>
+<p>这段是Sea.js的源码：</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">/**
+ * util-deps.js - The parser for dependencies
+ * ref: tests/research/parse-dependencies/test.html
+ */</span>
+
+<span class="hljs-keyword">var</span> REQUIRE_RE = <span class="hljs-regexp">/"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^\/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*require|(?:^|[^$])\brequire\s*\(\s*(["'])(.+?)\1\s*\)/g</span>
+<span class="hljs-keyword">var</span> SLASH_RE = <span class="hljs-regexp">/\\\\/g</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseDependencies</span><span class="hljs-params">(code)</span> {</span>
+  <span class="hljs-keyword">var</span> ret = []
+
+  code.replace(SLASH_RE, <span class="hljs-string">""</span>)
+      .replace(REQUIRE_RE, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m, m1, m2)</span> {</span>
+        <span class="hljs-keyword">if</span> (m2) {
+          ret.push(m2)
+        }
+      })
+
+  <span class="hljs-keyword">return</span> ret
+}
+</code></pre>
+<p><code>REQUIRE_RE</code>这个硕大无比的正则就是关键。推荐使用<a href="http://www.regexper.com/" target="_blank">regexper</a>来看看这个正则表达式。非native的函数factory我们可以通过的toString()方法获取源码，Sea.js就是使用<code>REQUIRE_RE</code>在factory的源码中匹配出该模块的依赖项。</p>
+<blockquote>
+<p>从<code>REQUIRE_RE</code>这么长的正则来看，这里坑很多；在CommonJS的wrapper方案中可以使用JS语法分析器来获取依赖会更准确。</p>
+</blockquote>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./seajs-in-action.html" class="navigation navigation-prev " aria-label="Previous page: 开发实战"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./your-own-loader-bodulejs.html" class="navigation navigation-next " aria-label="Next page: 编写自己的模块加载器"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+<script src="gitbook/app.js"></script>
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
