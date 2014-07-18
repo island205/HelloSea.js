@@ -9,7 +9,7 @@ title:  小试身手-Hello Sea.js
 
 ## 首先写个模块：
 
-{% highlight javascript %}
+```JavaScript
 // File:js/module/greet.js
 define(function (require, exports) {
     function helloPython() {
@@ -21,13 +21,12 @@ define(function (require, exports) {
     exports.helloPython = helloPython;
     exports.helloJavaScript = helloJavaScript;
 });
-{% endhighlight %}
-
+```
 如果你对Node.js非常熟悉，你可以把这个模块理解为Node.js的模块加上一个Wrapper。
 
 ## 在页面中引入Sea.js：
 
-{% highlight html %}
+```html
 <!-- File:index.html -->
 <!DOCTYPE HTML>
 <html lang="en">
@@ -41,11 +40,10 @@ define(function (require, exports) {
     
 </body>
 </html>
-{% endhighlight %}
-
+```
 ## 加载模块文件！
 
-{% highlight html %}
+```html
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -63,6 +61,6 @@ define(function (require, exports) {
 
 </body>
 </html>
-{% endhighlight %}
+```
 
 看到页面上输出的`Hello,JavaScript`么，这确实太简单了！
