@@ -6,7 +6,8 @@
 
 ## 阅读
 
-从[目录](http://island205.github.io/HelloSea.js/)开始吧！
+* [github page](http://island205.github.io/HelloSea.js/)
+* [gitbook.io](https://www.gitbook.io/book/island2051/hello-sea-js)
 
 ## 如何贡献
 
