@@ -18,6 +18,8 @@
 
 ## 贡献者
 
+> 排名不分先后。
+
 - [pyrocat101](https://github.com/pyrocat101)
 - [GZShi](https://github.com/GZShi)
 - [chuguixin](https://github.com/chuguixin)
@@ -27,8 +29,7 @@
 - [sunorry](https://github.com/sunorry)
 - [zhuochun](https://github.com/zhuochun)
 - [Che Kun](https://github.com/chekun)
-
-> 排名不分先后。
+- [lovelock](https://github.com/lovelock)
 
 ## License
 
