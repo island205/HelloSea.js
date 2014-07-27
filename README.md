@@ -16,6 +16,12 @@
 3. 给HelloSea.js发Pull request；
 4. 如果你的Pull request被合并了，你将获得commit的权限；开始重复步骤2吧！
 
+本书使用`gitbook`生成：
+
+```bash
+  gitbook serve .
+```
+
 ## 贡献者
 
 > 排名不分先后。
