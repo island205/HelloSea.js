@@ -31,7 +31,7 @@
 - [chuguixin](https://github.com/chuguixin)
 - [dnbsbyhf](https://github.com/dnbsbyhf)
 - [afc163](https://github.com/afc163)
-- [lzysd](https://github.com/lzyzsd)
+- [lzyzsd](https://github.com/lzyzsd)
 - [sunorry](https://github.com/sunorry)
 - [zhuochun](https://github.com/zhuochun)
 - [Che Kun](https://github.com/chekun)
