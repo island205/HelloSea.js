@@ -36,6 +36,7 @@
 - [zhuochun](https://github.com/zhuochun)
 - [Che Kun](https://github.com/chekun)
 - [lovelock](https://github.com/lovelock)
+- [daemon](https://github.com/daemonchen)
 
 ## License
 
