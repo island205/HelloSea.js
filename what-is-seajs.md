@@ -174,6 +174,6 @@ define(function (require, exports) {
 
 // File:usegreet.js
 sea.use("greet", function (Greet) {
-    greet.helloJavaScript();
+    Greet.helloJavaScript();
 });
 ```
